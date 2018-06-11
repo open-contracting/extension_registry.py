@@ -1,0 +1,103 @@
+import pytest
+
+from ocdsextensionregistry import ExtensionRegistry
+
+extensions_url = 'https://raw.githubusercontent.com/open-contracting/extension_registry/master/extensions.csv'
+extension_versions_url = 'https://raw.githubusercontent.com/open-contracting/extension_registry/master/extension_versions.csv'  # noqa
+
+extensions_data = """Id,Category,Core
+charges,ppp,
+enquiries,tender,true
+location,item,true
+lots,tender,true
+"""
+
+extension_versions_data = """Id,Date,Version,Base URL,Download URL
+charges,,master,https://raw.githubusercontent.com/open-contracting/ocds_charges_extension/master/,https://github.com/open-contracting/ocds_charges_extension/archive/master.zip
+charges,2017-05-09,v1.1,https://raw.githubusercontent.com/open-contracting/ocds_charges_extension/v1.1/,https://api.github.com/repos/open-contracting/ocds_charges_extension/zipball/v1.1
+enquiries,,master,https://raw.githubusercontent.com/open-contracting/ocds_enquiry_extension/master/,https://github.com/open-contracting/ocds_enquiry_extension/archive/master.zip
+enquiries,2017-05-09,v1.1,https://raw.githubusercontent.com/open-contracting/ocds_enquiry_extension/v1.1/,https://api.github.com/repos/open-contracting/ocds_enquiry_extension/zipball/v1.1
+enquiries,2017-08-07,v1.1.1,https://raw.githubusercontent.com/open-contracting/ocds_enquiry_extension/v1.1.1/,https://api.github.com/repos/open-contracting/ocds_enquiry_extension/zipball/v1.1.1
+enquiries,2018-02-01,v1.1.3,https://raw.githubusercontent.com/open-contracting/ocds_enquiry_extension/v1.1.3/,https://api.github.com/repos/open-contracting/ocds_enquiry_extension/zipball/v1.1.3
+location,,master,https://raw.githubusercontent.com/open-contracting/ocds_location_extension/master/,https://github.com/open-contracting/ocds_location_extension/archive/master.zip
+location,2017-05-09,v1.1,https://raw.githubusercontent.com/open-contracting/ocds_location_extension/v1.1/,https://api.github.com/repos/open-contracting/ocds_location_extension/zipball/v1.1
+location,2017-08-07,v1.1.1,https://raw.githubusercontent.com/open-contracting/ocds_location_extension/v1.1.1/,https://api.github.com/repos/open-contracting/ocds_location_extension/zipball/v1.1.1
+location,2018-02-01,v1.1.3,https://raw.githubusercontent.com/open-contracting/ocds_location_extension/v1.1.3/,https://api.github.com/repos/open-contracting/ocds_location_extension/zipball/v1.1.3
+lots,,master,https://raw.githubusercontent.com/open-contracting/ocds_lots_extension/master/,https://github.com/open-contracting/ocds_lots_extension/archive/master.zip
+lots,2017-05-09,v1.1,https://raw.githubusercontent.com/open-contracting/ocds_lots_extension/v1.1/,https://api.github.com/repos/open-contracting/ocds_lots_extension/zipball/v1.1
+lots,2017-08-07,v1.1.1,https://raw.githubusercontent.com/open-contracting/ocds_lots_extension/v1.1.1/,https://api.github.com/repos/open-contracting/ocds_lots_extension/zipball/v1.1.1
+lots,2018-01-30,v1.1.3,https://raw.githubusercontent.com/open-contracting/ocds_lots_extension/v1.1.3/,https://api.github.com/repos/open-contracting/ocds_lots_extension/zipball/v1.1.3
+"""
+
+
+def test_init_with_url():
+    obj = ExtensionRegistry(extension_versions_url, extensions_url)
+
+    assert len(obj.versions) > 50
+
+def test_init_with_data():
+    obj = ExtensionRegistry(extension_versions_data, extensions_data)
+
+    assert len(obj.versions) == 14
+    assert obj.versions[0].__dict__ == {
+        'id': 'charges',
+        'date': '',
+        'version': 'master',
+        'base_url': 'https://raw.githubusercontent.com/open-contracting/ocds_charges_extension/master/',
+        'download_url': 'https://github.com/open-contracting/ocds_charges_extension/archive/master.zip',
+        'category': 'ppp',
+        'core': False,
+    }
+    assert obj.versions[-1].__dict__ == {
+        'id': 'lots',
+        'date': '2018-01-30',
+        'version': 'v1.1.3',
+        'base_url': 'https://raw.githubusercontent.com/open-contracting/ocds_lots_extension/v1.1.3/',
+        'download_url': 'https://api.github.com/repos/open-contracting/ocds_lots_extension/zipball/v1.1.3',
+        'category': 'tender',
+        'core': True,
+    }
+
+
+def test_init_with_versions_only():
+    obj = ExtensionRegistry(extension_versions_data)
+
+    assert len(obj.versions) == 14
+    assert obj.versions[0].__dict__ == {
+        'id': 'charges',
+        'date': '',
+        'version': 'master',
+        'base_url': 'https://raw.githubusercontent.com/open-contracting/ocds_charges_extension/master/',
+        'download_url': 'https://github.com/open-contracting/ocds_charges_extension/archive/master.zip',
+    }
+    assert obj.versions[-1].__dict__ == {
+        'id': 'lots',
+        'date': '2018-01-30',
+        'version': 'v1.1.3',
+        'base_url': 'https://raw.githubusercontent.com/open-contracting/ocds_lots_extension/v1.1.3/',
+        'download_url': 'https://api.github.com/repos/open-contracting/ocds_lots_extension/zipball/v1.1.3',
+    }
+
+
+def test_filter():
+    obj = ExtensionRegistry(extension_versions_data, extensions_data)
+    result = obj.filter(core=True, version='v1.1.3', category='tender')
+
+    assert len(result) == 2
+    assert result[0].id == 'enquiries'
+    assert result[1].id == 'lots'
+
+
+def test_filter_without_extensions():
+    obj = ExtensionRegistry(extension_versions_data)
+    with pytest.raises(Exception) as excinfo:
+        result = obj.filter(category='tender')
+
+    assert str(excinfo.value) == 'You must initialize ExtensionRegistry with two arguments.'
+
+
+def test_all():
+    obj = ExtensionRegistry(extension_versions_data)
+    result = obj.all()
+
+    assert len(result) == 14
