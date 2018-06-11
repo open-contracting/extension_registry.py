@@ -35,6 +35,7 @@ def test_init_with_url():
 
     assert len(obj.versions) > 50
 
+
 def test_init_with_data():
     obj = ExtensionRegistry(extension_versions_data, extensions_data)
 
@@ -91,7 +92,7 @@ def test_filter():
 def test_filter_without_extensions():
     obj = ExtensionRegistry(extension_versions_data)
     with pytest.raises(Exception) as excinfo:
-        result = obj.filter(category='tender')
+        obj.filter(category='tender')
 
     assert str(excinfo.value) == 'You must initialize ExtensionRegistry with two arguments.'
 
