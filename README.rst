@@ -21,6 +21,10 @@ Examples
         print('Run `git clone {0.repository_url}` to make a local copy in a {0.repository_name} directory'.format(version))
         print('Get its patch at {0.base_url}release-schema.json\n'.format(version))
 
+    # The Enquiries extension ("enquiries") is maintained at https://github.com/open-contracting/ocds_enquiry_extension
+    # Run `git clone git@github.com:open-contracting/ocds_enquiry_extension.git` to make a local copy in a ocds_enquiry_extension directory
+    # Get its patch at https://raw.githubusercontent.com/open-contracting/ocds_enquiry_extension/v1.1.3/release-schema.json
+
 Contributing
 ------------
 
