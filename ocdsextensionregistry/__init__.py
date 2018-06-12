@@ -42,11 +42,9 @@ class ExtensionRegistry:
             else:
                 raise
 
-    def all(self):
-        """
-        Returns all the extension versions in the registry.
-        """
-        return self.versions
+    def __iter__(self):
+        for version in self.versions:
+            yield version
 
     def _resolve(self, data_or_url):
         parsed = urlparse(data_or_url)

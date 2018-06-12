@@ -97,8 +97,9 @@ def test_filter_without_extensions():
     assert str(excinfo.value) == 'You must initialize ExtensionRegistry with two arguments.'
 
 
-def test_all():
+def test_iter():
     obj = ExtensionRegistry(extension_versions_data)
-    result = obj.all()
+    for i, version in enumerate(obj, 1):
+        pass
 
-    assert len(result) == 14
+    assert i == 14
