@@ -38,5 +38,5 @@ Copyright (c) 2018 Open Contracting Partnership, released under the BSD license
    :target: https://travis-ci.org/open-contracting/extension_registry.py
 .. |Dependency Status| image:: https://requires.io/github/open-contracting/extension_registry.py/requirements.svg
    :target: https://requires.io/github/open-contracting/extension_registry.py/requirements/
-.. |Coverage Status| image:: https://coveralls.io/repos/open-contracting/extension_registry.py/badge.png
-   :target: https://coveralls.io/r/open-contracting/extension_registry.py
+.. |Coverage Status| image:: https://coveralls.io/repos/github/open-contracting/extension_registry.py/badge.png?branch=master
+   :target: https://coveralls.io/github/open-contracting/extension_registry.py?branch=master
