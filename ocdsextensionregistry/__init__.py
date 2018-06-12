@@ -6,6 +6,18 @@ from urllib.parse import urlparse
 import requests
 
 
+class OCDSExtensionRegistryError(Exception):
+    """Base class for exceptions from within this package"""
+
+
+class DoesNotExist(OCDSExtensionRegistryError):
+    """Raised if an object wasn't found for the given parameters"""
+
+
+class MissingExtensionMetadata(OCDSExtensionRegistryError):
+    """Raised if a method call requires extensions metadata, with which the extension registry was not initialized"""
+
+
 class ExtensionRegistry:
     def __init__(self, extension_versions_data, extensions_data=None):
         """
@@ -37,13 +49,18 @@ class ExtensionRegistry:
         try:
             return list(filter(lambda ver: all(getattr(ver, k) == v for k, v in kwargs.items()), self.versions))
         except AttributeError as e:
-            if "'category'" in str(e.args) or "'core'" in str(e.args):
-                raise Exception('You must initialize ExtensionRegistry with two arguments.') from e
-            else:
-                raise
+            self._handle_attribute_error(e)
 
     def get(self, **kwargs):
-        return next(ver for ver in self.versions if all(getattr(ver, k) == v for k, v in kwargs.items()))
+        """
+        Returns the first extension version in the registry that matches the keyword arguments.
+        """
+        try:
+            return next(ver for ver in self.versions if all(getattr(ver, k) == v for k, v in kwargs.items()))
+        except StopIteration:
+            raise DoesNotExist('Extension version matching {} does not exist.'.format(repr(kwargs)))
+        except AttributeError as e:
+            self._handle_attribute_error(e)
 
     def __iter__(self):
         for version in self.versions:
@@ -55,6 +72,12 @@ class ExtensionRegistry:
             return requests.get(data_or_url).text
         else:
             return data_or_url
+
+    def _handle_attribute_error(self, e):
+        if "'category'" in str(e.args) or "'core'" in str(e.args):
+            raise MissingExtensionMetadata('ExtensionRegistry must be initialized with extensions data.') from e
+        else:
+            raise
 
 
 class Extension:

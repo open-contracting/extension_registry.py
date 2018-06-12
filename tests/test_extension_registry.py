@@ -1,6 +1,6 @@
 import pytest
 
-from ocdsextensionregistry import ExtensionRegistry
+from ocdsextensionregistry import ExtensionRegistry, DoesNotExist, MissingExtensionMetadata
 
 extensions_url = 'https://raw.githubusercontent.com/open-contracting/extension_registry/master/extensions.csv'
 extension_versions_url = 'https://raw.githubusercontent.com/open-contracting/extension_registry/master/extension_versions.csv'  # noqa
@@ -110,10 +110,10 @@ def test_filter():
 
 def test_filter_without_extensions():
     obj = ExtensionRegistry(extension_versions_data)
-    with pytest.raises(Exception) as excinfo:
+    with pytest.raises(MissingExtensionMetadata) as excinfo:
         obj.filter(category='tender')
 
-    assert str(excinfo.value) == 'You must initialize ExtensionRegistry with two arguments.'
+    assert str(excinfo.value) == 'ExtensionRegistry must be initialized with extensions data.'
 
 
 def test_get():
@@ -131,10 +131,18 @@ def test_get():
 
 def test_get_no_match():
     obj = ExtensionRegistry(extension_versions_data)
-    with pytest.raises(StopIteration) as excinfo:
+    with pytest.raises(DoesNotExist) as excinfo:
         obj.get(id='nonexistent')
 
-    assert str(excinfo.value) == ''
+    assert str(excinfo.value) == "Extension version matching {'id': 'nonexistent'} does not exist."
+
+
+def test_get_without_extensions():
+    obj = ExtensionRegistry(extension_versions_data)
+    with pytest.raises(MissingExtensionMetadata) as excinfo:
+        obj.get(category='tender')
+
+    assert str(excinfo.value) == 'ExtensionRegistry must be initialized with extensions data.'
 
 
 def test_iter():
