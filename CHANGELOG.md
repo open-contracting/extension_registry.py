@@ -1,9 +1,10 @@
 # Changelog
 
-## 0.0.2 (2018-06-11)
+## 0.0.2 (2018-06-12)
 
 * Make `ExtensionRegistry` iterable.
 * Remove `all()` method from `ExtensionRegistry`.
+* Add `get(**kwargs)` method to `ExtensionRegistry`.
 
 ## 0.0.1 (2018-06-11)
 

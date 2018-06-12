@@ -42,6 +42,9 @@ class ExtensionRegistry:
             else:
                 raise
 
+    def get(self, **kwargs):
+        return next(ver for ver in self.versions if all(getattr(ver, k) == v for k, v in kwargs.items()))
+
     def __iter__(self):
         for version in self.versions:
             yield version
