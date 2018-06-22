@@ -42,7 +42,7 @@ def test_init_with_data():
     obj = ExtensionRegistry(extension_versions_data, extensions_data)
 
     assert len(obj.versions) == 14
-    assert obj.versions[0].__dict__ == {
+    assert obj.versions[0].as_dict() == {
         'id': 'charges',
         'date': '',
         'version': 'master',
@@ -52,7 +52,7 @@ def test_init_with_data():
         'core': False,
     }
     # Assume intermediate data is correctly parsed.
-    assert obj.versions[-1].__dict__ == {
+    assert obj.versions[-1].as_dict() == {
         'id': 'lots',
         'date': '2018-01-30',
         'version': 'v1.1.3',
@@ -67,7 +67,7 @@ def test_init_with_versions_only():
     obj = ExtensionRegistry(extension_versions_data)
 
     assert len(obj.versions) == 14
-    assert obj.versions[0].__dict__ == {
+    assert obj.versions[0].as_dict() == {
         'id': 'charges',
         'date': '',
         'version': 'master',
@@ -75,7 +75,7 @@ def test_init_with_versions_only():
         'download_url': 'https://github.com/open-contracting/ocds_charges_extension/archive/master.zip',
     }
     # Assume intermediate data is correctly parsed.
-    assert obj.versions[-1].__dict__ == {
+    assert obj.versions[-1].as_dict() == {
         'id': 'lots',
         'date': '2018-01-30',
         'version': 'v1.1.3',
@@ -89,7 +89,7 @@ def test_filter():
     result = obj.filter(core=True, version='v1.1.3', category='tender')
 
     assert len(result) == 2
-    assert result[0].__dict__ == {
+    assert result[0].as_dict() == {
         'id': 'enquiries',
         'date': '2018-02-01',
         'version': 'v1.1.3',
@@ -98,7 +98,7 @@ def test_filter():
         'category': 'tender',
         'core': True,
     }
-    assert result[1].__dict__ == {
+    assert result[1].as_dict() == {
         'id': 'lots',
         'date': '2018-01-30',
         'version': 'v1.1.3',
@@ -121,7 +121,7 @@ def test_get():
     obj = ExtensionRegistry(extension_versions_data)
     result = obj.get(id='lots', version='v1.1.3')
 
-    assert result.__dict__ == {
+    assert result.as_dict() == {
         'id': 'lots',
         'date': '2018-01-30',
         'version': 'v1.1.3',

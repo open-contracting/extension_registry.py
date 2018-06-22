@@ -1,3 +1,6 @@
+import pytest
+import requests
+
 from ocdsextensionregistry import Extension, ExtensionVersion
 
 
@@ -19,6 +22,62 @@ def test_update():
     assert obj.id == 'location'
     assert obj.category == 'item'
     assert obj.core is True
+
+
+def test_update_ignore_private_properties():
+    obj = ExtensionVersion(arguments())
+    other = ExtensionVersion(arguments())
+    other._file_cache['key'] = 'value'
+    obj.update(other)
+
+    assert obj._file_cache == {}
+
+
+def test_as_dict():
+    args = arguments()
+    obj = ExtensionVersion(args)
+
+    assert obj.as_dict() == {
+        'id': args['Id'],
+        'date': args['Date'],
+        'version': args['Version'],
+        'base_url': args['Base URL'],
+        'download_url': args['Download URL'],
+    }
+
+
+def test_remote():
+    obj = ExtensionVersion(arguments(**{'Download URL': None}))
+    data = obj.remote('LICENSE')
+    # Repeat requests should return the same result.
+    data = obj.remote('LICENSE')
+
+    assert 'http://www.apache.org/licenses/' in data
+
+
+def test_remote_download_url():
+    obj = ExtensionVersion(arguments())
+    data = obj.remote('LICENSE')
+    # Repeat requests should return the same result.
+    data = obj.remote('LICENSE')
+
+    assert 'http://www.apache.org/licenses/' in data
+
+
+def test_remote_nonexistent():
+    obj = ExtensionVersion(arguments(**{'Download URL': None}))
+    with pytest.raises(requests.exceptions.HTTPError) as excinfo:
+        obj.remote('nonexistent')
+
+    assert str(excinfo.value) == "404 Client Error: Not Found for url: https://raw.githubusercontent.com/open-contracting/ocds_location_extension/v1.1.3/nonexistent"  # noqa
+
+
+def test_remote_download_url_nonexistent():
+    obj = ExtensionVersion(arguments())
+    with pytest.raises(KeyError) as excinfo:
+        obj.remote('nonexistent')
+
+    assert str(excinfo.value) == "'nonexistent'"
 
 
 def test_metadata():

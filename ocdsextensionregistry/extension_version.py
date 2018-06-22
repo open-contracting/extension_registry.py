@@ -1,5 +1,7 @@
 import re
+from io import BytesIO
 from urllib.parse import urlparse
+from zipfile import ZipFile
 
 import requests
 
@@ -14,20 +16,51 @@ class ExtensionVersion:
         self.version = data['Version']
         self.base_url = data['Base URL']
         self.download_url = data['Download URL']
+        self._file_cache = {}
 
     def update(self, other):
         """
         Merges in the properties of another Extension or ExtensionVersion object.
         """
-        for k, v in other.__dict__.items():
+        for k, v in other.as_dict().items():
             setattr(self, k, v)
+
+    def as_dict(self):
+        """
+        Returns the object's public properties as a dictionary.
+        """
+        return {key: value for key, value in self.__dict__.items() if not key.startswith('_')}
+
+    def remote(self, basename):
+        """
+        Returns the contents of the file within the extension.
+
+        If the extension has a download URL, downloads the ZIP archive and caches all its files' contents. Otherwise,
+        downloads and caches the requested file's contents. Raises an HTTPError if a download fails, and a KeyError if
+        the requested file isn't in the ZIP archive.
+        """
+        if basename not in self._file_cache:
+            if not self.download_url:
+                response = requests.get(self.base_url + basename)
+                response.raise_for_status()
+                self._file_cache[basename] = response.text
+            elif not self._file_cache:
+                response = requests.get(self.download_url, allow_redirects=True)
+                response.raise_for_status()
+                zipfile = ZipFile(BytesIO(response.content))
+                names = zipfile.namelist()
+                start = len(names[0])
+                for name in names[1:]:
+                    self._file_cache[name[start:]] = str(zipfile.read(name))
+
+        return self._file_cache[basename]
 
     @property
     def metadata(self):
         """
         Retrieves and returns the extension's extension.json file as a dict.
         """
-        return requests.get('{}extension.json'.format(self.base_url)).json()
+        return requests.get(self.base_url + 'extension.json').json()
 
     @property
     def repository_full_name(self):
@@ -76,10 +109,10 @@ class ExtensionVersion:
         return re.match(config['name:pattern'], parsed.path).group(1)
 
     def _repository_html_page(self, parsed, config):
-        return '{}{}'.format(config['html_page:prefix'], self._repository_full_name(parsed, config))
+        return config['html_page:prefix'] + self._repository_full_name(parsed, config)
 
     def _repository_url(self, parsed, config):
-        return '{}{}{}'.format(config['url:prefix'], self._repository_full_name(parsed, config), config['url:suffix'])
+        return config['url:prefix'] + self._repository_full_name(parsed, config) + config['url:suffix']
 
     def _repository_property(self, prop):
         parsed = urlparse(self.base_url)
