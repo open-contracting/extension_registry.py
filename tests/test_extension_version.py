@@ -1,3 +1,5 @@
+import json
+
 import pytest
 import requests
 
@@ -48,20 +50,20 @@ def test_as_dict():
 
 def test_remote():
     obj = ExtensionVersion(arguments(**{'Download URL': None}))
-    data = obj.remote('LICENSE')
+    data = obj.remote('extension.json')
     # Repeat requests should return the same result.
-    data = obj.remote('LICENSE')
+    data = obj.remote('extension.json')
 
-    assert 'http://www.apache.org/licenses/' in data
+    assert json.loads(data)
 
 
 def test_remote_download_url():
     obj = ExtensionVersion(arguments())
-    data = obj.remote('LICENSE')
+    data = obj.remote('extension.json')
     # Repeat requests should return the same result.
-    data = obj.remote('LICENSE')
+    data = obj.remote('extension.json')
 
-    assert 'http://www.apache.org/licenses/' in data
+    assert json.loads(data)
 
 
 def test_remote_nonexistent():
