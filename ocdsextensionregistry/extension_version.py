@@ -1,3 +1,4 @@
+import json
 import re
 from io import BytesIO
 from urllib.parse import urlparse
@@ -60,7 +61,7 @@ class ExtensionVersion:
         """
         Retrieves and returns the extension's extension.json file as a dict.
         """
-        return requests.get(self.base_url + 'extension.json').json()
+        return json.loads(self.remote('extension.json'))
 
     @property
     def repository_full_name(self):
