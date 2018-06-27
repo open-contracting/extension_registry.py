@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.0.3 (2018-06-21)
+## 0.0.3 (2018-06-27)
 
 * Add `remote(basename)` method to `ExtensionVersion`, to return the contents of a file within the extension.
 * Add `as_dict()` method to `Extension` and `ExtensionVersion`, to avoid returning private properties.

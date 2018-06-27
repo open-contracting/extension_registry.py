@@ -51,7 +51,7 @@ class ExtensionVersion:
                 names = zipfile.namelist()
                 start = len(names[0])
                 for name in names[1:]:
-                    self._file_cache[name[start:]] = str(zipfile.read(name))
+                    self._file_cache[name[start:]] = zipfile.read(name).decode('utf-8')
 
         return self._file_cache[basename]
 
