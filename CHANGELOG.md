@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.4 (2018-06-27)
+
+* The `metadata` property of `ExtensionVersion` is cached.
+
 ## 0.0.3 (2018-06-27)
 
 * Add `remote(basename)` method to `ExtensionVersion`, to return the contents of a file within the extension.
