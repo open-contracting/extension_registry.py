@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.0.4
+## 0.0.4 (2018-06-27)
 
 * The `metadata` property of `ExtensionVersion` is cached.
 
