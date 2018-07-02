@@ -54,6 +54,9 @@ class ExtensionRegistry:
             self._handle_attribute_error(e)
 
     def __iter__(self):
+        """
+        Iterates over the extension versions in the registry.
+        """
         for version in self.versions:
             yield version
 

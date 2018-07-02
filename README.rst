@@ -1,6 +1,3 @@
-Extension Registry Python Package
-=================================
-
 |PyPI version| |Build Status| |Dependency Status| |Coverage Status|
 
 This Python package eases access to information about extensions in the `Open Contracting Data Standard <http://standard.open-contracting.org>`__'s `extension registry <https://github.com/open-contracting/extension_registry>`__.
@@ -29,8 +26,6 @@ Contributing
 ------------
 
 Methods in this library should either apply to all possible extensions, or be useful to at least two use cases. Methods that don't yet meet these criteria are documented as experimental.
-
-Copyright (c) 2018 Open Contracting Partnership, released under the BSD license
 
 .. |PyPI version| image:: https://badge.fury.io/py/ocdsextensionregistry.svg
    :target: https://badge.fury.io/py/ocdsextensionregistry
