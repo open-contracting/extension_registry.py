@@ -17,6 +17,7 @@ class ExtensionVersion:
         self.version = data['Version']
         self.base_url = data['Base URL']
         self.download_url = data['Download URL']
+        self._metadata = {}
         self._file_cache = {}
 
     def update(self, other):
@@ -61,7 +62,21 @@ class ExtensionVersion:
         """
         Retrieves and returns the extension's extension.json file as a dict.
         """
-        return json.loads(self.remote('extension.json'))
+        if not self._metadata:
+            self._metadata = json.loads(self.remote('extension.json'))
+
+            for field in ('name', 'description', 'documentationUrl'):
+                # Add required fields.
+                if field not in self._metadata:
+                    self._metadata[field] = {}
+                # Add language maps.
+                if isinstance(self._metadata[field], str):
+                    self._metadata[field] = {'en': self._metadata[field]}
+
+            if 'compatibility' not in self._metadata or isinstance(self._metadata['compatibility'], str):
+                self._metadata['compatibility'] = ['1.1']
+
+        return self._metadata
 
     @property
     def repository_full_name(self):

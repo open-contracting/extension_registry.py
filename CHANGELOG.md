@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.5
+
+* The `metadata` property of `ExtensionVersion` normalizes the contents of `extension.json` to provide consistent access.
+
 ## 0.0.4 (2018-06-27)
 
 * The `metadata` property of `ExtensionVersion` is cached.

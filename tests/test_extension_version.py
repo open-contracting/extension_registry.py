@@ -90,6 +90,17 @@ def test_metadata():
     assert 'description' in result
 
 
+def test_metadata_defaults():
+    download_url = 'https://api.github.com/repos/open-contracting/ocds_location_extension/zipball/v1.1'
+    obj = ExtensionVersion(arguments(**{'Download URL': download_url}))
+    result = obj.metadata
+
+    assert result['name']['en'] == 'Location'
+    assert result['description']['en'] == 'Communicates the location of proposed or executed contract delivery.'
+    assert result['documentationUrl'] == {}
+    assert result['compatibility'] == ['1.1']
+
+
 def test_repository_full_name():
     obj = ExtensionVersion(arguments())
     result = obj.repository_full_name
