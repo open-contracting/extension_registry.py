@@ -3,6 +3,7 @@ import json
 import os.path
 import re
 from collections import OrderedDict
+from contextlib import closing
 from io import BytesIO, StringIO
 from urllib.parse import urlparse
 from zipfile import ZipFile
@@ -73,15 +74,15 @@ class ExtensionVersion:
             if self.download_url:
                 response = requests.get(self.download_url, allow_redirects=True)
                 response.raise_for_status()
-                zipfile = ZipFile(BytesIO(response.content))
-                names = zipfile.namelist()
-                start = len(names[0])
-                for name in names[1:]:
-                    if name[-1] != '/' and name[start:] != '.travis.yml':
-                        content = zipfile.read(name)
-                        if os.path.splitext(name)[1] in ('.csv', '.json', '.md'):
-                            content = content.decode('utf-8')
-                        self._files[name[start:]] = content
+                with closing(ZipFile(BytesIO(response.content))) as zipfile:
+                    names = zipfile.namelist()
+                    start = len(names[0])
+                    for name in names[1:]:
+                        if name[-1] != '/' and name[start:] != '.travis.yml':
+                            content = zipfile.read(name)
+                            if os.path.splitext(name)[1] in ('.csv', '.json', '.md'):
+                                content = content.decode('utf-8')
+                            self._files[name[start:]] = content
 
         return self._files
 
