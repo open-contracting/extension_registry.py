@@ -5,7 +5,7 @@
 * Add `Codelist` and `CodelistCode` classes.
 * Add `files` property to `ExtensionVersion`, to return the contents of all files within the extension.
 * Add `schemas` property to `ExtensionVersion`, to return the schemas.
-* Add `codelists` property to `ExtensionVersion`, to return the codelissts.
+* Add `codelists` property to `ExtensionVersion`, to return the codelists.
 * Add `docs` property to `ExtensionVersion`, to return the contents of documentation files within the extension.
 * The `metadata` property of `ExtensionVersion` normalizes the contents of `extension.json` to provide consistent access.
 
