@@ -1,10 +1,16 @@
+import csv
 import json
 import re
-from io import BytesIO
+from collections import OrderedDict
+from io import BytesIO, StringIO
 from urllib.parse import urlparse
 from zipfile import ZipFile
 
 import requests
+
+from ocdsextensionregistry import Codelist
+
+SCHEMAS = ('record-package-schema.json', 'release-package-schema.json', 'release-schema.json')
 
 
 class ExtensionVersion:
@@ -17,8 +23,10 @@ class ExtensionVersion:
         self.version = data['Version']
         self.base_url = data['Base URL']
         self.download_url = data['Download URL']
-        self._metadata = {}
-        self._file_cache = {}
+        self._files = None
+        self._metadata = None
+        self._schemas = None
+        self._docs = None
 
     def update(self, other):
         """
@@ -41,29 +49,44 @@ class ExtensionVersion:
         downloads and caches the requested file's contents. Raises an HTTPError if a download fails, and a KeyError if
         the requested file isn't in the ZIP archive.
         """
-        if basename not in self._file_cache:
+        if basename not in self.files:
             if not self.download_url:
                 response = requests.get(self.base_url + basename)
                 response.raise_for_status()
-                self._file_cache[basename] = response.text
-            elif not self._file_cache:
+                self._files[basename] = response.text
+
+        return self.files[basename]
+
+    @property
+    def files(self):
+        """
+        Returns the contents of all files within the extension.
+
+        If the extension has a download URL, downloads the ZIP archive and caches all its files' contents. Otherwise,
+        returns an empty dict. Raises an HTTPError if the download fails.
+        """
+        if self._files is None:
+            self._files = {}
+
+            if self.download_url:
                 response = requests.get(self.download_url, allow_redirects=True)
                 response.raise_for_status()
                 zipfile = ZipFile(BytesIO(response.content))
                 names = zipfile.namelist()
                 start = len(names[0])
                 for name in names[1:]:
-                    self._file_cache[name[start:]] = zipfile.read(name).decode('utf-8')
+                    if name[-1] != '/':
+                        self._files[name[start:]] = zipfile.read(name).decode('utf-8')
 
-        return self._file_cache[basename]
+        return self._files
 
     @property
     def metadata(self):
         """
         Retrieves and returns the extension's extension.json file as a dict.
         """
-        if not self._metadata:
-            self._metadata = json.loads(self.remote('extension.json'))
+        if self._metadata is None:
+            self._metadata = json.loads(self.remote('extension.json'), object_pairs_hook=OrderedDict)
 
             for field in ('name', 'description', 'documentationUrl'):
                 # Add required fields.
@@ -77,6 +100,46 @@ class ExtensionVersion:
                 self._metadata['compatibility'] = ['1.1']
 
         return self._metadata
+
+    @property
+    def schemas(self):
+        """
+        Retrieves and returns the extension's schemas.
+        """
+        if self._schemas is None:
+            self._schemas = {}
+
+            if 'schemas' in self.metadata:
+                names = self.metadata['schemas']
+            elif self.download_url:
+                names = [name for name in self.files if name in SCHEMAS]
+            else:
+                names = SCHEMAS
+
+            for name in names:
+                try:
+                    self._schemas[name] = json.loads(self.remote(name), object_pairs_hook=OrderedDict)
+                except requests.exceptions.HTTPError:
+                    if 'schemas' in self.metadata:
+                        raise
+
+        return self._schemas
+
+    @property
+    def docs(self):
+        """
+        Retrieves and returns the contents of documentation files within the extension.
+
+        If the extension has no download URL, returns an empty dict.
+        """
+        if self._docs is None:
+            self._docs = {}
+
+            for name, text in self.files.items():
+                if name.startswith('docs/'):
+                    self._docs[name[5:]] = text
+
+        return self._docs
 
     @property
     def repository_full_name(self):

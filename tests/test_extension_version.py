@@ -29,10 +29,10 @@ def test_update():
 def test_update_ignore_private_properties():
     obj = ExtensionVersion(arguments())
     other = ExtensionVersion(arguments())
-    other._file_cache['key'] = 'value'
+    other._files = {'key': 'value'}
     obj.update(other)
 
-    assert obj._file_cache == {}
+    assert obj._files == None
 
 
 def test_as_dict():
@@ -82,15 +82,32 @@ def test_remote_download_url_nonexistent():
     assert str(excinfo.value) == "'nonexistent'"
 
 
+def test_files():
+    obj = ExtensionVersion(arguments())
+    data = obj.files
+
+    assert 'LICENSE' in data
+
+    # This method should not parse file contents.
+    for value in data.values():
+        assert isinstance(value, str)
+
+
+def test_files_without_download_url():
+    obj = ExtensionVersion(arguments(**{'Download URL': None}))
+    data = obj.files
+
+    assert data == {}
+
+
 def test_metadata():
     obj = ExtensionVersion(arguments())
     result = obj.metadata
 
-    assert 'name' in result
-    assert 'description' in result
+    assert result['codelists'] == ['locationGazetteers.csv', 'geometryType.csv']
 
 
-def test_metadata_defaults():
+def test_metadata_old_format():
     download_url = 'https://api.github.com/repos/open-contracting/ocds_location_extension/zipball/v1.1'
     obj = ExtensionVersion(arguments(**{'Download URL': download_url}))
     result = obj.metadata
@@ -99,6 +116,51 @@ def test_metadata_defaults():
     assert result['description']['en'] == 'Communicates the location of proposed or executed contract delivery.'
     assert result['documentationUrl'] == {}
     assert result['compatibility'] == ['1.1']
+
+
+def test_schemas():
+    download_url = 'https://github.com/open-contracting/ocds_location_extension/archive/master.zip'
+    obj = ExtensionVersion(arguments(**{'Download URL': download_url}))
+    result = obj.schemas
+
+    assert len(result) == 1
+    assert 'Location' in result['release-schema.json']['definitions']
+
+
+def test_schemas_without_schemas_in_metadata():
+    download_url = 'https://api.github.com/repos/open-contracting/ocds_location_extension/zipball/v1.1'
+    obj = ExtensionVersion(arguments(**{'Download URL': download_url}))
+    result = obj.schemas
+
+    assert len(result) == 3
+    assert result['record-package-schema.json'] == {}
+    assert result['release-package-schema.json'] == {}
+    assert 'Location' in result['release-schema.json']['definitions']
+
+
+def test_schemas_without_download_url():
+    download_url = None
+    obj = ExtensionVersion(arguments(**{'Download URL': download_url}))
+    result = obj.schemas
+
+    assert len(result) == 1
+    assert 'Location' in result['release-schema.json']['definitions']
+
+
+def test_docs():
+    download_url = 'https://github.com/open-contracting-extensions/ocds_coveredBy_extension/archive/master.zip'
+    obj = ExtensionVersion(arguments(**{'Download URL': download_url}))
+    result = obj.docs
+
+    assert isinstance(result['examples/example.json'], str)
+
+
+def test_docs_without_download_url():
+    download_url = None
+    obj = ExtensionVersion(arguments(**{'Download URL': download_url}))
+    result = obj.docs
+
+    assert result == {}
 
 
 def test_repository_full_name():
