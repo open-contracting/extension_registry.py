@@ -32,7 +32,7 @@ def test_update_ignore_private_properties():
     other._files = {'key': 'value'}
     obj.update(other)
 
-    assert obj._files == None
+    assert obj._files is None
 
 
 def test_as_dict():
@@ -180,6 +180,9 @@ def test_codelists_with_CR_newlines():
     download_url = 'https://api.github.com/repos/open-contracting/ocds_bid_extension/zipball/v1.1'
     obj = ExtensionVersion(arguments(**{'Download URL': download_url}))
     result = obj.codelists
+
+    assert len(result) == 2
+    assert result['bidStatistics.csv'].fieldnames == ['Category', 'Code', 'Title', 'Description', 'Min', 'Max', 'Required by']  # noqa
 
 
 def test_docs():
