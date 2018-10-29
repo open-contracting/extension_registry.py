@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.0.5
+
+* Add `Codelist` and `CodelistCode` classes.
+* Add `files` property to `ExtensionVersion`, to return the contents of all files within the extension.
+* Add `schemas` property to `ExtensionVersion`, to return the schemas.
+* Add `codelists` property to `ExtensionVersion`, to return the codelissts.
+* Add `docs` property to `ExtensionVersion`, to return the contents of documentation files within the extension.
+* The `metadata` property of `ExtensionVersion` normalizes the contents of `extension.json` to provide consistent access.
+
 ## 0.0.4 (2018-06-27)
 
 * The `metadata` property of `ExtensionVersion` is cached.
