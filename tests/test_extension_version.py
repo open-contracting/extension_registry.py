@@ -90,7 +90,7 @@ def test_files():
 
     # This method should not parse file contents.
     for value in data.values():
-        assert isinstance(value, str)
+        assert isinstance(value, (bytes, str))
 
 
 def test_files_without_download_url():
@@ -127,7 +127,7 @@ def test_schemas():
     assert 'Location' in result['release-schema.json']['definitions']
 
 
-def test_schemas_without_schemas_in_metadata():
+def test_schemas_without_metadata():
     download_url = 'https://api.github.com/repos/open-contracting/ocds_location_extension/zipball/v1.1'
     obj = ExtensionVersion(arguments(**{'Download URL': download_url}))
     result = obj.schemas
@@ -138,13 +138,48 @@ def test_schemas_without_schemas_in_metadata():
     assert 'Location' in result['release-schema.json']['definitions']
 
 
-def test_schemas_without_download_url():
+def test_schemas_without_metadata_or_download_url():
+    base_url = 'https://raw.githubusercontent.com/open-contracting/ocds_location_extension/v1.1/'
     download_url = None
-    obj = ExtensionVersion(arguments(**{'Download URL': download_url}))
+    obj = ExtensionVersion(arguments(**{'Base URL': base_url, 'Download URL': download_url}))
     result = obj.schemas
 
-    assert len(result) == 1
+    assert len(result) == 3
+    assert result['record-package-schema.json'] == {}
+    assert result['release-package-schema.json'] == {}
     assert 'Location' in result['release-schema.json']['definitions']
+
+
+def test_codelists():
+    obj = ExtensionVersion(arguments())
+    result = obj.codelists
+
+    assert len(result) == 2
+    assert result['locationGazetteers.csv'].fieldnames == ['Category', 'Code', 'Title', 'Description', 'Source', 'URI Pattern']  # noqa
+
+
+def test_codelists_without_metadata():
+    download_url = 'https://api.github.com/repos/open-contracting/ocds_location_extension/zipball/v1.1'
+    obj = ExtensionVersion(arguments(**{'Download URL': download_url}))
+    result = obj.codelists
+
+    assert len(result) == 1
+    assert result['locationGazeteers.csv'].fieldnames == ['Category', 'Code', 'Title', 'Description', 'Source', 'URI_Pattern']  # noqa
+
+
+def test_codelists_without_metadata_or_download_url():
+    base_url = 'https://raw.githubusercontent.com/open-contracting/ocds_location_extension/v1.1/'
+    download_url = None
+    obj = ExtensionVersion(arguments(**{'Base URL': base_url, 'Download URL': download_url}))
+    result = obj.codelists
+
+    assert result == {}
+
+
+def test_codelists_with_CR_newlines():
+    download_url = 'https://api.github.com/repos/open-contracting/ocds_bid_extension/zipball/v1.1'
+    obj = ExtensionVersion(arguments(**{'Download URL': download_url}))
+    result = obj.codelists
 
 
 def test_docs():

@@ -1,5 +1,6 @@
 import csv
 import json
+import os.path
 import re
 from collections import OrderedDict
 from io import BytesIO, StringIO
@@ -26,6 +27,7 @@ class ExtensionVersion:
         self._files = None
         self._metadata = None
         self._schemas = None
+        self._codelists = None
         self._docs = None
 
     def update(self, other):
@@ -60,7 +62,7 @@ class ExtensionVersion:
     @property
     def files(self):
         """
-        Returns the contents of all files within the extension.
+        Returns the contents of all files within the extension. Decodes the contents of CSV, JSON and Markdown files.
 
         If the extension has a download URL, downloads the ZIP archive and caches all its files' contents. Otherwise,
         returns an empty dict. Raises an HTTPError if the download fails.
@@ -75,8 +77,11 @@ class ExtensionVersion:
                 names = zipfile.namelist()
                 start = len(names[0])
                 for name in names[1:]:
-                    if name[-1] != '/':
-                        self._files[name[start:]] = zipfile.read(name).decode('utf-8')
+                    if name[-1] != '/' and name[start:] != '.travis.yml':
+                        content = zipfile.read(name)
+                        if os.path.splitext(name)[1] in ('.csv', '.json', '.md'):
+                            content = content.decode('utf-8')
+                        self._files[name[start:]] = content
 
         return self._files
 
@@ -124,6 +129,35 @@ class ExtensionVersion:
                         raise
 
         return self._schemas
+
+    @property
+    def codelists(self):
+        """
+        Retrieves and returns the extension's codelists.
+
+        If the extension has no download URL, and if no codelists are listed in extension.json, returns an empty dict.
+        """
+        if self._codelists is None:
+            self._codelists = {}
+
+            if 'codelists' in self.metadata:
+                names = self.metadata['codelists']
+            elif self.download_url:
+                names = [name[10:] for name in self.files if name.startswith('codelists/')]
+            else:
+                names = []
+
+            for name in names:
+                try:
+                    self._codelists[name] = Codelist(name)
+                    # Use universal newlines mode, to avoid parsing errors.
+                    io = StringIO(self.remote('codelists/' + name), newline='')
+                    self._codelists[name].extend(csv.DictReader(io))
+                except requests.exceptions.HTTPError:
+                    if 'codelists' in self.metadata:
+                        raise
+
+        return self._codelists
 
     @property
     def docs(self):
