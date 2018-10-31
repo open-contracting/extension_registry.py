@@ -1,8 +1,8 @@
 # Changelog
 
-## 0.0.5
+## 0.0.5 (2018-10-31)
 
-* Add `Codelist` and `CodelistCode` classes.
+* Add `ProfileBuilder`, `Codelist`, `CodelistCode` classes.
 * Add `files` property to `ExtensionVersion`, to return the contents of all files within the extension.
 * Add `schemas` property to `ExtensionVersion`, to return the schemas.
 * Add `codelists` property to `ExtensionVersion`, to return the codelists.
