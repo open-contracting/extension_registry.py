@@ -12,7 +12,7 @@ import json_merge_patch
 import requests
 from ocdsextensionregistry import ExtensionRegistry, Codelist
 
-logger = logging.getLogger('ocdsdocumentationsupport')
+logger = logging.getLogger('ocdsextensionregistry')
 
 
 def _json_loads(data):
