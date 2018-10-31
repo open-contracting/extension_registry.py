@@ -1,15 +1,15 @@
 import csv
-import json
 import os.path
 import re
-from collections import OrderedDict
+from contextlib import closing
 from io import BytesIO, StringIO
 from urllib.parse import urlparse
 from zipfile import ZipFile
 
 import requests
 
-from ocdsextensionregistry import Codelist
+from .codelist import Codelist
+from .util import json_loads
 
 SCHEMAS = ('record-package-schema.json', 'release-package-schema.json', 'release-schema.json')
 
@@ -73,15 +73,15 @@ class ExtensionVersion:
             if self.download_url:
                 response = requests.get(self.download_url, allow_redirects=True)
                 response.raise_for_status()
-                zipfile = ZipFile(BytesIO(response.content))
-                names = zipfile.namelist()
-                start = len(names[0])
-                for name in names[1:]:
-                    if name[-1] != '/' and name[start:] != '.travis.yml':
-                        content = zipfile.read(name)
-                        if os.path.splitext(name)[1] in ('.csv', '.json', '.md'):
-                            content = content.decode('utf-8')
-                        self._files[name[start:]] = content
+                with closing(ZipFile(BytesIO(response.content))) as zipfile:
+                    names = zipfile.namelist()
+                    start = len(names[0])
+                    for name in names[1:]:
+                        if name[-1] != '/' and name[start:] != '.travis.yml':
+                            content = zipfile.read(name)
+                            if os.path.splitext(name)[1] in ('.csv', '.json', '.md'):
+                                content = content.decode('utf-8')
+                            self._files[name[start:]] = content
 
         return self._files
 
@@ -91,14 +91,14 @@ class ExtensionVersion:
         Retrieves and returns the extension's extension.json file as a dict.
         """
         if self._metadata is None:
-            self._metadata = json.loads(self.remote('extension.json'), object_pairs_hook=OrderedDict)
+            self._metadata = json_loads(self.remote('extension.json'))
 
             for field in ('name', 'description', 'documentationUrl'):
                 # Add required fields.
                 if field not in self._metadata:
                     self._metadata[field] = {}
                 # Add language maps.
-                if isinstance(self._metadata[field], str):
+                if not isinstance(self._metadata[field], dict):
                     self._metadata[field] = {'en': self._metadata[field]}
 
             if 'compatibility' not in self._metadata or isinstance(self._metadata['compatibility'], str):
@@ -123,7 +123,7 @@ class ExtensionVersion:
 
             for name in names:
                 try:
-                    self._schemas[name] = json.loads(self.remote(name), object_pairs_hook=OrderedDict)
+                    self._schemas[name] = json_loads(self.remote(name))
                 except requests.exceptions.HTTPError:
                     if 'schemas' in self.metadata:
                         raise

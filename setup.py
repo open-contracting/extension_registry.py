@@ -6,14 +6,15 @@ with open('README.rst') as f:
 setup(
     name='ocdsextensionregistry',
     version='0.0.5',
-    author='James McKinney',
-    author_email='james@slashpoundbang.com',
+    author='Open Contracting Partnership',
+    author_email='data@open-contracting.org',
     url='https://github.com/open-contracting/extension_registry.py',
     description="Eases access to information from the extension registry of the Open Contracting Data Standard",
     license='BSD',
     packages=find_packages(),
     long_description=long_description,
     install_requires=[
+        'json-merge-patch',
         'requests',
     ],
     extras_require={
@@ -26,7 +27,7 @@ setup(
             'Sphinx',
             'sphinx-autobuild',
             'sphinx_rtd_theme',
-        ]
+        ],
     },
     classifiers=[
         'License :: OSI Approved :: BSD License',
