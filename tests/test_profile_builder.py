@@ -82,6 +82,25 @@ def test_patched_release_schema():
     assert 'buyer' not in result['properties']
 
 
+def test_patched_release_schema_with_schema_base_url():
+    schema_base_url = 'http://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/'
+    builder = ProfileBuilder('1__1__3', OrderedDict(), schema_base_url=schema_base_url)
+    result = builder.patched_release_schema()
+
+    # Changes `id`.
+    assert result['id'] == 'http://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'
+
+
+def test_release_package_schema_with_schema_base_url():
+    schema_base_url = 'http://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/'
+    builder = ProfileBuilder('1__1__3', OrderedDict(), schema_base_url=schema_base_url)
+    result = builder.release_package_schema()
+
+    # Changes `id` and `$ref`.
+    assert result['id'] == 'http://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-package-schema.json'  # noqa
+    assert result['properties']['releases']['items']['$ref'] == 'http://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa
+
+
 def test_standard_codelists():
     builder = ProfileBuilder('1__1__3', OrderedDict())
     result = builder.standard_codelists()
