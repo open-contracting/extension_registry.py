@@ -99,7 +99,7 @@ class ExtensionVersion:
                 if field not in self._metadata:
                     self._metadata[field] = {}
                 # Add language maps.
-                if isinstance(self._metadata[field], str):
+                if not isinstance(self._metadata[field], dict):
                     self._metadata[field] = {'en': self._metadata[field]}
 
             if 'compatibility' not in self._metadata or isinstance(self._metadata['compatibility'], str):
