@@ -10,16 +10,12 @@ from urllib.parse import urljoin
 
 import json_merge_patch
 import requests
-from ocdsextensionregistry import ExtensionRegistry, Codelist
+
+from .codelist import Codelist
+from .extension_registry import ExtensionRegistry
+from .util import json_loads
 
 logger = logging.getLogger('ocdsextensionregistry')
-
-
-def _json_loads(data):
-    """
-    Loads JSON data, preserving order.
-    """
-    return json.loads(data, object_pairs_hook=OrderedDict)
 
 
 class ProfileBuilder:
@@ -55,16 +51,16 @@ class ProfileBuilder:
         # Replaces `null` with sentinel values, to preserve the null'ing of fields by extensions in the final patch.
         for extension in self.extensions():
             data = re.sub(r':\s*null\b', ': "REPLACE_WITH_NULL"', extension.remote('release-schema.json'))
-            json_merge_patch.merge(profile_patch, _json_loads(data))
+            json_merge_patch.merge(profile_patch, json_loads(data))
 
-        return _json_loads(json.dumps(profile_patch).replace('"REPLACE_WITH_NULL"', 'null'))
+        return json_loads(json.dumps(profile_patch).replace('"REPLACE_WITH_NULL"', 'null'))
 
     def patched_release_schema(self):
         """
         Returns the patched release schema.
         """
         content = self.get_standard_file_contents('release-schema.json')
-        patched = json_merge_patch.merge(_json_loads(content), self.release_schema_patch())
+        patched = json_merge_patch.merge(json_loads(content), self.release_schema_patch())
         if self.schema_base_url:
             patched['id'] = urljoin(self.schema_base_url, 'release-schema.json')
 
@@ -74,7 +70,7 @@ class ProfileBuilder:
         """
         Returns a release package schema. If `schema_base_url` was provided, updates schema URLs.
         """
-        data = _json_loads(self.get_standard_file_contents('release-package-schema.json'))
+        data = json_loads(self.get_standard_file_contents('release-package-schema.json'))
 
         if self.schema_base_url:
             data['id'] = urljoin(self.schema_base_url, 'release-package-schema.json')

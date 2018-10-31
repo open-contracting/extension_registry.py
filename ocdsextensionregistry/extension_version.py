@@ -1,8 +1,6 @@
 import csv
-import json
 import os.path
 import re
-from collections import OrderedDict
 from contextlib import closing
 from io import BytesIO, StringIO
 from urllib.parse import urlparse
@@ -10,7 +8,8 @@ from zipfile import ZipFile
 
 import requests
 
-from ocdsextensionregistry import Codelist
+from .codelist import Codelist
+from .util import json_loads
 
 SCHEMAS = ('record-package-schema.json', 'release-package-schema.json', 'release-schema.json')
 
@@ -92,7 +91,7 @@ class ExtensionVersion:
         Retrieves and returns the extension's extension.json file as a dict.
         """
         if self._metadata is None:
-            self._metadata = json.loads(self.remote('extension.json'), object_pairs_hook=OrderedDict)
+            self._metadata = json_loads(self.remote('extension.json'))
 
             for field in ('name', 'description', 'documentationUrl'):
                 # Add required fields.
@@ -124,7 +123,7 @@ class ExtensionVersion:
 
             for name in names:
                 try:
-                    self._schemas[name] = json.loads(self.remote(name), object_pairs_hook=OrderedDict)
+                    self._schemas[name] = json_loads(self.remote(name))
                 except requests.exceptions.HTTPError:
                     if 'schemas' in self.metadata:
                         raise
