@@ -10,6 +10,9 @@ OCDS Extension Registry Python Package |release|
    api/extension_registry
    api/extension_version
    api/extension
+   api/codelist
+   api/codelist_code
+   api/profile_builder
    api/exceptions
 
 Copyright (c) 2018 Open Contracting Partnership, released under the BSD license
