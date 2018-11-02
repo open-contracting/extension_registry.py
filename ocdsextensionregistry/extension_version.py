@@ -76,12 +76,14 @@ class ExtensionVersion:
                 with closing(ZipFile(BytesIO(response.content))) as zipfile:
                     names = zipfile.namelist()
                     start = len(names[0])
+
                     for name in names[1:]:
-                        if name[-1] != '/' and name[start:] != '.travis.yml':
+                        filename = name[start:]
+                        if filename[-1] != '/' and filename != '.travis.yml':
                             content = zipfile.read(name)
                             if os.path.splitext(name)[1] in ('.csv', '.json', '.md'):
                                 content = content.decode('utf-8')
-                            self._files[name[start:]] = content
+                            self._files[filename] = content
 
         return self._files
 
