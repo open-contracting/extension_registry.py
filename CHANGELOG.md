@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.6
+
+* Fix edge case so that `metadata` language maps are ordered, even if `extension.json` didn't have language maps.
+
 ## 0.0.5 (2018-10-31)
 
 * Add `ProfileBuilder`, `Codelist`, `CodelistCode` classes.
