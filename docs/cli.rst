@@ -9,6 +9,14 @@ To see all commands available, run::
 
     ocdsextensionregistry --help
 
+If you see a message at the start of the output like::
+
+    exception "No module named 'babel'" prevented loading of ocdsextensionregistry.cli.commands.generate_pot_files module
+
+then you installed ``ocdsextensionregistry`` without command-line tools. To fix, run::
+
+    pip install ocdsextensionregistry[cli]
+
 download
 --------
 
