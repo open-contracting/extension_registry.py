@@ -88,7 +88,9 @@ class Command(BaseCommand):
         for _id in data:
             # Determine the latest version.
             versions = data[_id]['versions']
-            if 'master' in versions:
+            if len(versions) == 1:
+                latest_version = list(versions)[0]
+            elif 'master' in versions:
                 latest_version = 'master'
             else:
                 dated = list(filter(lambda item: item[1]['date'], versions.items()))
