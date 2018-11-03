@@ -1,4 +1,5 @@
 import logging
+import os.path
 import subprocess
 from contextlib import closing
 from glob import glob
@@ -55,6 +56,7 @@ class Command(BaseCommand):
                 'source_parsers': {
                     '.md': CommonMarkParser,
                 },
+                'suppress_warnings': ['image.nonlocal_uri'],
             },
             'freshenv': True,
             'parallel': 1,
@@ -142,7 +144,9 @@ class Command(BaseCommand):
                     with cd(srcdir):
                         # Eliminates a warning, without change to output.
                         with open('contents.rst', 'w') as f:
-                            f.write('.. toctree::\n   :glob:\n\n   docs/*\n   README')
+                            f.write('.. toctree::\n   :hidden:\n   :glob:\n\n   README')
+                            if os.path.isdir('docs'):
+                                f.write('\n   docs/*')
 
                         # sphinx-build -b gettext $(DOCS_DIR) $(POT_DIR)
                         app = Sphinx('.', None, '.', '.', 'gettext', **kwargs)

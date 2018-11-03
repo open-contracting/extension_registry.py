@@ -7,14 +7,14 @@ OCDS Extension Registry Python Package |release|
    :maxdepth: 2
    :caption: Contents
 
-   api/extension_registry
-   api/extension_version
-   api/extension
-   api/codelist
-   api/codelist_code
-   api/profile_builder
-   api/api
-   api/exceptions
+   cli
+   translation
+   library
+
+Contributing
+------------
+
+Methods in this library should either apply to all possible extensions, or be useful to at least two use cases. Methods that don't yet meet these criteria are documented as experimental.
 
 Copyright (c) 2018 Open Contracting Partnership, released under the BSD license
 
