@@ -3,3 +3,9 @@
 /dist
 /*.egg-info
 /docs/_build
+
+# Common output from CLI testing in development
+/.tx
+/build/locale
+/locale
+/outputdir
