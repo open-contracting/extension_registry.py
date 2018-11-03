@@ -28,9 +28,20 @@ setup(
             'sphinx-autobuild',
             'sphinx_rtd_theme',
         ],
+        'cli': [
+            'Babel',
+            'ocds-babel>=0.0.3',
+            'polib',
+            'Sphinx==1.5.1',
+        ]
     },
     classifiers=[
         'License :: OSI Approved :: BSD License',
         'Programming Language :: Python :: 3.6',
     ],
+    entry_points={
+        'console_scripts': [
+            'ocdsextensionregistry = ocdsextensionregistry.cli.__main__:main',
+        ],
+    },
 )
