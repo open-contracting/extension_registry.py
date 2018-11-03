@@ -10,14 +10,6 @@ OCDS Extension Registry Python Package |release|
    cli
    translation
    library
-   api/extension_registry
-   api/extension_version
-   api/extension
-   api/codelist
-   api/codelist_code
-   api/profile_builder
-   api/api
-   api/exceptions
 
 Contributing
 ------------
