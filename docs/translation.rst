@@ -33,7 +33,7 @@ Create a new ``.tx/config`` file::
 
     sphinx-intl create-txconfig
 
-Update the ``.tx/config`` file based on the POT files (replace ``ocds-extensions`` with your Transifex project)::
+Update the ``.tx/config`` file based on the POT files (replace ``ocds-extensions`` with your project)::
 
     sphinx-intl update-txconfig-resources --transifex-project-name ocds-extensions --pot-dir build/locale --locale-dir locale
 

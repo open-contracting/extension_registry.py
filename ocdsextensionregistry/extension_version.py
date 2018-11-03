@@ -63,7 +63,7 @@ class ExtensionVersion:
     @property
     def files(self):
         """
-        Returns the contents of all files within the extension. Decodes the contents of CSV, JSON and Markdown files.
+        Returns the unparsed contents of all files. Decodes the contents of CSV, JSON and Markdown files.
 
         If the extension has a download URL, downloads the ZIP archive and caches all its files' contents. Otherwise,
         returns an empty dict. Raises an HTTPError if the download fails.
@@ -91,7 +91,9 @@ class ExtensionVersion:
     @property
     def metadata(self):
         """
-        Retrieves and returns the extension's extension.json file as a dict.
+        Retrieves and returns the parsed contents of the extension's extension.json file.
+
+        Adds language maps if not present.
         """
         if self._metadata is None:
             self._metadata = json_loads(self.remote('extension.json'))
@@ -112,7 +114,7 @@ class ExtensionVersion:
     @property
     def schemas(self):
         """
-        Retrieves and returns the extension's schemas.
+        Retrieves and returns the parsed contents of the extension's schemas files.
         """
         if self._schemas is None:
             self._schemas = {}
@@ -136,7 +138,7 @@ class ExtensionVersion:
     @property
     def codelists(self):
         """
-        Retrieves and returns the extension's codelists.
+        Retrieves and returns the parsed contents of the extension's codelists files.
 
         If the extension has no download URL, and if no codelists are listed in extension.json, returns an empty dict.
         """
@@ -165,7 +167,7 @@ class ExtensionVersion:
     @property
     def docs(self):
         """
-        Retrieves and returns the contents of documentation files within the extension.
+        Retrieves and returns the unparsed contents of the extension's documentation files.
 
         If the extension has no download URL, returns an empty dict.
         """
