@@ -56,6 +56,7 @@ class Command(BaseCommand):
                 'source_parsers': {
                     '.md': CommonMarkParser,
                 },
+                'suppress_warnings': ['image.nonlocal_uri'],
             },
             'freshenv': True,
             'parallel': 1,
