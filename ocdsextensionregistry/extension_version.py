@@ -1,6 +1,7 @@
 import csv
 import os.path
 import re
+from collections import OrderedDict
 from contextlib import closing
 from io import BytesIO, StringIO
 from urllib.parse import urlparse
@@ -101,7 +102,7 @@ class ExtensionVersion:
                     self._metadata[field] = {}
                 # Add language maps.
                 if not isinstance(self._metadata[field], dict):
-                    self._metadata[field] = {'en': self._metadata[field]}
+                    self._metadata[field] = OrderedDict({'en': self._metadata[field]})
 
             if 'compatibility' not in self._metadata or isinstance(self._metadata['compatibility'], str):
                 self._metadata['compatibility'] = ['1.1']
