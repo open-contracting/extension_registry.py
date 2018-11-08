@@ -22,7 +22,7 @@ download
 
 Downloads versions of extensions to a local directory.
 
-To download all versions of all extensions::
+To download all versions of all extensions into an ``outputdir`` directory::
 
     ocdsextensionregistry download outputdir
 
@@ -38,26 +38,26 @@ You can mix and match specifying extensions and versions::
 
     ocdsextensionregistry download outputdir lots bids==v1.1.3
 
-If you've already downloaded versions of extensions, you will need to specify how to handle repeated downloads using the ``--overwrite`` option.
+If you've already downloaded versions of extensions, you will need to specify how to handle repeated downloads using the ``--overwrite`` option:
 
 * ``--overwrite any`` overwrite any downloaded versions
 * ``--overwrite none`` overwrite no downloaded versions
 * ``--overwrite live`` overwrite only live versions (like the master branch of an extension)
 
-Without the output directory, the extension files are organized like `{extension}/{version}/{files}`, for example: ``lots/v1.1.3/README.md``.
+Within the output directory, the extension files are organized like `{extension}/{version}/{files}`, for example: ``lots/v1.1.3/README.md``.
 
 generate-pot-files
 ------------------
 
-Generates POT files (message catalogs) for versions of extensions, for example::
+Creates POT files (message catalogs) for versions of extensions in a local directory, for example::
 
     ocdsextensionregistry generate-pot-files build/locale
 
 You can specify versions and extensions like with the ``download`` command.
 
-To see Sphinx's standard output, use the ``--verbose`` option.
+`Sphinx <http://www.sphinx-doc.org/>`__ is used to extract messages from Markdown files. To see Sphinx's standard output, use the ``--verbose`` option.
 
-Without the output directory, the POT files are organized like `{extension}/{version}/{files}`, for example: ``lots/v1.1.3/docs.pot``.
+Within the output directory, the POT files are organized like `{extension}/{version}/{files}`, for example: ``lots/v1.1.3/docs.pot``.
 
 generate-data-file
 ------------------
