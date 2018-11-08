@@ -41,7 +41,7 @@ Push source files to Transifex for translation::
 
     tx push -s
 
-Once you've translated strings on Transifex, email <data@open-contracting.org> so that we can pull translation files from Transifex::
+Once you've translated strings on Transifex, email data@open-contracting.org so that we can pull translation files from Transifex::
 
     tx pull -a -f
 
@@ -54,8 +54,10 @@ Follow the steps for creating new translations, then clone the repository::
 
     git clone https://github.com/open-contracting/ocds-extensions-translations.git
 
-And push its translations::
+Change into its directory::
+
+    cd ocds-extensions-translations
+
+And push its translations. See `Transifex's documentation <https://docs.transifex.com/client/push>`__ for more information on how to specify which languages or resources to push::
 
     tx push -t
-
-See `Transifex's documentation <https://docs.transifex.com/client/push>`__ for more information on how to specify which languages or resources to push.
