@@ -49,8 +49,9 @@ class Command(BaseCommand):
         # * bin/sphinx-build calls main() in sphinx, which calls build_main(), which calls main() in sphinx.cmdline
         # * main() calls Sphinx(…).build(…) in sphinx.application
 
-        # sphinx-build -E -q …
+        # sphinx-build -E …
         kwargs = {
+            'freshenv': True,
             'confoverrides': {
                 'source_suffix': ['.rst', '.md'],
                 'source_parsers': {
@@ -58,9 +59,8 @@ class Command(BaseCommand):
                 },
                 'suppress_warnings': ['image.nonlocal_uri'],
             },
-            'freshenv': True,
-            'parallel': 1,
         }
+        # sphinx-build -q …
         if not self.args.verbose:
             kwargs.update(status=None)
 
@@ -142,15 +142,14 @@ class Command(BaseCommand):
                             zipfile.extract(info, srcdir)
 
                     with cd(srcdir):
-                        # Eliminates a warning, without change to output.
+                        # Eliminates a warning, without changing the output.
                         with open('contents.rst', 'w') as f:
                             f.write('.. toctree::\n   :hidden:\n   :glob:\n\n   README')
                             if os.path.isdir('docs'):
                                 f.write('\n   docs/*')
 
-                        # sphinx-build -b gettext $(DOCS_DIR) $(POT_DIR)
-                        app = Sphinx('.', None, '.', '.', 'gettext', **kwargs)
-                        app.build(True)
+                        # sphinx-build -a -b gettext $(DOCS_DIR) $(POT_DIR)
+                        Sphinx('.', None, '.', '.', 'gettext', **kwargs).build(True)
 
                         # https://stackoverflow.com/questions/15408348
                         content = subprocess.run(['msgcat', *glob('*.pot')], check=True, stdout=subprocess.PIPE).stdout
