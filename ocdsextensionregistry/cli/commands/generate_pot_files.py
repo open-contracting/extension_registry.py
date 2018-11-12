@@ -12,8 +12,10 @@ import requests
 from babel.messages.catalog import Catalog
 from babel.messages.extract import extract, pathmatch
 from babel.messages.pofile import write_po
+from docutils.parsers.rst import Directive, directives
 from ocds_babel.extract import extract_codelist, extract_schema, extract_extension_metadata
 from recommonmark.parser import CommonMarkParser
+from recommonmark.transform import AutoStructify
 from sphinx.application import Sphinx
 from sphinx.util.osutil import cd
 
@@ -21,6 +23,13 @@ from .base import BaseCommand
 from ocdsextensionregistry import EXTENSIONS_DATA, EXTENSION_VERSIONS_DATA
 
 logger = logging.getLogger('ocdsextensionregistry')
+
+
+class NullDirective(Directive):
+    has_content = True
+
+    def run(self):
+        return []
 
 
 class Command(BaseCommand):
@@ -63,6 +72,10 @@ class Command(BaseCommand):
         # sphinx-build -q …
         if not self.args.verbose:
             kwargs.update(status=None)
+
+        # Silence warnings about unregistered directives.
+        for name in ('csv-table-no-translate', 'extensiontable'):
+            directives.register_directive(name, NullDirective)
 
         # For pybabel, the code path is:
         #
@@ -148,8 +161,15 @@ class Command(BaseCommand):
                             if os.path.isdir('docs'):
                                 f.write('\n   docs/*')
 
-                        # sphinx-build -a -b gettext $(DOCS_DIR) $(POT_DIR)
-                        Sphinx('.', None, '.', '.', 'gettext', **kwargs).build(True)
+                        # sphinx-build -b gettext $(DOCS_DIR) $(POT_DIR)
+                        app = Sphinx('.', None, '.', '.', 'gettext', **kwargs)
+
+                        # To extract messages from `.. list-table`.
+                        app.add_config_value('recommonmark_config', {'enable_eval_rst': True}, True)
+                        app.add_transform(AutoStructify)
+
+                        # sphinx-build -a …
+                        app.build(True)
 
                         # https://stackoverflow.com/questions/15408348
                         content = subprocess.run(['msgcat', *glob('*.pot')], check=True, stdout=subprocess.PIPE).stdout
