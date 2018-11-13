@@ -24,6 +24,7 @@ def test_command_latest_version_master(monkeypatch, tmpdir):
 
     assert json.loads(actual.getvalue())['location']['latest_version'] == 'master'
 
+
 def test_command_latest_version_dated(monkeypatch, tmpdir):
     with patch('sys.stdout', new_callable=StringIO) as actual:
         monkeypatch.setattr(sys, 'argv', args + [str(tmpdir), 'location==v1.1.3', 'location==v1.1.1'])

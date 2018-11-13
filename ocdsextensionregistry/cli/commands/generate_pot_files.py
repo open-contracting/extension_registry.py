@@ -12,7 +12,7 @@ import requests
 from babel.messages.catalog import Catalog
 from babel.messages.extract import extract, pathmatch
 from babel.messages.pofile import write_po
-from docutils.parsers.rst import Directive, directives
+from docutils.parsers.rst import directives
 from ocds_babel.extract import extract_codelist, extract_schema, extract_extension_metadata
 from ocds_babel.directives import NullDirective
 from recommonmark.parser import CommonMarkParser
