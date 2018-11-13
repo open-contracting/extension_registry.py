@@ -14,6 +14,7 @@ from babel.messages.extract import extract, pathmatch
 from babel.messages.pofile import write_po
 from docutils.parsers.rst import Directive, directives
 from ocds_babel.extract import extract_codelist, extract_schema, extract_extension_metadata
+from ocds_babel.directives import NullDirective
 from recommonmark.parser import CommonMarkParser
 from recommonmark.transform import AutoStructify
 from sphinx.application import Sphinx
@@ -23,13 +24,6 @@ from .base import BaseCommand
 from ocdsextensionregistry import EXTENSIONS_DATA, EXTENSION_VERSIONS_DATA
 
 logger = logging.getLogger('ocdsextensionregistry')
-
-
-class NullDirective(Directive):
-    has_content = True
-
-    def run(self):
-        return []
 
 
 class Command(BaseCommand):
@@ -164,8 +158,9 @@ class Command(BaseCommand):
                         # sphinx-build -b gettext $(DOCS_DIR) $(POT_DIR)
                         app = Sphinx('.', None, '.', '.', 'gettext', **kwargs)
 
-                        # To extract messages from `.. list-table`.
+                        # Avoid "recommonmark_config not setted, proceed default setting".
                         app.add_config_value('recommonmark_config', {}, True)
+                        # To extract messages from `.. list-table`.
                         app.add_transform(AutoStructify)
 
                         # sphinx-build -a …
