@@ -31,7 +31,6 @@ setup(
         'cli': [
             'ocds-babel>=0.0.4',
             'polib',
-            'Sphinx==1.5.1',
         ]
     },
     classifiers=[
