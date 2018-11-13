@@ -29,7 +29,6 @@ setup(
             'sphinx_rtd_theme',
         ],
         'cli': [
-            'Babel',
             'ocds-babel>=0.0.3',
             'polib',
             'Sphinx==1.5.1',

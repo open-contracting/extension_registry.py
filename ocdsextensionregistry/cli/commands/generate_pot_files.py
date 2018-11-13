@@ -58,8 +58,8 @@ class Command(BaseCommand):
         # * bin/sphinx-build calls main() in sphinx, which calls build_main(), which calls main() in sphinx.cmdline
         # * main() calls Sphinx(…).build(…) in sphinx.application
 
-        # sphinx-build -E …
         kwargs = {
+            # sphinx-build -E …
             'freshenv': True,
             'confoverrides': {
                 'source_suffix': ['.rst', '.md'],
@@ -69,8 +69,8 @@ class Command(BaseCommand):
                 'suppress_warnings': ['image.nonlocal_uri'],
             },
         }
-        # sphinx-build -q …
         if not self.args.verbose:
+            # sphinx-build -q …
             kwargs.update(status=None)
 
         # Silence warnings about unregistered directives.
@@ -165,7 +165,7 @@ class Command(BaseCommand):
                         app = Sphinx('.', None, '.', '.', 'gettext', **kwargs)
 
                         # To extract messages from `.. list-table`.
-                        app.add_config_value('recommonmark_config', {'enable_eval_rst': True}, True)
+                        app.add_config_value('recommonmark_config', {}, True)
                         app.add_transform(AutoStructify)
 
                         # sphinx-build -a …
