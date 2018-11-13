@@ -12,8 +12,11 @@ import requests
 from babel.messages.catalog import Catalog
 from babel.messages.extract import extract, pathmatch
 from babel.messages.pofile import write_po
+from docutils.parsers.rst import directives
 from ocds_babel.extract import extract_codelist, extract_schema, extract_extension_metadata
+from ocds_babel.directives import NullDirective
 from recommonmark.parser import CommonMarkParser
+from recommonmark.transform import AutoStructify
 from sphinx.application import Sphinx
 from sphinx.util.osutil import cd
 
@@ -49,8 +52,9 @@ class Command(BaseCommand):
         # * bin/sphinx-build calls main() in sphinx, which calls build_main(), which calls main() in sphinx.cmdline
         # * main() calls Sphinx(…).build(…) in sphinx.application
 
-        # sphinx-build -E -q …
         kwargs = {
+            # sphinx-build -E …
+            'freshenv': True,
             'confoverrides': {
                 'source_suffix': ['.rst', '.md'],
                 'source_parsers': {
@@ -58,11 +62,14 @@ class Command(BaseCommand):
                 },
                 'suppress_warnings': ['image.nonlocal_uri'],
             },
-            'freshenv': True,
-            'parallel': 1,
         }
         if not self.args.verbose:
+            # sphinx-build -q …
             kwargs.update(status=None)
+
+        # Silence warnings about unregistered directives.
+        for name in ('csv-table-no-translate', 'extensiontable'):
+            directives.register_directive(name, NullDirective)
 
         # For pybabel, the code path is:
         #
@@ -142,7 +149,7 @@ class Command(BaseCommand):
                             zipfile.extract(info, srcdir)
 
                     with cd(srcdir):
-                        # Eliminates a warning, without change to output.
+                        # Eliminates a warning, without changing the output.
                         with open('contents.rst', 'w') as f:
                             f.write('.. toctree::\n   :hidden:\n   :glob:\n\n   README')
                             if os.path.isdir('docs'):
@@ -150,6 +157,13 @@ class Command(BaseCommand):
 
                         # sphinx-build -b gettext $(DOCS_DIR) $(POT_DIR)
                         app = Sphinx('.', None, '.', '.', 'gettext', **kwargs)
+
+                        # Avoid "recommonmark_config not setted, proceed default setting".
+                        app.add_config_value('recommonmark_config', {}, True)
+                        # To extract messages from `.. list-table`.
+                        app.add_transform(AutoStructify)
+
+                        # sphinx-build -a …
                         app.build(True)
 
                         # https://stackoverflow.com/questions/15408348
