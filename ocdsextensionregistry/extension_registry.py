@@ -64,11 +64,9 @@ class ExtensionRegistry:
         parsed = urlparse(data_or_url)
         if parsed.scheme:
             return requests.get(data_or_url).text
-        else:
-            return data_or_url
+        return data_or_url
 
     def _handle_attribute_error(self, e):
         if "'category'" in str(e.args) or "'core'" in str(e.args):
             raise MissingExtensionMetadata('ExtensionRegistry must be initialized with extensions data.') from e
-        else:
-            raise
+        raise
