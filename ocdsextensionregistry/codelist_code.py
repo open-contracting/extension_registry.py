@@ -26,8 +26,7 @@ class CodelistCode(Mapping):
     def __repr__(self):
         if self.extension_name:
             return 'CodelistCode(data={}, extension_name={})'.format(repr(self.data), repr(self.extension_name))
-        else:
-            return 'CodelistCode(data={})'.format(repr(self.data))
+        return 'CodelistCode(data={})'.format(repr(self.data))
 
     def pop(self, *args):
         return self.data.pop(*args)

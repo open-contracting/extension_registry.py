@@ -237,8 +237,7 @@ class ExtensionVersion:
         config = self._configuration(parsed)
         if config:
             return getattr(self, '_repository_' + prop)(parsed, config)
-        else:
-            raise NotImplementedError("can't determine {} from {}".format(prop, self.base_url))
+        raise NotImplementedError("can't determine {} from {}".format(prop, self.base_url))
 
     def _configuration(self, parsed):
         # Multiple websites are implemented to explore the robustness of the approach.
