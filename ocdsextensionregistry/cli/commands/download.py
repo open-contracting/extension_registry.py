@@ -36,7 +36,8 @@ class Command(BaseCommand):
 
         for version in self.versions():
             if not version.download_url:
-                logger.warning('No Download URL for {}=={}'.format(version.id, version.version))
+                logger.warning('Not downloading {}=={} (no Download URL)'.format(version.id, version.version))
+                continue
 
             version_directory = output_directory / version.id / version.version
 

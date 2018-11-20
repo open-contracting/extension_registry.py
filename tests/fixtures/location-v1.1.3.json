@@ -74,7 +74,7 @@
                         "null"
                       ],
                       "title": "Geometry",
-                      "description": "We follow the [GeoJSON standard](http://geojson.org/) to express basic location information, using latitude and longitude values in the [WGS84](https://en.wikipedia.org/wiki/World_Geodetic_System) (EPSG:4326) projection.  A point location can be identified by geocoding a delivery address. For concession licenses, or other contracts covering a polygon location which is not contained in a known gazetteer, polygon and multi-polygon can be used. ",
+                      "description": "We follow the [GeoJSON standard](http://geojson.org/) to express basic location information, using latitude and longitude values in the [WGS84](https://en.wikipedia.org/wiki/World_Geodetic_System) (EPSG:4326) projection.  A point location can be identified by geocoding a delivery address. For concession licenses, or other contracts covering a polygon location which is not contained in a known gazetteer, polygon and multi-polygon can be used.",
                       "properties": {
                         "type": {
                           "title": "Type",
@@ -160,145 +160,105 @@
         },
         "codelists": {
           "geometryType.csv": {
-            "fieldnames": {
-              "Code": {
-                "en": "Code"
-              },
-              "Title": {
-                "en": "Title"
-              },
-              "Description": {
-                "en": "Description"
-              },
-              "Source": {
-                "en": "Source"
-              }
-            },
-            "rows": {
-              "Point": {
-                "en": {
+            "en": {
+              "fieldnames": [
+                "Code",
+                "Title",
+                "Description",
+                "Source"
+              ],
+              "rows": [
+                {
                   "Code": "Point",
                   "Title": "Point",
                   "Description": "For type 'Point', the 'coordinates' member is a single position.",
                   "Source": "https://tools.ietf.org/html/rfc7946#section-3.1"
-                }
-              },
-              "MultiPoint": {
-                "en": {
+                },
+                {
                   "Code": "MultiPoint",
                   "Title": "MultiPoint",
                   "Description": "For type 'MultiPoint', the 'coordinates' member is an array of positions.",
                   "Source": "https://tools.ietf.org/html/rfc7946#section-3.1"
-                }
-              },
-              "LineString": {
-                "en": {
+                },
+                {
                   "Code": "LineString",
                   "Title": "LineString",
                   "Description": "For type 'LineString', the 'coordinates' member is an array of two or more positions.",
                   "Source": "https://tools.ietf.org/html/rfc7946#section-3.1"
-                }
-              },
-              "MultiLineString": {
-                "en": {
+                },
+                {
                   "Code": "MultiLineString",
                   "Title": "MultiLineString",
                   "Description": "For type 'MultiLineString', the 'coordinates' member is an array of LineString coordinate arrays.",
                   "Source": "https://tools.ietf.org/html/rfc7946#section-3.1"
-                }
-              },
-              "Polygon": {
-                "en": {
+                },
+                {
                   "Code": "Polygon",
                   "Title": "Polygon",
                   "Description": "For type 'Polygon', the 'coordinates' member MUST be an array of linear ring coordinate arrays.",
                   "Source": "https://tools.ietf.org/html/rfc7946#section-3.1"
-                }
-              },
-              "MultiPolygon": {
-                "en": {
+                },
+                {
                   "Code": "MultiPolygon",
                   "Title": "MultiPolygon",
                   "Description": "For type 'MultiPolygon', the 'coordinates' member is an array of Polygon coordinate arrays.",
                   "Source": "https://tools.ietf.org/html/rfc7946#section-3.1"
                 }
-              }
+              ]
             }
           },
           "locationGazetteers.csv": {
-            "fieldnames": {
-              "Category": {
-                "en": "Category"
-              },
-              "Code": {
-                "en": "Code"
-              },
-              "Title": {
-                "en": "Title"
-              },
-              "Description": {
-                "en": "Description"
-              },
-              "Source": {
-                "en": "Source"
-              },
-              "URI Pattern": {
-                "en": "URI Pattern"
-              }
-            },
-            "rows": {
-              "NUTS": {
-                "en": {
+            "en": {
+              "fieldnames": [
+                "Category",
+                "Code",
+                "Title",
+                "Description",
+                "Source",
+                "URI Pattern"
+              ],
+              "rows": [
+                {
                   "Category": "Sub-National",
                   "Code": "NUTS",
                   "Title": "EU Nomenclature of Territorial Units for Statistics",
                   "Description": "The Nomenclature of Territorial Units for Statistics (NUTS) was established by Eurostat in order to provide a single uniform breakdown of territorial units for the production of regional statistics for the European Union.",
                   "Source": "http://simap.europa.eu/codes-and-nomenclatures/codes-nuts/index_en.htm",
                   "URI Pattern": "http://nuts.psi.enakting.org/id/"
-                }
-              },
-              "ISO2": {
-                "en": {
+                },
+                {
                   "Category": "National",
                   "Code": "ISO2",
                   "Title": "ISO Country Codes (3166-1 alpha-2)",
                   "Description": "ISO 2-Digit Country Codes",
                   "Source": "http://www.iso.org/iso/country_codes.htm",
                   "URI Pattern": ""
-                }
-              },
-              "GEONAMES": {
-                "en": {
+                },
+                {
                   "Category": "Universal",
                   "Code": "GEONAMES",
                   "Title": "GeoNames",
                   "Description": "GeoNames provides numerical identifiers for many points of interest around the world, including administrative divisions, populated centres and other locations, embedded within a structured tree of geographic relations.",
                   "Source": "http://www.geonames.org/",
                   "URI Pattern": "http://www.geonames.org/"
-                }
-              },
-              "OSMN": {
-                "en": {
+                },
+                {
                   "Category": "Universal",
                   "Code": "OSMN",
                   "Title": "OpenStreetMap Node",
                   "Description": "OpenStreetMap Nodes consist of a single point in space defined by a latitude, longitude and node ID. Nodes may have tags to indicate the particular geographic feature they represent.",
                   "Source": "",
                   "URI Pattern": "http://www.openstreetmap.org/node/"
-                }
-              },
-              "OSMR": {
-                "en": {
+                },
+                {
                   "Category": "Universal",
                   "Code": "OSMR",
                   "Title": "OpenStreetMap Relation",
                   "Description": "Relations are used to model logical (and usually local) or geographic relationships between objects. In practice, boundaries of geographic areas are available as Relations in OpenStreetMap.",
                   "Source": "http://wiki.openstreetmap.org/wiki/Relation",
                   "URI Pattern": "http://www.openstreetmap.org/relation/"
-                }
-              },
-              "OSMW": {
-                "en": {
+                },
+                {
                   "Category": "Universal",
                   "Code": "OSMW",
                   "Title": "OpenStreetMap Way",
@@ -306,7 +266,7 @@
                   "Source": "http://wiki.openstreetmap.org/wiki/Way",
                   "URI Pattern": "http://www.openstreetmap.org/way/"
                 }
-              }
+              ]
             }
           }
         },

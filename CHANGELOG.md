@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.0.6
+## 0.0.6 (2018-11-20)
 
 * Add command-line tools (see [documentation](https://ocdsextensionregistry.readthedocs.io/en/latest/cli.html) for details).
 * Fix edge case so that `metadata` language maps are ordered, even if `extension.json` didn't have language maps.
