@@ -30,7 +30,6 @@ setup(
         ],
         'cli': [
             'ocds-babel>=0.0.4',
-            'polib',
         ]
     },
     classifiers=[

@@ -68,6 +68,20 @@ Generates a data file in JSON format with all the information about versions of 
 
 You can specify versions and extensions like with the ``download`` command.
 
+To add translations to the data file, set the ``--locale-dir`` option to a directory containing MO files, for example::
+
+    ocdsextensionregistry generate-data-file --locale-dir locale > data.json
+
+The default behavior is to add all available translations, To select translations, use the ``--languages`` option, for example::
+
+    ocdsextensionregistry generate-data-file --locale-dir locale --languages es,fr > data.json
+
+To create MO files from existing translations, run::
+
+    git clone https://github.com/open-contracting/ocds-extensions-translations.git
+    cd ocds-extensions-translations
+    sphinx-intl build -d locale
+
 The data file is organized as below. To keep it short, the sample shows only one version of one extension, and only one row of one codelist, and it truncates the Markdown content of documentation files and the parsed content of schema files.
 
 .. code:: json
