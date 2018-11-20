@@ -1,5 +1,6 @@
 import gettext
 import json
+import logging
 import os
 import sys
 from collections import OrderedDict
