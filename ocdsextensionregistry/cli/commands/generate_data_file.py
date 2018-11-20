@@ -12,6 +12,8 @@ from .base import BaseCommand
 from ocdsextensionregistry import EXTENSIONS_DATA, EXTENSION_VERSIONS_DATA
 from ocdsextensionregistry.exceptions import CommandError
 
+logger = logging.getLogger('ocdsextensionregistry')
+
 
 def _translator(version, domain, localedir, language):
     domain = '{}/{}/{}'.format(version.id, version.version, domain)
@@ -122,12 +124,15 @@ class Command(BaseCommand):
                     # We currently only handle Markdown files.
                     # find . -type f -not -path '*/.git/*' -not -name '*.csv' -not -name '*.json' -not -name '*.md'
                     #   -not -name '.travis.yml' -not -name 'LICENSE'
-                    if name.endswith('.md'):
-                        if name not in version_data['docs']:
-                            version_data['docs'][name] = OrderedDict()
+                    if not name.endswith('.md'):
+                        logger.warning('Not translating {} (no .md extension)'.format(name))
+                        continue
 
-                        translation = translate_markdown_data(name, version.docs[name], translator)
-                        version_data['docs'][name][language] = translation
+                    if name not in version_data['docs']:
+                        version_data['docs'][name] = OrderedDict()
+
+                    translation = translate_markdown_data(name, version.docs[name], translator)
+                    version_data['docs'][name][language] = translation
 
             data[version.id]['versions'][version.version] = version_data
 
