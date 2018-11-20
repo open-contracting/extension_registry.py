@@ -96,25 +96,14 @@ class Command(BaseCommand):
                 translator = _translator(version, 'codelists', localedir, language)
                 for name in sorted(version.codelists):
                     if name not in version_data['codelists']:
-                        version_data['codelists'][name] = OrderedDict([
-                            ('fieldnames', OrderedDict()),
-                            ('rows', OrderedDict()),
-                        ])
+                        version_data['codelists'][name] = OrderedDict()
 
                     codelist = version.codelists[name]
-
-                    for fieldname in codelist.fieldnames:
-                        if fieldname not in version_data['codelists'][name]['fieldnames']:
-                            version_data['codelists'][name]['fieldnames'][fieldname] = OrderedDict()
-                        translation = translator.gettext(fieldname)
-                        version_data['codelists'][name]['fieldnames'][fieldname][language] = translation
-
-                    translations = translate_codelist_data(codelist, translator)
-                    for translation in translations:
-                        code = translation[version_data['codelists'][name]['fieldnames']['Code'][language]]
-                        if code not in version_data['codelists'][name]['rows']:
-                            version_data['codelists'][name]['rows'][code] = OrderedDict()
-                        version_data['codelists'][name]['rows'][code][language] = translation
+                    version_data['codelists'][name][language] = OrderedDict()
+                    translation = [translator.gettext(fieldname) for fieldname in codelist.fieldnames]
+                    version_data['codelists'][name][language]['fieldnames'] = translation
+                    translation = translate_codelist_data(codelist, translator)
+                    version_data['codelists'][name][language]['rows'] = translation
 
             # Add the version's documentation.
             for name in sorted(version.docs):

@@ -139,26 +139,20 @@ The data file is organized as below. To keep it short, the sample shows only one
             },
             "codelists": {
               "riskAllocation.csv": {
-                "fieldnames": {
-                  "Code": {
-                    "en": "Code"
-                  },
-                  "Title": {
-                    "en": "Title"
-                  },
-                  "Description": {
-                    "en": "Description"
-                  }
-                },
-                "rows": {
-                  "publicAuthority": {
-                    "en": {
+                "en": {
+                  "fieldnames": [
+                    "Code",
+                    "Title",
+                    "Description"
+                  ],
+                  "rows": [
+                    {
                       "Code": "publicAuthority",
                       "Title": "Public authority",
                       "Description": "The risk is wholly or mostly retained by the public authority"
-                    }
-                  },
-                  …
+                    },
+                    …
+                  ]
                 }
               },
               …
