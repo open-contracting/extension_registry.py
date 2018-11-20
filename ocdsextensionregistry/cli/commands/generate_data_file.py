@@ -3,7 +3,6 @@ import json
 import os
 import sys
 from collections import OrderedDict
-from io import StringIO
 
 from ocds_babel import TRANSLATABLE_EXTENSION_METADATA_KEYWORDS
 from ocds_babel.translate import (translate_codelist_data, translate_schema_data, translate_extension_metadata_data,
@@ -120,11 +119,15 @@ class Command(BaseCommand):
                 version_data['readme'][language] = translation
 
                 for name in sorted(version.docs):
-                    if name not in version_data['docs']:
-                        version_data['docs'][name] = OrderedDict()
+                    # We currently only handle Markdown files.
+                    # find . -type f -not -path '*/.git/*' -not -name '*.csv' -not -name '*.json' -not -name '*.md'
+                    #   -not -name '.travis.yml' -not -name 'LICENSE'
+                    if name.endswith('.md'):
+                        if name not in version_data['docs']:
+                            version_data['docs'][name] = OrderedDict()
 
-                    translation = translate_markdown_data(name, version.docs[name], translator)
-                    version_data['docs'][name][language] = translation
+                        translation = translate_markdown_data(name, version.docs[name], translator)
+                        version_data['docs'][name][language] = translation
 
             data[version.id]['versions'][version.version] = version_data
 
