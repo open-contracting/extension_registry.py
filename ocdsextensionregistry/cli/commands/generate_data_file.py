@@ -98,19 +98,20 @@ class Command(BaseCommand):
                         version_data['schemas'][name][language] = translation
 
                 # Add the version's codelists.
-                translator = _translator(version, 'codelists', localedir, language)
-                for name in sorted(version.codelists):
-                    if name not in version_data['codelists']:
-                        version_data['codelists'][name] = OrderedDict()
+                if version.codelists:
+                    translator = _translator(version, 'codelists', localedir, language)
+                    for name in sorted(version.codelists):
+                        if name not in version_data['codelists']:
+                            version_data['codelists'][name] = OrderedDict()
 
-                    codelist = version.codelists[name]
-                    version_data['codelists'][name][language] = OrderedDict()
+                        codelist = version.codelists[name]
+                        version_data['codelists'][name][language] = OrderedDict()
 
-                    translation = [translator.gettext(fieldname) for fieldname in codelist.fieldnames]
-                    version_data['codelists'][name][language]['fieldnames'] = translation
+                        translation = [translator.gettext(fieldname) for fieldname in codelist.fieldnames]
+                        version_data['codelists'][name][language]['fieldnames'] = translation
 
-                    translation = translate_codelist_data(codelist, translator)
-                    version_data['codelists'][name][language]['rows'] = translation
+                        translation = translate_codelist_data(codelist, translator)
+                        version_data['codelists'][name][language]['rows'] = translation
 
                 # Add the version's readme and documentation.
                 translator = _translator(version, 'docs', localedir, language)
