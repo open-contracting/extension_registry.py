@@ -3,8 +3,11 @@ import json
 import os
 import sys
 from collections import OrderedDict
+from io import StringIO
 
-from ocds_babel.translate import translate_codelist_data, translate_schema_data
+from ocds_babel import TRANSLATABLE_EXTENSION_METADATA_KEYWORDS
+from ocds_babel.translate import (translate_codelist_data, translate_schema_data, translate_extension_metadata_data,
+                                  translate_markdown_data)
 
 from .base import BaseCommand
 from ocdsextensionregistry import EXTENSIONS_DATA, EXTENSION_VERSIONS_DATA
@@ -75,21 +78,23 @@ class Command(BaseCommand):
                 ('schemas', OrderedDict()),
                 ('codelists', OrderedDict()),
                 ('docs', OrderedDict()),
-                ('readme', OrderedDict({
-                    'en': version.remote('README.md'),
-                })),
+                ('readme', OrderedDict()),
             ])
 
             for language in languages:
-                # Add the version's schema.
+                # Update the version's metadata and add the version's schema.
                 translator = _translator(version, 'schema', localedir, language)
+
+                translation = translate_extension_metadata_data(version.metadata, translator, lang=language)
+                for key in TRANSLATABLE_EXTENSION_METADATA_KEYWORDS:
+                    version_data['metadata'][key][language] = translation[key][language]
+
                 for name in ('record-package-schema.json', 'release-package-schema.json', 'release-schema.json'):
                     if name not in version_data['schemas']:
                         version_data['schemas'][name] = OrderedDict()
 
                     if name in version.schemas:
-                        schema = version.schemas[name]
-                        translation = translate_schema_data(schema, translator)
+                        translation = translate_schema_data(version.schemas[name], translator)
                         version_data['schemas'][name][language] = translation
 
                 # Add the version's codelists.
@@ -100,16 +105,25 @@ class Command(BaseCommand):
 
                     codelist = version.codelists[name]
                     version_data['codelists'][name][language] = OrderedDict()
+
                     translation = [translator.gettext(fieldname) for fieldname in codelist.fieldnames]
                     version_data['codelists'][name][language]['fieldnames'] = translation
+
                     translation = translate_codelist_data(codelist, translator)
                     version_data['codelists'][name][language]['rows'] = translation
 
-            # Add the version's documentation.
-            for name in sorted(version.docs):
-                version_data['docs'][name] = OrderedDict({
-                    'en': version.docs[name],
-                })
+                # Add the version's readme and documentation.
+                translator = _translator(version, 'docs', localedir, language)
+
+                translation = translate_markdown_data('README.md', version.remote('README.md'), translator)
+                version_data['readme'][language] = translation
+
+                for name in sorted(version.docs):
+                    if name not in version_data['docs']:
+                        version_data['docs'][name] = OrderedDict()
+
+                    translation = translate_markdown_data(name, version.docs[name], translator)
+                    version_data['docs'][name][language] = translation
 
             data[version.id]['versions'][version.version] = version_data
 
