@@ -76,11 +76,7 @@ The default behavior is to add all available translations, To select translation
 
     ocdsextensionregistry generate-data-file --locale-dir locale --languages es,fr > data.json
 
-To create MO files from existing translations, run::
-
-    git clone https://github.com/open-contracting/ocds-extensions-translations.git
-    cd ocds-extensions-translations
-    sphinx-intl build -d locale
+To create MO files from existing translations, see :doc:`translation`.
 
 The data file is organized as below. To keep it short, the sample shows only one version of one extension, and only one row of one codelist, and it truncates the Markdown content of documentation files and the parsed content of schema files.
 

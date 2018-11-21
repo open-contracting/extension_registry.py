@@ -61,3 +61,10 @@ Change into its directory::
 And push its translations. See `Transifex's documentation <https://docs.transifex.com/client/push>`__ for more information on how to specify which languages or resources to push::
 
     tx push -t
+
+Build MO files
+--------------
+
+If the PO files are in a `locale` directory, run::
+
+        sphinx-intl build -d locale
