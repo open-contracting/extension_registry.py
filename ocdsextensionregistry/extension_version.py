@@ -184,7 +184,7 @@ class ExtensionVersion:
     def repository_full_name(self):
         """
         Returns the full name of the extension's repository, which should be a unique identifier on the hosting
-        service, e.g. open-contracting/ocds_bid_extension
+        service, e.g. open-contracting-extensions/ocds_bid_extension
 
         Experimental
         """
@@ -204,7 +204,7 @@ class ExtensionVersion:
     def repository_html_page(self):
         """
         Returns the URL to the landing page of the extension's repository, e.g.
-        https://github.com/open-contracting/ocds_bid_extension
+        https://github.com/open-contracting-extensions/ocds_bid_extension
 
         Experimental
         """
@@ -214,7 +214,7 @@ class ExtensionVersion:
     def repository_url(self):
         """
         Returns the URL of the extension's repository, in a format that can be input to a VCS program without
-        modification, e.g. https://github.com/open-contracting/ocds_bid_extension.git
+        modification, e.g. https://github.com/open-contracting-extensions/ocds_bid_extension.git
 
         Experimental
         """
@@ -259,7 +259,7 @@ class ExtensionVersion:
                 'url:suffix': '.git',  # assumes Git not Mercurial, which can't be disambiguated using the base URL
             }
         elif netloc == 'raw.githubusercontent.com':
-            # Sample base URL: https://raw.githubusercontent.com/open-contracting/ocds_bid_extension/v1.1.3/
+            # Sample base URL: https://raw.githubusercontent.com/open-contracting-extensions/ocds_bid_extension/v1.1.3/
             return {
                 'full_name:pattern': r'\A/([^/]+/[^/]+)',
                 'name:pattern': r'\A/[^/]+/([^/]+)',

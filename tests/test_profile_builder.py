@@ -44,15 +44,15 @@ def test_extensions():
         'id': 'charges',
         'date': '',
         'version': 'master',
-        'base_url': 'https://raw.githubusercontent.com/open-contracting/ocds_charges_extension/master/',
-        'download_url': 'https://github.com/open-contracting/ocds_charges_extension/archive/master.zip',
+        'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_charges_extension/master/',
+        'download_url': 'https://github.com/open-contracting-extensions/ocds_charges_extension/archive/master.zip',
     }
     assert result[1].as_dict() == {
         'id': 'location',
         'date': '2018-02-01',
         'version': 'v1.1.3',
-        'base_url': 'https://raw.githubusercontent.com/open-contracting/ocds_location_extension/v1.1.3/',
-        'download_url': 'https://api.github.com/repos/open-contracting/ocds_location_extension/zipball/v1.1.3',
+        'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/',
+        'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.3',
     }
 
 

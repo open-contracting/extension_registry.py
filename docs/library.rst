@@ -24,9 +24,9 @@ Filter the versions of extensions in the registry, and access information about 
 
 Output::
 
-    The Enquiries extension ("enquiries") is maintained at https://github.com/open-contracting/ocds_enquiry_extension
-    Run `git clone git@github.com:open-contracting/ocds_enquiry_extension.git` to make a local copy in a ocds_enquiry_extension directory
-    Get its patch at https://raw.githubusercontent.com/open-contracting/ocds_enquiry_extension/v1.1.3/release-schema.json
+    The Enquiries extension ("enquiries") is maintained at https://github.com/open-contracting-extensions/ocds_enquiry_extension
+    Run `git clone git@github.com:open-contracting-extensions/ocds_enquiry_extension.git` to make a local copy in a ocds_enquiry_extension directory
+    Get its patch at https://raw.githubusercontent.com/open-contracting-extensions/ocds_enquiry_extension/v1.1.3/release-schema.json
 
 To work with the files within a version of an extension:
 

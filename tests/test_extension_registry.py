@@ -14,20 +14,20 @@ lots,tender,true
 """
 
 extension_versions_data = """Id,Date,Version,Base URL,Download URL
-charges,,master,https://raw.githubusercontent.com/open-contracting/ocds_charges_extension/master/,https://github.com/open-contracting/ocds_charges_extension/archive/master.zip
-charges,2017-05-09,v1.1,https://raw.githubusercontent.com/open-contracting/ocds_charges_extension/v1.1/,https://api.github.com/repos/open-contracting/ocds_charges_extension/zipball/v1.1
-enquiries,,master,https://raw.githubusercontent.com/open-contracting/ocds_enquiry_extension/master/,https://github.com/open-contracting/ocds_enquiry_extension/archive/master.zip
-enquiries,2017-05-09,v1.1,https://raw.githubusercontent.com/open-contracting/ocds_enquiry_extension/v1.1/,https://api.github.com/repos/open-contracting/ocds_enquiry_extension/zipball/v1.1
-enquiries,2017-08-07,v1.1.1,https://raw.githubusercontent.com/open-contracting/ocds_enquiry_extension/v1.1.1/,https://api.github.com/repos/open-contracting/ocds_enquiry_extension/zipball/v1.1.1
-enquiries,2018-02-01,v1.1.3,https://raw.githubusercontent.com/open-contracting/ocds_enquiry_extension/v1.1.3/,https://api.github.com/repos/open-contracting/ocds_enquiry_extension/zipball/v1.1.3
-location,,master,https://raw.githubusercontent.com/open-contracting/ocds_location_extension/master/,https://github.com/open-contracting/ocds_location_extension/archive/master.zip
-location,2017-05-09,v1.1,https://raw.githubusercontent.com/open-contracting/ocds_location_extension/v1.1/,https://api.github.com/repos/open-contracting/ocds_location_extension/zipball/v1.1
-location,2017-08-07,v1.1.1,https://raw.githubusercontent.com/open-contracting/ocds_location_extension/v1.1.1/,https://api.github.com/repos/open-contracting/ocds_location_extension/zipball/v1.1.1
-location,2018-02-01,v1.1.3,https://raw.githubusercontent.com/open-contracting/ocds_location_extension/v1.1.3/,https://api.github.com/repos/open-contracting/ocds_location_extension/zipball/v1.1.3
-lots,,master,https://raw.githubusercontent.com/open-contracting/ocds_lots_extension/master/,https://github.com/open-contracting/ocds_lots_extension/archive/master.zip
-lots,2017-05-09,v1.1,https://raw.githubusercontent.com/open-contracting/ocds_lots_extension/v1.1/,https://api.github.com/repos/open-contracting/ocds_lots_extension/zipball/v1.1
-lots,2017-08-07,v1.1.1,https://raw.githubusercontent.com/open-contracting/ocds_lots_extension/v1.1.1/,https://api.github.com/repos/open-contracting/ocds_lots_extension/zipball/v1.1.1
-lots,2018-01-30,v1.1.3,https://raw.githubusercontent.com/open-contracting/ocds_lots_extension/v1.1.3/,https://api.github.com/repos/open-contracting/ocds_lots_extension/zipball/v1.1.3
+charges,,master,https://raw.githubusercontent.com/open-contracting-extensions/ocds_charges_extension/master/,https://github.com/open-contracting-extensions/ocds_charges_extension/archive/master.zip
+charges,2017-05-09,v1.1,https://raw.githubusercontent.com/open-contracting-extensions/ocds_charges_extension/v1.1/,https://api.github.com/repos/open-contracting-extensions/ocds_charges_extension/zipball/v1.1
+enquiries,,master,https://raw.githubusercontent.com/open-contracting-extensions/ocds_enquiry_extension/master/,https://github.com/open-contracting-extensions/ocds_enquiry_extension/archive/master.zip
+enquiries,2017-05-09,v1.1,https://raw.githubusercontent.com/open-contracting-extensions/ocds_enquiry_extension/v1.1/,https://api.github.com/repos/open-contracting-extensions/ocds_enquiry_extension/zipball/v1.1
+enquiries,2017-08-07,v1.1.1,https://raw.githubusercontent.com/open-contracting-extensions/ocds_enquiry_extension/v1.1.1/,https://api.github.com/repos/open-contracting-extensions/ocds_enquiry_extension/zipball/v1.1.1
+enquiries,2018-02-01,v1.1.3,https://raw.githubusercontent.com/open-contracting-extensions/ocds_enquiry_extension/v1.1.3/,https://api.github.com/repos/open-contracting-extensions/ocds_enquiry_extension/zipball/v1.1.3
+location,,master,https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/master/,https://github.com/open-contracting-extensions/ocds_location_extension/archive/master.zip
+location,2017-05-09,v1.1,https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1/,https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1
+location,2017-08-07,v1.1.1,https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.1/,https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.1
+location,2018-02-01,v1.1.3,https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/,https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.3
+lots,,master,https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/master/,https://github.com/open-contracting-extensions/ocds_lots_extension/archive/master.zip
+lots,2017-05-09,v1.1,https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/v1.1/,https://api.github.com/repos/open-contracting-extensions/ocds_lots_extension/zipball/v1.1
+lots,2017-08-07,v1.1.1,https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/v1.1.1/,https://api.github.com/repos/open-contracting-extensions/ocds_lots_extension/zipball/v1.1.1
+lots,2018-01-30,v1.1.3,https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/v1.1.3/,https://api.github.com/repos/open-contracting-extensions/ocds_lots_extension/zipball/v1.1.3
 """
 
 
@@ -46,8 +46,8 @@ def test_init_with_data():
         'id': 'charges',
         'date': '',
         'version': 'master',
-        'base_url': 'https://raw.githubusercontent.com/open-contracting/ocds_charges_extension/master/',
-        'download_url': 'https://github.com/open-contracting/ocds_charges_extension/archive/master.zip',
+        'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_charges_extension/master/',
+        'download_url': 'https://github.com/open-contracting-extensions/ocds_charges_extension/archive/master.zip',
         'category': 'ppp',
         'core': False,
     }
@@ -56,8 +56,8 @@ def test_init_with_data():
         'id': 'lots',
         'date': '2018-01-30',
         'version': 'v1.1.3',
-        'base_url': 'https://raw.githubusercontent.com/open-contracting/ocds_lots_extension/v1.1.3/',
-        'download_url': 'https://api.github.com/repos/open-contracting/ocds_lots_extension/zipball/v1.1.3',
+        'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/v1.1.3/',
+        'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_lots_extension/zipball/v1.1.3',
         'category': 'tender',
         'core': True,
     }
@@ -71,16 +71,16 @@ def test_init_with_versions_only():
         'id': 'charges',
         'date': '',
         'version': 'master',
-        'base_url': 'https://raw.githubusercontent.com/open-contracting/ocds_charges_extension/master/',
-        'download_url': 'https://github.com/open-contracting/ocds_charges_extension/archive/master.zip',
+        'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_charges_extension/master/',
+        'download_url': 'https://github.com/open-contracting-extensions/ocds_charges_extension/archive/master.zip',
     }
     # Assume intermediate data is correctly parsed.
     assert obj.versions[-1].as_dict() == {
         'id': 'lots',
         'date': '2018-01-30',
         'version': 'v1.1.3',
-        'base_url': 'https://raw.githubusercontent.com/open-contracting/ocds_lots_extension/v1.1.3/',
-        'download_url': 'https://api.github.com/repos/open-contracting/ocds_lots_extension/zipball/v1.1.3',
+        'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/v1.1.3/',
+        'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_lots_extension/zipball/v1.1.3',
     }
 
 
@@ -93,8 +93,8 @@ def test_filter():
         'id': 'enquiries',
         'date': '2018-02-01',
         'version': 'v1.1.3',
-        'base_url': 'https://raw.githubusercontent.com/open-contracting/ocds_enquiry_extension/v1.1.3/',
-        'download_url': 'https://api.github.com/repos/open-contracting/ocds_enquiry_extension/zipball/v1.1.3',
+        'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_enquiry_extension/v1.1.3/',
+        'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_enquiry_extension/zipball/v1.1.3',
         'category': 'tender',
         'core': True,
     }
@@ -102,8 +102,8 @@ def test_filter():
         'id': 'lots',
         'date': '2018-01-30',
         'version': 'v1.1.3',
-        'base_url': 'https://raw.githubusercontent.com/open-contracting/ocds_lots_extension/v1.1.3/',
-        'download_url': 'https://api.github.com/repos/open-contracting/ocds_lots_extension/zipball/v1.1.3',
+        'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/v1.1.3/',
+        'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_lots_extension/zipball/v1.1.3',
         'category': 'tender',
         'core': True,
     }
@@ -125,8 +125,8 @@ def test_get():
         'id': 'lots',
         'date': '2018-01-30',
         'version': 'v1.1.3',
-        'base_url': 'https://raw.githubusercontent.com/open-contracting/ocds_lots_extension/v1.1.3/',
-        'download_url': 'https://api.github.com/repos/open-contracting/ocds_lots_extension/zipball/v1.1.3',
+        'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/v1.1.3/',
+        'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_lots_extension/zipball/v1.1.3',
     }
 
 

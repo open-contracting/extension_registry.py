@@ -99,8 +99,8 @@ The data file is organized as below. To keep it short, the sample shows only one
             "id": "risk_allocation",
             "date": "",
             "version": "master",
-            "base_url": "https://raw.githubusercontent.com/open-contracting/ocds-riskAllocation-extension/master/",
-            "download_url": "https://github.com/open-contracting/ocds-riskAllocation-extension/archive/master.zip",
+            "base_url": "https://raw.githubusercontent.com/open-contracting-extensions/ocds_riskAllocation_extension/master/",
+            "download_url": "https://github.com/open-contracting-extensions/ocds_riskAllocation_extension/archive/master.zip",
             "metadata": {
               "name": {
                 "en": "Risk Allocation"
@@ -109,7 +109,7 @@ The data file is organized as below. To keep it short, the sample shows only one
                 "en": "Draft risk allocation extension for ppp extension"
               },
               "documentationUrl": {
-                "en": "https://github.com/open-contracting/ocds-riskAllocation-extension"
+                "en": "https://github.com/open-contracting-extensions/ocds_riskAllocation_extension"
               },
               "compatibility": [
                 "1.1"
