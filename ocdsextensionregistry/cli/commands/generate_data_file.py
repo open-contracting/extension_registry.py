@@ -145,9 +145,9 @@ class Command(BaseCommand):
             elif 'master' in versions:
                 latest_version = 'master'
             else:
-                dated = list(filter(lambda item: item[1]['date'], versions.items()))
+                dated = list(filter(lambda kv: kv[1]['date'], versions.items()))
                 if dated:
-                    latest_version = sorted(dated, key=lambda item: item[1]['date'])[-1][0]
+                    latest_version = max(dated, key=lambda kv: kv[1]['date'])[0]
                 else:
                     raise CommandError("Couldn't determine latest version of {}".format(_id))
 
