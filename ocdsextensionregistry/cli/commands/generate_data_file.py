@@ -90,8 +90,9 @@ class Command(BaseCommand):
             ])
 
             parsed = urlparse(version_data['publisher']['url'])
-            if parsed.netloc == 'github.com':
-                api_url = 'https://api.github.com/users/{}'.format(version_data['publisher']['name'])
+            if parsed.netloc == 'github.com' and 'GITHUB_ACCESS_TOKEN' in os.environ:
+                api_url = 'https://api.github.com/users/{}?access_token={}'.format(
+                    version_data['publisher']['name'], os.getenv('GITHUB_ACCESS_TOKEN'))
                 version_data['publisher']['name'] = requests.get(api_url).json()['name']
 
             for language in languages:

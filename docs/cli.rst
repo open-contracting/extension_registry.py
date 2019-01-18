@@ -78,6 +78,8 @@ The default behavior is to add all available translations, To select translation
 
 To create MO files from existing translations, see :doc:`translation`.
 
+By default, the publisher name of an extension version is like "open-contracting-extensions". If the version is on GitHub, you can have the publisher name be like "Open Contracting Data Standard Extensions" by `generating a personal access token <https://github.com/settings/tokens/new>`__ (do not select any scopes), copying it, and setting a `GITHUB_ACCESS_TOKEN` environment variable to it.
+
 The data file is organized as below. To keep it short, the sample shows only one version of one extension, and only one row of one codelist, and it truncates the Markdown content of documentation files and the parsed content of schema files.
 
 .. code:: json

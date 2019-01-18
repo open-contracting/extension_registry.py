@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.8 (2019-01-18)
+
+* Fix rate limiting error when getting publisher names from GitHub in `generate-data-file` tool.
+
 ## 0.0.7 (2019-01-18)
 
 * Add `publisher` data to the `generate-data-file` tool.
