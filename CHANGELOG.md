@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.7 (2019-01-18)
+
+* Add `repository_user` and `repository_user_page` properties to `ExtensionVersion`, to return user or organization to which the extension's repository belongs.
+
 ## 0.0.6 (2018-11-20)
 
 * Add command-line tools (see [documentation](https://ocdsextensionregistry.readthedocs.io/en/latest/cli.html) for details).

@@ -201,6 +201,25 @@ class ExtensionVersion:
         return self._repository_property('name')
 
     @property
+    def repository_user(self):
+        """
+        Returns the user or organization to which the extension's repository belongs, e.g. open-contracting-extensions
+
+        Experimental
+        """
+        return self._repository_property('user')
+
+    @property
+    def repository_user_page(self):
+        """
+        Returns the URL to the landing page of the user or organization to which the extension's repository belongs,
+        e.g. https://github.com/open-contracting-extensions
+
+        Experimental
+        """
+        return self._repository_property('user_page')
+
+    @property
     def repository_html_page(self):
         """
         Returns the URL to the landing page of the extension's repository, e.g.
@@ -225,6 +244,12 @@ class ExtensionVersion:
 
     def _repository_name(self, parsed, config):
         return re.match(config['name:pattern'], parsed.path).group(1)
+
+    def _repository_user(self, parsed, config):
+        return re.match(config['user:pattern'], parsed.path).group(1)
+
+    def _repository_user_page(self, parsed, config):
+        return config['html_page:prefix'] + self._repository_user(parsed, config)
 
     def _repository_html_page(self, parsed, config):
         return config['html_page:prefix'] + self._repository_full_name(parsed, config)
@@ -254,6 +279,7 @@ class ExtensionVersion:
             return {
                 'full_name:pattern': r'\A/([^/]+/[^/]+)',
                 'name:pattern': r'\A/[^/]+/([^/]+)',
+                'user:pattern': r'\A/([^/]+)',
                 'html_page:prefix': 'https://bitbucket.org/',
                 'url:prefix': 'https://bitbucket.org/',
                 'url:suffix': '.git',  # assumes Git not Mercurial, which can't be disambiguated using the base URL
@@ -263,6 +289,7 @@ class ExtensionVersion:
             return {
                 'full_name:pattern': r'\A/([^/]+/[^/]+)',
                 'name:pattern': r'\A/[^/]+/([^/]+)',
+                'user:pattern': r'\A/([^/]+)',
                 'html_page:prefix': 'https://github.com/',
                 'url:prefix': 'git@github.com:',
                 'url:suffix': '.git',
@@ -272,6 +299,7 @@ class ExtensionVersion:
             return {
                 'full_name:pattern': r'\A/(.+)/raw/',
                 'name:pattern': r'/([^/]+)/raw/',
+                'user:pattern': r'\A/([^/]+)',
                 'html_page:prefix': 'https://gitlab.com/',
                 'url:prefix': 'https://gitlab.com/',
                 'url:suffix': '.git',

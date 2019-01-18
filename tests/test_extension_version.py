@@ -215,6 +215,20 @@ def test_repository_name():
     assert result == 'ocds_location_extension'
 
 
+def test_repository_user():
+    obj = ExtensionVersion(arguments())
+    result = obj.repository_user
+
+    assert result == 'open-contracting-extensions'
+
+
+def test_repository_user_page():
+    obj = ExtensionVersion(arguments())
+    result = obj.repository_user_page
+
+    assert result == 'https://github.com/open-contracting-extensions'
+
+
 def test_repository_html_page():
     obj = ExtensionVersion(arguments())
     result = obj.repository_html_page
