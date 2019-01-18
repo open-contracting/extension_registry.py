@@ -4,7 +4,9 @@ import logging
 import os
 import sys
 from collections import OrderedDict
+from urllib.parse import urlparse
 
+import requests
 from ocds_babel import TRANSLATABLE_EXTENSION_METADATA_KEYWORDS
 from ocds_babel.translate import (translate_codelist_data, translate_schema_data, translate_extension_metadata_data,
                                   translate_markdown_data)
@@ -76,12 +78,21 @@ class Command(BaseCommand):
                 ('version', version.version),
                 ('base_url', version.base_url),
                 ('download_url', version.download_url),
+                ('publisher', OrderedDict([
+                    ('name', version.repository_user),
+                    ('url', version.repository_user_page),
+                ])),
                 ('metadata', version.metadata),
                 ('schemas', OrderedDict()),
                 ('codelists', OrderedDict()),
                 ('docs', OrderedDict()),
                 ('readme', OrderedDict()),
             ])
+
+            parsed = urlparse(version_data['publisher']['url'])
+            if parsed.netloc == 'github.com':
+                api_url = 'https://api.github.com/users/{}'.format(version_data['publisher']['name'])
+                version_data['publisher']['name'] = requests.get(api_url).json()['name']
 
             for language in languages:
                 # Update the version's metadata and add the version's schema.
