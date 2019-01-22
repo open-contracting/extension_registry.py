@@ -3,6 +3,7 @@
 ## 0.0.9
 
 * Drop support for `docs/` directory in extensions.
+* Use UTF-8 characters in JSON files when building profiles.
 
 ## 0.0.8 (2019-01-18)
 

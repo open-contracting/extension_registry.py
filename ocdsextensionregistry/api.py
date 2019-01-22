@@ -39,7 +39,7 @@ def build_profile(basedir, standard_tag, extension_versions, registry_base_url=N
 
     def write_json_file(data, *parts):
         with open_file(os.path.join(basedir, *parts), 'w') as f:
-            json.dump(data, f, indent=2, separators=(',', ': '))
+            json.dump(data, f, ensure_ascii=False, indent=2, separators=(',', ': '))
             f.write('\n')
 
     def write_codelist_file(codelist, fieldnames, *parts):
