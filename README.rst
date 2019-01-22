@@ -15,6 +15,7 @@ The command-line tools have additional requirements, including Sphinx. To instal
 To install with command-line tools::
 
     pip install ocdsextensionregistry[cli]
+    pip install -e git+https://github.com/rtfd/recommonmark.git@81d7c6f7b37981ac22571dd91a7cc9d24c3e66a1#egg=recommonmark
 
 To see all commands available, run::
 

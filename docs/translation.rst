@@ -7,6 +7,7 @@ Setup
 Install this package with command-line tools as well as ``sphinx-intl`` and ``transifex-client``::
 
     pip install ocdsextensionregistry[cli] 'sphinx-intl<1' transifex-client
+    pip install -e git+https://github.com/rtfd/recommonmark.git@81d7c6f7b37981ac22571dd91a7cc9d24c3e66a1#egg=recommonmark
 
 Create a `~/.transifexrc <https://docs.transifex.com/client/client-configuration#%7E/-transifexrc>`__ file (replace ``USERNAME`` and ``PASSWORD``)::
 

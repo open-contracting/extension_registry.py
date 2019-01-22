@@ -4,6 +4,7 @@ Command-Line Tools
 To install::
 
     pip install ocdsextensionregistry[cli]
+    pip install -e git+https://github.com/rtfd/recommonmark.git@81d7c6f7b37981ac22571dd91a7cc9d24c3e66a1#egg=recommonmark
 
 To see all commands available, run::
 
@@ -16,6 +17,7 @@ If you see a message at the start of the output like::
 then you installed ``ocdsextensionregistry`` without command-line tools. To fix, run::
 
     pip install ocdsextensionregistry[cli]
+    pip install -e git+https://github.com/rtfd/recommonmark.git@81d7c6f7b37981ac22571dd91a7cc9d24c3e66a1#egg=recommonmark
 
 download
 --------
