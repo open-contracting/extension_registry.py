@@ -42,9 +42,10 @@ Push source files to Transifex for translation::
 
     tx push -s
 
-Once you've translated strings on Transifex, email data@open-contracting.org so that we can pull translation files from Transifex::
+Once you've translated strings on Transifex, email data@open-contracting.org so that we can pull translation files from Transifex, build MO files, and commit the changes::
 
     tx pull -a -f
+    sphinx-intl build -d locale
 
 Update existing translations
 ----------------------------
@@ -63,9 +64,4 @@ And push its translations. See `Transifex's documentation <https://docs.transife
 
     tx push -t
 
-Build MO files
---------------
-
-If the PO files are in a `locale` directory, run::
-
-        sphinx-intl build -d locale
+Once you've translated strings on Transifex, follow the same final step under creating new translations.
