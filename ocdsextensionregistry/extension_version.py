@@ -29,7 +29,6 @@ class ExtensionVersion:
         self._metadata = None
         self._schemas = None
         self._codelists = None
-        self._docs = None
 
     def update(self, other):
         """
@@ -163,22 +162,6 @@ class ExtensionVersion:
                         raise
 
         return self._codelists
-
-    @property
-    def docs(self):
-        """
-        Retrieves and returns the unparsed contents of the extension's documentation files.
-
-        If the extension has no download URL, returns an empty dict.
-        """
-        if self._docs is None:
-            self._docs = {}
-
-            for name, text in self.files.items():
-                if name.startswith('docs/'):
-                    self._docs[name[5:]] = text
-
-        return self._docs
 
     @property
     def repository_full_name(self):

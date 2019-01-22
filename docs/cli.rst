@@ -157,11 +157,6 @@ The data file is organized as below. To keep it short, the sample shows only one
               },
               …
             },
-            "docs": {
-              "index.md": {
-                "en": "# Risk Allocation Extension\n\nThe risk allocation extension …"
-              }
-            },
             "readme": {
               "en": "# Risk allocation\n\nThe [framework for disclosure in PPPs](http://pubdocs.worldbank.org/en/773541448296707678/Disclosure-in-PPPs-Framework.pdf) …"
             }

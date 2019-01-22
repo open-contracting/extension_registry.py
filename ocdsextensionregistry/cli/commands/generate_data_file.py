@@ -85,7 +85,6 @@ class Command(BaseCommand):
                 ('metadata', version.metadata),
                 ('schemas', OrderedDict()),
                 ('codelists', OrderedDict()),
-                ('docs', OrderedDict()),
                 ('readme', OrderedDict()),
             ])
 
@@ -132,20 +131,6 @@ class Command(BaseCommand):
 
                 translation = translate_markdown_data('README.md', version.remote('README.md'), translator)
                 version_data['readme'][language] = translation
-
-                for name in sorted(version.docs):
-                    # We currently only handle Markdown files.
-                    # find . -type f -not -path '*/.git/*' -not -name '*.csv' -not -name '*.json' -not -name '*.md'
-                    #   -not -name '.travis.yml' -not -name 'LICENSE'
-                    if not name.endswith('.md'):
-                        logger.warning('Not translating {} (no .md extension)'.format(name))
-                        continue
-
-                    if name not in version_data['docs']:
-                        version_data['docs'][name] = OrderedDict()
-
-                    translation = translate_markdown_data(name, version.docs[name], translator)
-                    version_data['docs'][name][language] = translation
 
             data[version.id]['versions'][version.version] = version_data
 

@@ -185,22 +185,6 @@ def test_codelists_with_CR_newlines():
     assert result['bidStatistics.csv'].fieldnames == ['Category', 'Code', 'Title', 'Description', 'Min', 'Max', 'Required by']  # noqa
 
 
-def test_docs():
-    download_url = 'https://github.com/open-contracting-extensions/ocds_coveredBy_extension/archive/master.zip'
-    obj = ExtensionVersion(arguments(**{'Download URL': download_url}))
-    result = obj.docs
-
-    assert isinstance(result['examples/example.json'], str)
-
-
-def test_docs_without_download_url():
-    download_url = None
-    obj = ExtensionVersion(arguments(**{'Download URL': download_url}))
-    result = obj.docs
-
-    assert result == {}
-
-
 def test_repository_full_name():
     obj = ExtensionVersion(arguments())
     result = obj.repository_full_name

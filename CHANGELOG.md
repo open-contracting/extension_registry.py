@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.9
+
+* Drop support for `docs/` directory in extensions.
+
 ## 0.0.8 (2019-01-18)
 
 * Fix rate limiting error when getting publisher names from GitHub in `generate-data-file` tool.

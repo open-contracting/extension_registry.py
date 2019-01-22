@@ -145,7 +145,7 @@ class Command(BaseCommand):
                 with TemporaryDirectory() as srcdir:
                     for info in zipfile.infolist()[1:]:
                         filename = info.filename[start:]
-                        if filename[-1] != '/' and filename.startswith('docs/') or filename == 'README.md':
+                        if filename == 'README.md':
                             info.filename = filename
                             zipfile.extract(info, srcdir)
 
@@ -153,8 +153,6 @@ class Command(BaseCommand):
                         # Eliminates a warning, without changing the output.
                         with open('contents.rst', 'w') as f:
                             f.write('.. toctree::\n   :hidden:\n   :glob:\n\n   README')
-                            if os.path.isdir('docs'):
-                                f.write('\n   docs/*')
 
                         # sphinx-build -b gettext $(DOCS_DIR) $(POT_DIR)
                         app = Sphinx('.', None, '.', '.', 'gettext', **kwargs)

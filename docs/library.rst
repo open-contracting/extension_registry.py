@@ -33,7 +33,6 @@ To work with the files within a version of an extension:
 * :func:`metadata <ocdsextensionregistry.extension_version.ExtensionVersion.metadata>` parses and provides consistent access to the information in ``extension.json``
 * :func:`schemas <ocdsextensionregistry.extension_version.ExtensionVersion.schemas>` returns the parsed contents of schema files
 * :func:`codelists <ocdsextensionregistry.extension_version.ExtensionVersion.codelists>` returns the parsed contents of codelist files (see more below)
-* :func:`docs <ocdsextensionregistry.extension_version.ExtensionVersion.docs>` returns the unparsed contents of documentation files
 * :func:`files <ocdsextensionregistry.extension_version.ExtensionVersion.files>` returns the unparsed contents of all files
 
 See all details in :doc:`api/extension_version`.
