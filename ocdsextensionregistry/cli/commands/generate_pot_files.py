@@ -1,5 +1,4 @@
 import logging
-import os.path
 import subprocess
 from contextlib import closing
 from glob import glob
