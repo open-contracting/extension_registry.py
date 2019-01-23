@@ -13,7 +13,6 @@ def build_profile(basedir, standard_tag, extension_versions, registry_base_url=N
     """
     Pulls extensions into a profile.
 
-    - Writes extensions' README.md files (docs/extensions/{id}.md)
     - Merges extensions' JSON Merge Patch files for OCDS' release-schema.json (schema/profile/release-schema.json)
     - Writes extensions' codelist files (schema/profile/codelists)
     - Patches OCDS' release-schema.json with extensions' JSON Merge Patch files (schema/patched/release-schema.json)
@@ -25,7 +24,7 @@ def build_profile(basedir, standard_tag, extension_versions, registry_base_url=N
     `basedir` is the profile's schema/ directory.
     """
     @contextmanager
-    def open_file(name, mode):
+    def open_file(name, mode='r'):
         """
         Creates the directory if it doesn't exist.
         """
@@ -59,11 +58,6 @@ def build_profile(basedir, standard_tag, extension_versions, registry_base_url=N
             'release-package-schema.json': builder.release_package_schema(),
         }
     }
-
-    # Write the documentation files.
-    for extension in builder.extensions():
-        with open_file(os.path.join(basedir, '..', 'docs', 'extensions', '{}.md'.format(extension.id)), 'w') as f:
-            f.write(extension.remote('README.md'))
 
     # Write the JSON Merge Patch and JSON Schema files.
     for directory, schemas in directories_and_schemas.items():

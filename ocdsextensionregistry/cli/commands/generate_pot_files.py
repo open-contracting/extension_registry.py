@@ -151,7 +151,7 @@ class Command(BaseCommand):
                     with cd(srcdir):
                         # Eliminates a warning, without changing the output.
                         with open('contents.rst', 'w') as f:
-                            f.write('.. toctree::\n   :hidden:\n   :glob:\n\n   README')
+                            f.write('.. toctree::\n   :hidden:\n\n   README')
 
                         # sphinx-build -b gettext $(DOCS_DIR) $(POT_DIR)
                         app = Sphinx('.', None, '.', '.', 'gettext', **kwargs)
