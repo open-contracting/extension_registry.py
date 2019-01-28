@@ -108,6 +108,7 @@ def test_metadata():
 
 
 def test_metadata_old_format():
+    # See https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1/extension.json
     download_url = 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1'
     obj = ExtensionVersion(arguments(**{'Download URL': download_url}))
     result = obj.metadata

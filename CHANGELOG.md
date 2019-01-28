@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.10 (2019-01-28)
+
+* Fix invalid `dependencies` in `extension.json`.
+
 ## 0.0.9 (2019-01-23)
 
 * Drop support for `docs/` directory in extensions.

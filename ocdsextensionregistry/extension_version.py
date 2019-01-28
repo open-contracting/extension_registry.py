@@ -105,8 +105,15 @@ class ExtensionVersion:
                 if not isinstance(self._metadata[field], dict):
                     self._metadata[field] = OrderedDict({'en': self._metadata[field]})
 
+            # Fix the compatibility.
             if 'compatibility' not in self._metadata or isinstance(self._metadata['compatibility'], str):
                 self._metadata['compatibility'] = ['1.1']
+
+            # Remove non-URL dependencies.
+            # noqa: See https://raw.githubusercontent.com/open-contracting-extensions/ocds_enquiry_extension/v1.1.1/extension.json
+            # noqa: See https://raw.githubusercontent.com/open-contracting-extensions/ocds_finance_extension/v1.1/extension.json
+            if 'dependencies' in self._metadata:
+                self._metadata['dependencies'] = [d for d in self._metadata['dependencies'] if urlparse(d).scheme]
 
         return self._metadata
 
