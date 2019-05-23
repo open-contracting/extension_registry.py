@@ -29,7 +29,7 @@ setup(
             'sphinx_rtd_theme',
         ],
         'cli': [
-            'ocds-babel>=0.0.6',
+            'ocds-babel[markdown]>=0.1.0',
         ]
     },
     classifiers=[

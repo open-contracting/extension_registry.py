@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.11
+
+* Upgrade to ocds-babel 0.1.0.
+
 ## 0.0.10 (2019-01-28)
 
 * Fix invalid `dependencies` in `extension.json`.

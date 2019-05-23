@@ -84,16 +84,21 @@ class Command(BaseCommand):
         #   7. Adds the messages to the catalog
         #   8. Writes a POT file
 
+        options = {
+            'headers': 'Title,Description,Extension',
+            'ignore': 'currency.csv',
+        }
+
         # 1. Reads the input path and method map from command-line options
         arguments = [
             # pybabel extract -F babel_ocds_codelist.cfg . -o $(POT_DIR)/$(DOMAIN_PREFIX)codelists.pot
             ('codelists.pot', [
-                ('codelists/*.csv', extract_codelist),
+                ('codelists/*.csv', extract_codelist, options),
             ]),
             # pybabel extract -F babel_ocds_schema.cfg . -o $(POT_DIR)/$(DOMAIN_PREFIX)schema.pot
             ('schema.pot', [
-                ('*-schema.json', extract_schema),
-                ('extension.json', extract_extension_metadata),
+                ('*-schema.json', extract_schema, None),
+                ('extension.json', extract_extension_metadata, None),
             ]),
         ]
 
@@ -122,14 +127,14 @@ class Command(BaseCommand):
                         filename = name[start:]
 
                         # 4. extract_from_dir() calls check_and_call_extract_file()
-                        for pattern, method in method_map:
+                        for pattern, method, options in method_map:
                             if not pathmatch(pattern, filename):
                                 continue
 
                             # 5. check_and_call_extract_file() calls extract_from_file()
                             with zipfile.open(name) as fileobj:
                                 # 6. extract_from_file() calls extract() to extract messages
-                                for lineno, message, comments, context in extract(method, fileobj):
+                                for lineno, message, comments, context in extract(method, fileobj, options=options):
                                     # 7. Adds the messages to the catalog
                                     catalog.add(message, None, [(filename, lineno)],
                                                 auto_comments=comments, context=context)

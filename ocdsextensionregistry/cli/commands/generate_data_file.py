@@ -46,6 +46,7 @@ class Command(BaseCommand):
         data = OrderedDict()
         languages = {'en'}
         localedir = self.args.locale_dir
+        headers = ['Title', 'Description', 'Extension']
 
         if localedir:
             available_translations = [n for n in os.listdir(localedir) if os.path.isdir(os.path.join(localedir, n))]
@@ -123,7 +124,7 @@ class Command(BaseCommand):
                         translation = [translator.gettext(fieldname) for fieldname in codelist.fieldnames]
                         version_data['codelists'][name][language]['fieldnames'] = translation
 
-                        translation = translate_codelist_data(codelist, translator)
+                        translation = translate_codelist_data(codelist, translator, headers)
                         version_data['codelists'][name][language]['rows'] = translation
 
                 # Add the version's readme and documentation.
