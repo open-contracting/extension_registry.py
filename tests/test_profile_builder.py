@@ -88,7 +88,7 @@ def test_patched_release_schema_with_schema_base_url():
     result = builder.patched_release_schema()
 
     # Changes `id`.
-    assert result['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'
+    assert result['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa
 
 
 def test_release_package_schema_with_schema_base_url():
