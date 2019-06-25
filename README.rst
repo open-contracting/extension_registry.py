@@ -1,6 +1,6 @@
 |PyPI Version| |Build Status| |Coverage Status| |Python Version|
 
-This Python package eases access to information about extensions in the `Open Contracting Data Standard <http://standard.open-contracting.org>`__'s `extension registry <https://github.com/open-contracting/extension_registry>`__.
+This Python package eases access to information about extensions in the `Open Contracting Data Standard <https://standard.open-contracting.org>`__'s `extension registry <https://github.com/open-contracting/extension_registry>`__.
 
 It includes Python classes for programmatic access, as well as a suite of command-line tools which can:
 
