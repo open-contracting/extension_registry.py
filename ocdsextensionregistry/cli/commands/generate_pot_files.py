@@ -40,9 +40,14 @@ class Command(BaseCommand):
                           help="the URL of the registry's extensions.csv")
         self.add_argument('--extension-versions-url', default=EXTENSION_VERSIONS_DATA,
                           help="the URL of the registry's extension_versions.csv")
+        self.add_argument('--versions-dir',
+                          help="a directory containing versions of extensions")
 
     def handle(self):
         output_directory = Path(self.args.output_directory)
+
+        if self.args.versions_dir:
+            versions_directory = Path(self.args.versions_dir)
 
         # We simulate pybabel and sphinx-build commands. Variable names are chosen to match upstream code.
 
@@ -103,18 +108,26 @@ class Command(BaseCommand):
         ]
 
         for version in self.versions():
-            if not version.download_url:
-                logger.warning('No downloading {}=={} (no Download URL)'.format(version.id, version.version))
-                continue
+            if self.args.versions_dir:
+                version.directory = versions_directory / version.id / version.version
+
+            if self.args.versions_dir:
+                if not version.directory.is_dir():
+                    logger.warning('Not processing {}=={} (not in {})'.format(
+                        version.id, version.version, versions_directory))
+                    continue
+            else:
+                if not version.download_url:
+                    logger.warning('Not processing {}=={} (no Download URL)'.format(
+                        version.id, version.version))
+                    continue
 
             outdir = output_directory / version.id / version.version
 
             outdir.mkdir(parents=True, exist_ok=True)
 
             # See the `files` method of `ExtensionVersion` for similar code.
-            response = requests.get(version.download_url, allow_redirects=True)
-            response.raise_for_status()
-            with closing(ZipFile(BytesIO(response.content))) as zipfile:
+            with closing(version.zipfile()) as zipfile:
                 names = zipfile.namelist()
                 start = len(names[0])
 

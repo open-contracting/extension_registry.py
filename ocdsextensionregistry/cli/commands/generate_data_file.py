@@ -4,6 +4,7 @@ import logging
 import os
 import sys
 from collections import OrderedDict
+from pathlib import Path
 from urllib.parse import urlparse
 
 import requests
@@ -38,10 +39,15 @@ class Command(BaseCommand):
                           default=EXTENSIONS_DATA)
         self.add_argument('--extension-versions-url', help="the URL of the registry's extension_versions.csv",
                           default=EXTENSION_VERSIONS_DATA)
+        self.add_argument('--versions-dir',
+                          help="a directory containing versions of extensions")
 
     def handle(self):
         if self.args.languages and not self.args.locale_dir:
             self.subparser.error('--locale-dir is required if --languages is set.')
+
+        if self.args.versions_dir:
+            versions_directory = Path(self.args.versions_dir)
 
         data = OrderedDict()
         languages = {'en'}
@@ -60,6 +66,9 @@ class Command(BaseCommand):
                 languages.update(available_translations)
 
         for version in self.versions():
+            if self.args.versions_dir:
+                version.directory = versions_directory / version.id / version.version
+
             # Add the extension's data.
             if version.id not in data:
                 data[version.id] = OrderedDict([
@@ -95,7 +104,7 @@ class Command(BaseCommand):
                     version_data['publisher']['name'], os.getenv('GITHUB_ACCESS_TOKEN'))
                 version_data['publisher']['name'] = requests.get(api_url).json()['name']
 
-            for language in languages:
+            for language in sorted(languages):
                 # Update the version's metadata and add the version's schema.
                 translator = _translator(version, 'schema', localedir, language)
 

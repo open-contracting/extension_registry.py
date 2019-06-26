@@ -61,6 +61,10 @@ You can specify versions and extensions like with the ``download`` command.
 
 Within the output directory, the POT files are organized like `{extension}/{version}/{files}`, for example: ``lots/v1.1.3/docs.pot``.
 
+This command can be run offline if ``--versions-dir`` is set to a local directory organized like the output directory of the ``download`` command, and if ``--extension-versions-url`` and ``--extensions-url`` are set to local files, for example::
+
+    ocdsextensionregistry generate-pot-files --versions-dir outputdir --extension-versions-url file://path/to/extension_versions.csv --extensions-url file://path/to/extensions.csv build/locale
+
 generate-data-file
 ------------------
 
@@ -80,7 +84,11 @@ The default behavior is to add all available translations, To select translation
 
 To create MO files from existing translations, see :doc:`translation`.
 
-By default, the publisher name of an extension version is like "open-contracting-extensions". If the version is on GitHub, you can have the publisher name be like "Open Contracting Data Standard Extensions" by `generating a personal access token <https://github.com/settings/tokens/new>`__ (do not select any scopes), copying it, and setting a `GITHUB_ACCESS_TOKEN` environment variable to it.
+By default, the publisher name of an extension version is like "open-contracting-extensions". If the version is on GitHub, you can have the publisher name be like "Open Contracting Data Standard Extensions" by `generating a personal access token <https://github.com/settings/tokens/new>`__ (do not select any scopes), copying it, and setting a ``GITHUB_ACCESS_TOKEN`` environment variable to it.
+
+This command can be run offline if ``--versions-dir`` is set to a local directory organized like the output directory of the ``download`` command, and if ``--extension-versions-url`` and ``--extensions-url`` are set to local files, for example::
+
+    ocdsextensionregistry generate-data-file --versions-dir outputdir --extension-versions-url file://path/to/extension_versions.csv --extensions-url file://path/to/extensions.csv > data.json
 
 The data file is organized as below. To keep it short, the sample shows only one version of one extension, and only one row of one codelist, and it truncates the Markdown content of documentation files and the parsed content of schema files.
 

@@ -1,5 +1,5 @@
 import csv
-import os.path
+import os
 import re
 from collections import OrderedDict
 from contextlib import closing
@@ -10,6 +10,7 @@ from zipfile import ZipFile
 import requests
 
 from .codelist import Codelist
+from .exceptions import NotAvailableInBulk
 from .util import json_loads
 
 SCHEMAS = ('record-package-schema.json', 'release-package-schema.json', 'release-schema.json')
@@ -25,6 +26,7 @@ class ExtensionVersion:
         self.version = data['Version']
         self.base_url = data['Base URL']
         self.download_url = data['Download URL']
+        self.directory = None
         self._files = None
         self._metadata = None
         self._schemas = None
@@ -43,16 +45,22 @@ class ExtensionVersion:
         """
         return {key: value for key, value in self.__dict__.items() if not key.startswith('_')}
 
+    def available_in_bulk(self):
+        """
+        Returns whether the files are available in bulk (i.e. whether it has a download URL or a local directory).
+        """
+        return self.directory or self.download_url
+
     def remote(self, basename):
         """
         Returns the contents of the file within the extension.
 
-        If the extension has a download URL, downloads the ZIP archive and caches all its files' contents. Otherwise,
-        downloads and caches the requested file's contents. Raises an HTTPError if a download fails, and a KeyError if
-        the requested file isn't in the ZIP archive.
+        If the extension has a download URL or a local directory, caches all the files' contents. Otherwise, downloads
+        and caches the requested file's contents. Raises an HTTPError if a download fails. Raises a KeyError if the
+        requested file isn't in the ZIP archive.
         """
         if basename not in self.files:
-            if not self.download_url:
+            if not self.available_in_bulk():
                 response = requests.get(self.base_url + basename)
                 response.raise_for_status()
                 self._files[basename] = response.text
@@ -64,16 +72,14 @@ class ExtensionVersion:
         """
         Returns the unparsed contents of all files. Decodes the contents of CSV, JSON and Markdown files.
 
-        If the extension has a download URL, downloads the ZIP archive and caches all its files' contents. Otherwise,
-        returns an empty dict. Raises an HTTPError if the download fails.
+        If the extension has a download URL or a local directory, caches all the files' contents. Otherwise, returns an
+        empty dict. Raises an HTTPError if the download fails.
         """
         if self._files is None:
             self._files = {}
 
-            if self.download_url:
-                response = requests.get(self.download_url, allow_redirects=True)
-                response.raise_for_status()
-                with closing(ZipFile(BytesIO(response.content))) as zipfile:
+            if self.available_in_bulk():
+                with closing(self.zipfile()) as zipfile:
                     names = zipfile.namelist()
                     start = len(names[0])
 
@@ -86,6 +92,27 @@ class ExtensionVersion:
                             self._files[filename] = content
 
         return self._files
+
+    def zipfile(self):
+        """
+        If the extension has a local directory, returns a ZIP archive of the files it contains. If the extension has a
+        download URL, downloads and returns the ZIP archive.
+        """
+        if self.directory:
+            io = BytesIO()
+            with ZipFile(io, 'w') as zipfile:
+                zipfile.write(self.directory)
+                for root, dirs, files in os.walk(self.directory):
+                    for file in sorted(files):
+                        zipfile.write(os.path.join(root, file))
+        elif self.download_url:
+            response = requests.get(self.download_url, allow_redirects=True)
+            response.raise_for_status()
+            io = BytesIO(response.content)
+        else:
+            raise NotAvailableInBulk('ExtensionVersion.zipfile() requires either a directory or a download_url.')
+
+        return ZipFile(io)
 
     @property
     def metadata(self):
@@ -127,7 +154,7 @@ class ExtensionVersion:
 
             if 'schemas' in self.metadata:
                 names = self.metadata['schemas']
-            elif self.download_url:
+            elif self.available_in_bulk():
                 names = [name for name in self.files if name in SCHEMAS]
             else:
                 names = SCHEMAS
@@ -153,7 +180,7 @@ class ExtensionVersion:
 
             if 'codelists' in self.metadata:
                 names = self.metadata['codelists']
-            elif self.download_url:
+            elif self.available_in_bulk():
                 names = [name[10:] for name in self.files if name.startswith('codelists/')]
             else:
                 names = []

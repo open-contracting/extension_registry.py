@@ -63,6 +63,9 @@ class ExtensionRegistry:
     def _resolve(self, data_or_url):
         parsed = urlparse(data_or_url)
         if parsed.scheme:
+            if parsed.scheme == 'file':
+                with open(data_or_url[7:]) as f:
+                    return f.read()
             return requests.get(data_or_url).text
         return data_or_url
 

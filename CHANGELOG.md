@@ -2,6 +2,12 @@
 
 ## 0.0.11
 
+The `generate-pot-files` and `generate-data-files` commands can now be run offline (see [documentation](https://ocdsextensionregistry.readthedocs.io/en/latest/cli.html) for details). 
+
+* Support the `file` scheme for the `extension_versions_data` and `extensions_data` arguments to `ExtensionRegistry`. This means the `--extension-versions-url` and `--extensions-url` CLI options can now refer to local files.
+* Add a `--versions-dir` option to the `generate-pot-files` and `generate-data-files` commands to specify a local directory of extension versions.
+* Add `available_in_bulk()` method to `ExtensionVersion`, to return whether the extension's files are available in bulk.
+* Add `zipfile()` method to `ExtensionVersion`, to return a ZIP archive of the extension's files.
 * Upgrade to ocds-babel 0.1.0.
 
 ## 0.0.10 (2019-01-28)
