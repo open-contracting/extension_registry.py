@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.0.11
+## 0.0.11 (2019-06-26)
 
 The `generate-pot-files` and `generate-data-files` commands can now be run offline (see [documentation](https://ocdsextensionregistry.readthedocs.io/en/latest/cli.html) for details). 
 
