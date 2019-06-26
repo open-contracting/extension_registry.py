@@ -159,7 +159,7 @@ def test_extension_codelists(caplog):
         assert result[0][0]['Source'] == ''
 
         # Combines codelist additions and removals.
-        assert len(plus_party_role) == 16
+        assert len(plus_party_role) == 13
         assert plus_party_role[-1]['Code'] == 'enquirer'
 
         # Logs ignored codelists.

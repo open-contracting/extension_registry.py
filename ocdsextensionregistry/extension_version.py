@@ -26,7 +26,7 @@ class ExtensionVersion:
         self.version = data['Version']
         self.base_url = data['Base URL']
         self.download_url = data['Download URL']
-        self.directory = None
+        self._directory = None
         self._files = None
         self._metadata = None
         self._schemas = None
@@ -38,6 +38,14 @@ class ExtensionVersion:
         """
         for k, v in other.as_dict().items():
             setattr(self, k, v)
+
+    @property
+    def directory(self):
+        return self._directory
+
+    @directory.setter
+    def directory(self, directory):
+        self._directory = directory
 
     def as_dict(self):
         """

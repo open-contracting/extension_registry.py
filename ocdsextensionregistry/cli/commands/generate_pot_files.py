@@ -2,12 +2,9 @@ import logging
 import subprocess
 from contextlib import closing
 from glob import glob
-from io import BytesIO
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from zipfile import ZipFile
 
-import requests
 from babel.messages.catalog import Catalog
 from babel.messages.extract import extract, pathmatch
 from babel.messages.pofile import write_po
