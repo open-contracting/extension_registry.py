@@ -299,6 +299,16 @@ class ExtensionVersion:
         # If all interfaces could be disambiguated using the domain alone, we could implement the lookup of the
         # configuration as a dictionary. Since that's not the case, the lookup is implemented as a method.
         netloc = parsed.netloc
+        if netloc == 'raw.githubusercontent.com':
+            # Sample base URL: https://raw.githubusercontent.com/open-contracting-extensions/ocds_bid_extension/v1.1.3/
+            return {
+                'full_name:pattern': r'\A/([^/]+/[^/]+)',
+                'name:pattern': r'\A/[^/]+/([^/]+)',
+                'user:pattern': r'\A/([^/]+)',
+                'html_page:prefix': 'https://github.com/',
+                'url:prefix': 'git@github.com:',
+                'url:suffix': '.git',
+            }
         if netloc == 'bitbucket.org':
             # A base URL may look like: https://bitbucket.org/facebook/hgsql/raw/default/
             return {
@@ -309,17 +319,7 @@ class ExtensionVersion:
                 'url:prefix': 'https://bitbucket.org/',
                 'url:suffix': '.git',  # assumes Git not Mercurial, which can't be disambiguated using the base URL
             }
-        elif netloc == 'raw.githubusercontent.com':
-            # Sample base URL: https://raw.githubusercontent.com/open-contracting-extensions/ocds_bid_extension/v1.1.3/
-            return {
-                'full_name:pattern': r'\A/([^/]+/[^/]+)',
-                'name:pattern': r'\A/[^/]+/([^/]+)',
-                'user:pattern': r'\A/([^/]+)',
-                'html_page:prefix': 'https://github.com/',
-                'url:prefix': 'git@github.com:',
-                'url:suffix': '.git',
-            }
-        elif netloc == 'gitlab.com':
+        if netloc == 'gitlab.com':
             # A base URL may look like: https://gitlab.com/gitlab-org/gitter/env/raw/master/
             return {
                 'full_name:pattern': r'\A/(.+)/raw/',

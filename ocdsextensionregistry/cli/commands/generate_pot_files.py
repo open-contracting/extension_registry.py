@@ -157,7 +157,10 @@ class Command(BaseCommand):
                             write_po(outfile, catalog)
 
                 with TemporaryDirectory() as srcdir:
-                    for info in zipfile.infolist()[1:]:
+                    infos = zipfile.infolist()
+                    start = len(infos[0].filename)
+
+                    for info in infos[1:]:
                         filename = info.filename[start:]
                         if filename == 'README.md':
                             info.filename = filename

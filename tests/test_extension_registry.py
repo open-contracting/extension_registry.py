@@ -63,6 +63,36 @@ def test_init_with_data():
     }
 
 
+def test_init_with_file(tmpdir):
+    extension_versions_file = tmpdir.join('extension_versions.csv')
+    extension_versions_file.write(extension_versions_data)
+    extensions_file = tmpdir.join('extensions.csv')
+    extensions_file.write(extensions_data)
+
+    obj = ExtensionRegistry('file://{}'.format(extension_versions_file), 'file://{}'.format(extensions_file))
+
+    assert len(obj.versions) == 14
+    assert obj.versions[0].as_dict() == {
+        'id': 'charges',
+        'date': '',
+        'version': 'master',
+        'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_charges_extension/master/',
+        'download_url': 'https://github.com/open-contracting-extensions/ocds_charges_extension/archive/master.zip',
+        'category': 'ppp',
+        'core': False,
+    }
+    # Assume intermediate data is correctly parsed.
+    assert obj.versions[-1].as_dict() == {
+        'id': 'lots',
+        'date': '2018-01-30',
+        'version': 'v1.1.3',
+        'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/v1.1.3/',
+        'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_lots_extension/zipball/v1.1.3',
+        'category': 'tender',
+        'core': True,
+    }
+
+
 def test_init_with_versions_only():
     obj = ExtensionRegistry(extension_versions_data)
 
@@ -115,6 +145,14 @@ def test_filter_without_extensions():
         obj.filter(category='tender')
 
     assert str(excinfo.value) == 'ExtensionRegistry must be initialized with extensions data.'
+
+
+def test_filter_invalid():
+    obj = ExtensionRegistry(extension_versions_data)
+    with pytest.raises(AttributeError) as excinfo:
+        obj.filter(invalid='invalid')
+
+    assert str(excinfo.value) == "'ExtensionVersion' object has no attribute 'invalid'"
 
 
 def test_get():

@@ -1,11 +1,7 @@
 import logging
 import shutil
 from contextlib import closing
-from io import BytesIO
 from pathlib import Path
-from zipfile import ZipFile
-
-import requests
 
 from .base import BaseCommand
 from ocdsextensionregistry import EXTENSIONS_DATA, EXTENSION_VERSIONS_DATA
@@ -51,9 +47,7 @@ class Command(BaseCommand):
                 version_directory.mkdir(parents=True)
 
                 # See the `files` method of `ExtensionVersion` for similar code.
-                response = requests.get(version.download_url, allow_redirects=True)
-                response.raise_for_status()
-                with closing(ZipFile(BytesIO(response.content))) as zipfile:
+                with closing(version.zipfile()) as zipfile:
                     infos = zipfile.infolist()
                     start = len(infos[0].filename)
 

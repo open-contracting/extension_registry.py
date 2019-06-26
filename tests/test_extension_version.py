@@ -4,6 +4,7 @@ import pytest
 import requests
 
 from ocdsextensionregistry import Extension, ExtensionVersion
+from ocdsextensionregistry.exceptions import NotAvailableInBulk
 
 
 def test_init():
@@ -50,6 +51,7 @@ def test_as_dict():
 
 def test_remote():
     obj = ExtensionVersion(arguments(**{'Download URL': None}))
+
     data = obj.remote('extension.json')
     # Repeat requests should return the same result.
     data = obj.remote('extension.json')
@@ -59,11 +61,26 @@ def test_remote():
 
 def test_remote_download_url():
     obj = ExtensionVersion(arguments())
+
     data = obj.remote('extension.json')
     # Repeat requests should return the same result.
     data = obj.remote('extension.json')
 
     assert json.loads(data)
+
+
+def test_remote_directory(tmpdir):
+    file = tmpdir.join('extension.json')
+    file.write('{"key": "value"}')
+
+    obj = ExtensionVersion(arguments(**{'Download URL': None}))
+    obj.directory = tmpdir
+
+    data = obj.remote('extension.json')
+    # Repeat requests should return the same result.
+    data = obj.remote('extension.json')
+
+    assert json.loads(data) == {'key': 'value'}
 
 
 def test_remote_nonexistent():
@@ -80,6 +97,14 @@ def test_remote_download_url_nonexistent():
         obj.remote('nonexistent')
 
     assert str(excinfo.value) == "'nonexistent'"
+
+
+def test_zipfile_not_available_in_bulk():
+    obj = ExtensionVersion(arguments(**{'Download URL': None}))
+    with pytest.raises(NotAvailableInBulk) as excinfo:
+        obj.zipfile()
+
+    assert str(excinfo.value) == "ExtensionVersion.zipfile() requires either a directory or a download_url."
 
 
 def test_files():
