@@ -111,7 +111,7 @@ This initializes a profile of OCDS 1.1.3 with two extensions. You can then:
 See all details in :doc:`api/profile_builder`.
 
 API documentation
-~~~~~~~~~~~~~~~~~
+-----------------
 
 .. toctree::
    :maxdepth: 2
