@@ -11,7 +11,7 @@ setup(
     url='https://github.com/open-contracting/extension_registry.py',
     description="Eases access to information from the extension registry of the Open Contracting Data Standard",
     license='BSD',
-    packages=find_packages(),
+    packages=find_packages(exclude=['tests', 'tests.*']),
     long_description=long_description,
     install_requires=[
         'json-merge-patch',
