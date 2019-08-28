@@ -10,6 +10,7 @@ OCDS Extension Registry Python Package |release|
    cli
    translation
    library
+   changelog
 
 Contributing
 ------------
