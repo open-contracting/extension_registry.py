@@ -145,7 +145,7 @@ class Command(BaseCommand):
             data[version.id]['versions'][version.version] = version_data
 
         for _id in data:
-            # Determine the latest version.
+            # Determine the latest version. See ocdsextensionregistry.util.get_latest_version().
             versions = data[_id]['versions']
             if len(versions) == 1:
                 latest_version = list(versions)[0]

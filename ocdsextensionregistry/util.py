@@ -1,6 +1,8 @@
 import json
 from collections import OrderedDict
 
+from .exceptions import UnknownLatestVersion
+
 
 def json_dump(data, io):
     """
@@ -30,3 +32,21 @@ def add_extension_name(schema, extension_name, pointer=None):
             schema['extension'] = extension_name
         for key, value in schema.items():
             add_extension_name(value, extension_name, pointer=pointer + (key,))
+
+
+def get_latest_version(versions):
+    """
+    Returns the identifier of the latest version from a list of versions of the same extension.
+    """
+    if len(versions) == 1:
+        return versions[0]
+
+    for version in versions:
+        if version.version == 'master':
+            return version
+
+    dated = list(filter(lambda version: version.date, versions))
+    if dated:
+        return max(dated, key=lambda version: version.date)
+
+    raise UnknownLatestVersion

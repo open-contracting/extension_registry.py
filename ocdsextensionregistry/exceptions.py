@@ -14,5 +14,9 @@ class NotAvailableInBulk(OCDSExtensionRegistryError):
     """Raised if files are required to be available in bulk, but are not"""
 
 
+class UnknownLatestVersion(OCDSExtensionRegistryError):
+    """Raised if the latest version of an extension can't be determined"""
+
+
 class CommandError(OCDSExtensionRegistryError):
     """Errors from within this package's CLI"""
