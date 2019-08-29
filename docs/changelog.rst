@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.0.12 (2019-XX-XX)
+~~~~~~~~~~~~~~~~~~~
+
+- Unregistered extensions are now supported by the profile builder. The ``extension_versions`` argument to ``ProfileBuilder`` can be a list of extensions' metadata URLs, base URLs and/or download URLs.
+
 0.0.11 (2019-06-26)
 ~~~~~~~~~~~~~~~~~~~
 

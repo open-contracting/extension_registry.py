@@ -82,6 +82,33 @@ def test_patched_release_schema():
     assert 'buyer' not in result['properties']
 
 
+def test_patched_release_schema_with_unregistered_extension_metadata_url():
+    url = 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_coveredBy_extension/master/extension.json'  # noqa
+    builder = ProfileBuilder('1__1__3', [url])
+    result = builder.patched_release_schema()
+
+    assert '$schema' in result
+    assert 'coveredBy' in result['definitions']['Tender']['properties']
+
+
+def test_patched_release_schema_with_unregistered_extension_base_url():
+    url = 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_coveredBy_extension/master/'
+    builder = ProfileBuilder('1__1__3', [url])
+    result = builder.patched_release_schema()
+
+    assert '$schema' in result
+    assert 'coveredBy' in result['definitions']['Tender']['properties']
+
+
+def test_patched_release_schema_with_unregistered_extension_download_url():
+    url = 'https://github.com/open-contracting-extensions/ocds_coveredBy_extension/archive/master.zip'
+    builder = ProfileBuilder('1__1__3', [url])
+    result = builder.patched_release_schema()
+
+    assert '$schema' in result
+    assert 'coveredBy' in result['definitions']['Tender']['properties']
+
+
 def test_patched_release_schema_with_schema_base_url():
     schema_base_url = 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/'
     builder = ProfileBuilder('1__1__3', OrderedDict(), schema_base_url=schema_base_url)

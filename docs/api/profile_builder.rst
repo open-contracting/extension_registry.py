@@ -18,6 +18,16 @@ This initializes a profile of OCDS 1.1.3 with two extensions. You can then:
 * :func:`patched_codelists() <ocdsextensionregistry.profile_builder.ProfileBuilder.patched_codelists>` to get the codelists, after patching OCDS with the profile
 * :func:`extensions() <ocdsextensionregistry.profile_builder.ProfileBuilder.extensions>` to iterate over the profile's versions of extensions
 
+Alternately, you can pass a list of extensions' metadata URLs, base URLs and/or download URLs, for example:
+
+.. code:: python
+
+    builder = ProfileBuilder('1__1__3', [
+      'https://raw.githubusercontent.com/open-contracting-extensions/ocds_coveredBy_extension/master/extension.json',
+      'https://raw.githubusercontent.com/open-contracting-extensions/ocds_options_extension/master/',
+      'https://github.com/open-contracting-extensions/ocds_techniques_extension/archive/master.zip',
+    ])
+
 API
 ---
 

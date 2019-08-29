@@ -13,6 +13,7 @@ import requests
 
 from .codelist import Codelist
 from .extension_registry import ExtensionRegistry
+from .extension_version import ExtensionVersion
 from .util import json_loads
 
 logger = logging.getLogger('ocdsextensionregistry')
@@ -21,13 +22,13 @@ logger = logging.getLogger('ocdsextensionregistry')
 class ProfileBuilder:
     def __init__(self, standard_tag, extension_versions, registry_base_url=None, schema_base_url=None):
         """
-        Accepts an OCDS version and a dictionary of extension identifiers and versions, and initializes a reader of the
-        extension registry.
+        Accepts an OCDS version and either a dictionary of extension identifiers and versions, or a list of extensions'
+        metadata URLs, base URLs and/or download URLs, and initializes a reader of the extension registry.
         """
         self.standard_tag = standard_tag
         self.extension_versions = extension_versions
-        self._file_cache = {}
         self.schema_base_url = schema_base_url
+        self._file_cache = {}
 
         # Allows setting the registry URL to e.g. a pull request, when working on a profile.
         if not registry_base_url:
@@ -39,8 +40,19 @@ class ProfileBuilder:
         """
         Returns the matching extension versions from the registry.
         """
-        for identifier, version in self.extension_versions.items():
-            yield self.registry.get(id=identifier, version=version)
+        if isinstance(self.extension_versions, dict):
+            for identifier, version in self.extension_versions.items():
+                yield self.registry.get(id=identifier, version=version)
+        else:
+            for url in self.extension_versions:
+                data = dict.fromkeys(['Id', 'Date', 'Version', 'Base URL', 'Download URL'])
+                if url.endswith('/extension.json'):
+                    data['Base URL'] = url[:-14]
+                elif url.endswith('/'):
+                    data['Base URL'] = url
+                else:
+                    data['Download URL'] = url
+                yield ExtensionVersion(data)
 
     def release_schema_patch(self):
         """
