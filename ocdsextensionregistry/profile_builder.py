@@ -14,20 +14,32 @@ import requests
 from .codelist import Codelist
 from .extension_registry import ExtensionRegistry
 from .extension_version import ExtensionVersion
-from .util import json_loads
+from .util import json_loads, add_extension_name
 
 logger = logging.getLogger('ocdsextensionregistry')
 
 
 class ProfileBuilder:
-    def __init__(self, standard_tag, extension_versions, registry_base_url=None, schema_base_url=None):
+    def __init__(self, standard_tag, extension_versions, registry_base_url=None, schema_base_url=None,
+                 annotate=False):
         """
         Accepts an OCDS version and either a dictionary of extension identifiers and versions, or a list of extensions'
         metadata URLs, base URLs and/or download URLs, and initializes a reader of the extension registry.
+
+        :param str standard_tag: the OCDS version tag, e.g. ``'1__1__3'``
+        :param extension_versions: the extension versions
+        :param str registry_base_url: the registry's base URL, defaults to
+                                      ``'https://raw.githubusercontent.com/open-contracting/extension_registry/master/'``
+        :param str schema_base_url: the schema's base URL, e.g.
+                                    ``'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/'``
+        :param bool annotate: whether to annotate all definitions and properties with extension names
+        :type extension_versions: dict or list
+        :
         """
         self.standard_tag = standard_tag
         self.extension_versions = extension_versions
         self.schema_base_url = schema_base_url
+        self.annotate = annotate
         self._file_cache = {}
 
         # Allows setting the registry URL to e.g. a pull request, when working on a profile.
@@ -62,8 +74,10 @@ class ProfileBuilder:
 
         # Replaces `null` with sentinel values, to preserve the null'ing of fields by extensions in the final patch.
         for extension in self.extensions():
-            data = re.sub(r':\s*null\b', ': "REPLACE_WITH_NULL"', extension.remote('release-schema.json'))
-            json_merge_patch.merge(profile_patch, json_loads(data))
+            data = json_loads(re.sub(r':\s*null\b', ': "REPLACE_WITH_NULL"', extension.remote('release-schema.json')))
+            if self.annotate:
+                add_extension_name(data, extension.metadata['name']['en'])
+            json_merge_patch.merge(profile_patch, data)
 
         return json_loads(json.dumps(profile_patch).replace('"REPLACE_WITH_NULL"', 'null'))
 

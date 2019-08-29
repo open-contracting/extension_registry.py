@@ -82,7 +82,17 @@ def test_patched_release_schema():
     assert 'buyer' not in result['properties']
 
 
-def test_patched_release_schema_with_unregistered_extension_metadata_url():
+def test_patched_release_schema_with_annotate():
+    builder = ProfileBuilder('1__1__3', OrderedDict([('location', 'v1.1.3')]), annotate=True)
+    result = builder.patched_release_schema()
+
+    definition = result['definitions']['Location']
+    assert definition['extension'] == 'Location'
+    assert definition['properties']['geometry']['extension'] == 'Location'
+    assert definition['properties']['geometry']['properties']['type']['extension'] == 'Location'
+
+
+def test_patched_release_schema_with_metadata_url():
     url = 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_coveredBy_extension/master/extension.json'  # noqa
     builder = ProfileBuilder('1__1__3', [url])
     result = builder.patched_release_schema()
@@ -91,7 +101,7 @@ def test_patched_release_schema_with_unregistered_extension_metadata_url():
     assert 'coveredBy' in result['definitions']['Tender']['properties']
 
 
-def test_patched_release_schema_with_unregistered_extension_base_url():
+def test_patched_release_schema_with_base_url():
     url = 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_coveredBy_extension/master/'
     builder = ProfileBuilder('1__1__3', [url])
     result = builder.patched_release_schema()
@@ -100,7 +110,7 @@ def test_patched_release_schema_with_unregistered_extension_base_url():
     assert 'coveredBy' in result['definitions']['Tender']['properties']
 
 
-def test_patched_release_schema_with_unregistered_extension_download_url():
+def test_patched_release_schema_with_download_url():
     url = 'https://github.com/open-contracting-extensions/ocds_coveredBy_extension/archive/master.zip'
     builder = ProfileBuilder('1__1__3', [url])
     result = builder.patched_release_schema()

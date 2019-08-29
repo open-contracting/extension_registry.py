@@ -15,6 +15,7 @@ from ocds_babel.translate import (translate_codelist_data, translate_schema_data
 from .base import BaseCommand
 from ocdsextensionregistry import EXTENSIONS_DATA, EXTENSION_VERSIONS_DATA
 from ocdsextensionregistry.exceptions import CommandError
+from ocdsextensionregistry.util import json_dump
 
 logger = logging.getLogger('ocdsextensionregistry')
 
@@ -163,4 +164,4 @@ class Command(BaseCommand):
             for field in ('name', 'description'):
                 data[_id][field] = data[_id]['versions'][latest_version]['metadata'][field]
 
-        json.dump(data, sys.stdout, ensure_ascii=False, indent=2, separators=(',', ': '))
+        json_dump(data, sys.stdout)

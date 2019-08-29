@@ -5,6 +5,7 @@ from collections import OrderedDict
 from contextlib import contextmanager
 
 from .profile_builder import ProfileBuilder
+from .util import json_dump
 
 VALID_FIELDNAMES = ('Code', 'Title', 'Description', 'Extension')
 
@@ -38,7 +39,7 @@ def build_profile(basedir, standard_tag, extension_versions, registry_base_url=N
 
     def write_json_file(data, *parts):
         with open_file(os.path.join(basedir, *parts), 'w') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2, separators=(',', ': '))
+            json_dump(data, f)
             f.write('\n')
 
     def write_codelist_file(codelist, fieldnames, *parts):
