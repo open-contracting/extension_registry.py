@@ -2,7 +2,7 @@ Programmatic Access
 ===================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    api/extension_registry
    api/extension_version
