@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.0.13 (2019-08-29)
+~~~~~~~~~~~~~~~~~~~
+
+- Add a ``schema`` parameter to ``ProfileBuilder``'s ``patched_release_schema()`` and ``release_package_schema()`` methods to override the release schema or release package schema.
+
 0.0.12 (2019-08-29)
 ~~~~~~~~~~~~~~~~~~~
 

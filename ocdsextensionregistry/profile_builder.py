@@ -81,31 +81,38 @@ class ProfileBuilder:
 
         return json_loads(json.dumps(output).replace('"REPLACE_WITH_NULL"', 'null'))
 
-    def patched_release_schema(self, extension_field=None):
+    def patched_release_schema(self, schema=None, extension_field=None):
         """
         Returns the patched release schema.
 
+        :param dict schema: the release schema
         :param str extension_field: the schema field with which to annotate all definitions and properties with
                                     extension names
         """
-        output = json_loads(self.get_standard_file_contents('release-schema.json'))
-        json_merge_patch.merge(output, self.release_schema_patch(extension_field=extension_field))
+        if not schema:
+            schema = json_loads(self.get_standard_file_contents('release-schema.json'))
+
+        json_merge_patch.merge(schema, self.release_schema_patch(extension_field=extension_field))
+
         if self.schema_base_url:
-            output['id'] = urljoin(self.schema_base_url, 'release-schema.json')
+            schema['id'] = urljoin(self.schema_base_url, 'release-schema.json')
 
-        return output
+        return schema
 
-    def release_package_schema(self):
+    def release_package_schema(self, schema=None):
         """
         Returns a release package schema. If `schema_base_url` was provided, updates schema URLs.
+
+        :param dict schema: the release schema
         """
-        data = json_loads(self.get_standard_file_contents('release-package-schema.json'))
+        if not schema:
+            schema = json_loads(self.get_standard_file_contents('release-package-schema.json'))
 
         if self.schema_base_url:
-            data['id'] = urljoin(self.schema_base_url, 'release-package-schema.json')
-            data['properties']['releases']['items']['$ref'] = urljoin(self.schema_base_url, 'release-schema.json')
+            schema['id'] = urljoin(self.schema_base_url, 'release-package-schema.json')
+            schema['properties']['releases']['items']['$ref'] = urljoin(self.schema_base_url, 'release-schema.json')
 
-        return data
+        return schema
 
     def standard_codelists(self):
         """
