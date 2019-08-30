@@ -63,31 +63,33 @@ class ProfileBuilder:
                     data['Download URL'] = url
                 yield ExtensionVersion(data)
 
-    def release_schema_patch(self, add_extension_field=False):
+    def release_schema_patch(self, extension_field=None):
         """
         Returns the consolidated release schema patch.
 
-        :param bool add_extension_field: whether to annotate all definitions and properties with extension names
+        :param str extension_field: the schema field with which to annotate all definitions and properties with
+                                    extension names
         """
         output = OrderedDict()
 
         # Replaces `null` with sentinel values, to preserve the null'ing of fields by extensions in the final patch.
         for extension in self.extensions():
             patch = json_loads(re.sub(r':\s*null\b', ': "REPLACE_WITH_NULL"', extension.remote('release-schema.json')))
-            if add_extension_field:
-                _add_extension_field(patch, extension.metadata['name']['en'])
+            if extension_field:
+                _add_extension_field(patch, extension.metadata['name']['en'], extension_field)
             json_merge_patch.merge(output, patch)
 
         return json_loads(json.dumps(output).replace('"REPLACE_WITH_NULL"', 'null'))
 
-    def patched_release_schema(self, add_extension_field=False):
+    def patched_release_schema(self, extension_field=None):
         """
         Returns the patched release schema.
 
-        :param bool add_extension_field: whether to annotate all definitions and properties with extension names
+        :param str extension_field: the schema field with which to annotate all definitions and properties with
+                                    extension names
         """
         output = json_loads(self.get_standard_file_contents('release-schema.json'))
-        json_merge_patch.merge(output, self.release_schema_patch(add_extension_field=add_extension_field))
+        json_merge_patch.merge(output, self.release_schema_patch(extension_field=extension_field))
         if self.schema_base_url:
             output['id'] = urljoin(self.schema_base_url, 'release-schema.json')
 
@@ -229,7 +231,7 @@ class ProfileBuilder:
         return self._file_cache[basename]
 
 
-def _add_extension_field(schema, extension_name, field_name='extension', pointer=None):
+def _add_extension_field(schema, extension_name, field_name, pointer=None):
     if pointer is None:
         pointer = ()
     if isinstance(schema, list):
