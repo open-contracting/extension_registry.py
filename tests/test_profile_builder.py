@@ -82,9 +82,9 @@ def test_patched_release_schema():
     assert 'buyer' not in result['properties']
 
 
-def test_patched_release_schema_with_annotate():
+def test_patched_release_schema_with_add_extension_field():
     builder = ProfileBuilder('1__1__3', OrderedDict([('location', 'v1.1.3')]))
-    result = builder.patched_release_schema(annotate=True)
+    result = builder.patched_release_schema(add_extension_field=True)
 
     definition = result['definitions']['Location']
     assert definition['extension'] == 'Location'

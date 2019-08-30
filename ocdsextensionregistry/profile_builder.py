@@ -14,7 +14,7 @@ import requests
 from .codelist import Codelist
 from .extension_registry import ExtensionRegistry
 from .extension_version import ExtensionVersion
-from .util import json_loads, add_extension_name
+from .util import json_loads
 
 logger = logging.getLogger('ocdsextensionregistry')
 
@@ -63,31 +63,31 @@ class ProfileBuilder:
                     data['Download URL'] = url
                 yield ExtensionVersion(data)
 
-    def release_schema_patch(self, annotate=False):
+    def release_schema_patch(self, add_extension_field=False):
         """
         Returns the consolidated release schema patch.
 
-        :param bool annotate: whether to annotate all definitions and properties with extension names
+        :param bool add_extension_field: whether to annotate all definitions and properties with extension names
         """
         output = OrderedDict()
 
         # Replaces `null` with sentinel values, to preserve the null'ing of fields by extensions in the final patch.
         for extension in self.extensions():
             patch = json_loads(re.sub(r':\s*null\b', ': "REPLACE_WITH_NULL"', extension.remote('release-schema.json')))
-            if annotate:
-                add_extension_name(patch, extension.metadata['name']['en'])
+            if add_extension_field:
+                _add_extension_field(patch, extension.metadata['name']['en'])
             json_merge_patch.merge(output, patch)
 
         return json_loads(json.dumps(output).replace('"REPLACE_WITH_NULL"', 'null'))
 
-    def patched_release_schema(self, annotate=False):
+    def patched_release_schema(self, add_extension_field=False):
         """
         Returns the patched release schema.
 
-        :param bool annotate: whether to annotate all definitions and properties with extension names
+        :param bool add_extension_field: whether to annotate all definitions and properties with extension names
         """
         output = json_loads(self.get_standard_file_contents('release-schema.json'))
-        json_merge_patch.merge(output, self.release_schema_patch(annotate=annotate))
+        json_merge_patch.merge(output, self.release_schema_patch(add_extension_field=add_extension_field))
         if self.schema_base_url:
             output['id'] = urljoin(self.schema_base_url, 'release-schema.json')
 
@@ -227,3 +227,16 @@ class ProfileBuilder:
                     self._file_cache[name[start:]] = zipfile.read(name).decode('utf-8')
 
         return self._file_cache[basename]
+
+
+def _add_extension_field(schema, extension_name, field_name='extension', pointer=None):
+    if pointer is None:
+        pointer = ()
+    if isinstance(schema, list):
+        for item in schema:
+            _add_extension_field(item, extension_name, field_name=field_name, pointer=pointer)
+    elif isinstance(schema, dict):
+        if len(pointer) > 1 and pointer[-2] in ('definitions', 'properties'):
+            schema[field_name] = extension_name
+        for key, value in schema.items():
+            _add_extension_field(value, extension_name, field_name=field_name, pointer=pointer + (key,))
