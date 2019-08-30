@@ -5,7 +5,7 @@ Changelog
 ~~~~~~~~~~~~~~~~~~~
 
 - Unregistered extensions are now supported by the profile builder. The ``extension_versions`` argument to ``ProfileBuilder`` can be a list of extensions' metadata URLs, base URLs and/or download URLs.
-- Add an ``annotate`` parameter to ``ProfileBuilder`` to annotate all definitions and properties with extension names.
+- Add an ``annotate`` parameter to ``ProfileBuilder``'s ``release_schema_patch`` and ``patched_release_schema`` methods to annotate all definitions and properties with extension names.
 - Add a ``get_latest_version`` function to ``ocdsextensionregistry.utils``, to return the identifier of the latest version from a list of versions of the same extension.
 
 0.0.11 (2019-06-26)

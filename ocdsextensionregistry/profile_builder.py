@@ -20,8 +20,7 @@ logger = logging.getLogger('ocdsextensionregistry')
 
 
 class ProfileBuilder:
-    def __init__(self, standard_tag, extension_versions, registry_base_url=None, schema_base_url=None,
-                 annotate=False):
+    def __init__(self, standard_tag, extension_versions, registry_base_url=None, schema_base_url=None):
         """
         Accepts an OCDS version and either a dictionary of extension identifiers and versions, or a list of extensions'
         metadata URLs, base URLs and/or download URLs, and initializes a reader of the extension registry.
@@ -32,14 +31,12 @@ class ProfileBuilder:
                                       ``'https://raw.githubusercontent.com/open-contracting/extension_registry/master/'``
         :param str schema_base_url: the schema's base URL, e.g.
                                     ``'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/'``
-        :param bool annotate: whether to annotate all definitions and properties with extension names
         :type extension_versions: dict or list
         :
         """
         self.standard_tag = standard_tag
         self.extension_versions = extension_versions
         self.schema_base_url = schema_base_url
-        self.annotate = annotate
         self._file_cache = {}
 
         # Allows setting the registry URL to e.g. a pull request, when working on a profile.
@@ -66,31 +63,35 @@ class ProfileBuilder:
                     data['Download URL'] = url
                 yield ExtensionVersion(data)
 
-    def release_schema_patch(self):
+    def release_schema_patch(self, annotate=False):
         """
         Returns the consolidated release schema patch.
+
+        :param bool annotate: whether to annotate all definitions and properties with extension names
         """
-        profile_patch = OrderedDict()
+        output = OrderedDict()
 
         # Replaces `null` with sentinel values, to preserve the null'ing of fields by extensions in the final patch.
         for extension in self.extensions():
-            data = json_loads(re.sub(r':\s*null\b', ': "REPLACE_WITH_NULL"', extension.remote('release-schema.json')))
-            if self.annotate:
-                add_extension_name(data, extension.metadata['name']['en'])
-            json_merge_patch.merge(profile_patch, data)
+            patch = json_loads(re.sub(r':\s*null\b', ': "REPLACE_WITH_NULL"', extension.remote('release-schema.json')))
+            if annotate:
+                add_extension_name(patch, extension.metadata['name']['en'])
+            json_merge_patch.merge(output, patch)
 
-        return json_loads(json.dumps(profile_patch).replace('"REPLACE_WITH_NULL"', 'null'))
+        return json_loads(json.dumps(output).replace('"REPLACE_WITH_NULL"', 'null'))
 
-    def patched_release_schema(self):
+    def patched_release_schema(self, annotate=False):
         """
         Returns the patched release schema.
-        """
-        content = self.get_standard_file_contents('release-schema.json')
-        patched = json_merge_patch.merge(json_loads(content), self.release_schema_patch())
-        if self.schema_base_url:
-            patched['id'] = urljoin(self.schema_base_url, 'release-schema.json')
 
-        return patched
+        :param bool annotate: whether to annotate all definitions and properties with extension names
+        """
+        output = json_loads(self.get_standard_file_contents('release-schema.json'))
+        json_merge_patch.merge(output, self.release_schema_patch(annotate=annotate))
+        if self.schema_base_url:
+            output['id'] = urljoin(self.schema_base_url, 'release-schema.json')
+
+        return output
 
     def release_package_schema(self):
         """

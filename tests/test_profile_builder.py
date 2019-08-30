@@ -83,8 +83,8 @@ def test_patched_release_schema():
 
 
 def test_patched_release_schema_with_annotate():
-    builder = ProfileBuilder('1__1__3', OrderedDict([('location', 'v1.1.3')]), annotate=True)
-    result = builder.patched_release_schema()
+    builder = ProfileBuilder('1__1__3', OrderedDict([('location', 'v1.1.3')]))
+    result = builder.patched_release_schema(annotate=True)
 
     definition = result['definitions']['Location']
     assert definition['extension'] == 'Location'
