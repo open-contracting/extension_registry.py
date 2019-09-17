@@ -16,6 +16,7 @@ setup(
     install_requires=[
         'json-merge-patch',
         'requests',
+        'requests-cache',
     ],
     extras_require={
         'test': [

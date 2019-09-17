@@ -8,12 +8,15 @@ from urllib.parse import urlparse
 from zipfile import ZipFile
 
 import requests
+import requests_cache
 
 from .codelist import Codelist
 from .exceptions import NotAvailableInBulk
 from .util import json_loads
 
 SCHEMAS = ('record-package-schema.json', 'release-package-schema.json', 'release-schema.json')
+
+requests_cache.install_cache(backend='memory')
 
 
 class ExtensionVersion:

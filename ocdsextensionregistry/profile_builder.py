@@ -10,6 +10,7 @@ from urllib.parse import urljoin
 
 import json_merge_patch
 import requests
+import requests_cache
 
 from .codelist import Codelist
 from .extension_registry import ExtensionRegistry
@@ -17,6 +18,7 @@ from .extension_version import ExtensionVersion
 from .util import json_loads
 
 logger = logging.getLogger('ocdsextensionregistry')
+requests_cache.install_cache(backend='memory')
 
 
 class ProfileBuilder:
