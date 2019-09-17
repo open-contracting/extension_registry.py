@@ -29,14 +29,10 @@ The ``generate-pot-files`` and ``generate-data-files`` commands can now be run o
 -  Add ``zipfile()`` method to ``ExtensionVersion``, to return a ZIP archive of the extension’s files.
 -  Upgrade to ocds-babel 0.1.0.
 
-.. _section-1:
-
 0.0.10 (2019-01-28)
 ~~~~~~~~~~~~~~~~~~~
 
 -  Fix invalid ``dependencies`` in ``extension.json``.
-
-.. _section-2:
 
 0.0.9 (2019-01-23)
 ~~~~~~~~~~~~~~~~~~
@@ -45,14 +41,10 @@ The ``generate-pot-files`` and ``generate-data-files`` commands can now be run o
 -  Use UTF-8 characters in JSON files when building profiles.
 -  No longer write extension readme files when building profiles.
 
-.. _section-3:
-
 0.0.8 (2019-01-18)
 ~~~~~~~~~~~~~~~~~~
 
 -  Fix rate limiting error when getting publisher names from GitHub in ``generate-data-file`` tool.
-
-.. _section-4:
 
 0.0.7 (2019-01-18)
 ~~~~~~~~~~~~~~~~~~
@@ -60,15 +52,11 @@ The ``generate-pot-files`` and ``generate-data-files`` commands can now be run o
 -  Add ``publisher`` data to the ``generate-data-file`` tool.
 -  Add ``repository_user`` and ``repository_user_page`` properties to ``ExtensionVersion``, to return user or organization to which the extension’s repository belongs.
 
-.. _section-5:
-
 0.0.6 (2018-11-20)
 ~~~~~~~~~~~~~~~~~~
 
 -  Add command-line tools (see `documentation <https://ocdsextensionregistry.readthedocs.io/en/latest/cli.html>`__ for details).
 -  Fix edge case so that ``metadata`` language maps are ordered, even if ``extension.json`` didn’t have language maps.
-
-.. _section-6:
 
 0.0.5 (2018-10-31)
 ~~~~~~~~~~~~~~~~~~
@@ -80,22 +68,16 @@ The ``generate-pot-files`` and ``generate-data-files`` commands can now be run o
 -  Add ``docs`` property to ``ExtensionVersion``, to return the contents of documentation files within the extension.
 -  The ``metadata`` property of ``ExtensionVersion`` normalizes the contents of ``extension.json`` to provide consistent access.
 
-.. _section-7:
-
 0.0.4 (2018-06-27)
 ~~~~~~~~~~~~~~~~~~
 
 -  The ``metadata`` property of ``ExtensionVersion`` is cached.
-
-.. _section-8:
 
 0.0.3 (2018-06-27)
 ~~~~~~~~~~~~~~~~~~
 
 -  Add ``remote(basename)`` method to ``ExtensionVersion``, to return the contents of a file within the extension.
 -  Add ``as_dict()`` method to ``Extension`` and ``ExtensionVersion``, to avoid returning private properties.
-
-.. _section-9:
 
 0.0.2 (2018-06-12)
 ~~~~~~~~~~~~~~~~~~
@@ -104,8 +86,6 @@ The ``generate-pot-files`` and ``generate-data-files`` commands can now be run o
 -  Make ``ExtensionRegistry`` iterable, to iterate over all extension versions.
 -  Remove ``all()`` method from ``ExtensionRegistry``.
 -  Add package-specific exceptions.
-
-.. _section-10:
 
 0.0.1 (2018-06-11)
 ~~~~~~~~~~~~~~~~~~
