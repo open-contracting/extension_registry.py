@@ -1,8 +1,8 @@
 Changelog
 =========
 
-0.0.14
-~~~~~~
+0.0.14 (2019-09-18)
+~~~~~~~~~~~~~~~~~~~
 
 - Use in-memory HTTP requests cache.
 
