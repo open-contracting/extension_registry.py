@@ -10,7 +10,12 @@ from .util import json_dump
 VALID_FIELDNAMES = ('Code', 'Title', 'Description', 'Extension')
 
 
-def build_profile(basedir, standard_tag, extension_versions, registry_base_url=None, schema_base_url=None):
+def identity(text, *args, **kwargs):
+    return text
+
+
+def build_profile(basedir, standard_tag, extension_versions, registry_base_url=None, schema_base_url=None,
+                  update_codelist_urls=None):
     """
     Pulls extensions into a profile.
 
@@ -22,7 +27,15 @@ def build_profile(basedir, standard_tag, extension_versions, registry_base_url=N
 
     The profile's codelists exclude deprecated codes and add an Extension column.
 
-    `basedir` is the profile's schema/ directory.
+    :param str basedir: the profile's ``schema/`` directory
+    :param str standard_tag: the OCDS version tag, e.g. ``'1__1__3'``
+    :param extension_versions: the extension versions
+    :param str registry_base_url: the registry's base URL, defaults to
+                                  ``'https://raw.githubusercontent.com/open-contracting/extension_registry/master/'``
+    :param str schema_base_url: the schema's base URL, e.g.
+                                ``'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/'``
+    :param update_codelist_urls: a function that accepts a schema as text and a list of names of codelists and replaces
+                                 the OCDS documentation's codelist page URLs with the profile's codelist page URLs
     """
     @contextmanager
     def open_file(name, mode='r'):
@@ -88,3 +101,13 @@ def build_profile(basedir, standard_tag, extension_versions, registry_base_url=N
         metadata.pop('codelists', None)
 
     write_json_file(metadata, 'profile', 'extension.json')
+
+    if update_codelist_urls:
+        codelists = [codelist.basename for codelist in extension_codelists]
+        for directory, schemas in directories_and_schemas.items():
+            for filename, schema in schemas.items():
+                path = os.path.join(basedir, directory, filename)
+                with open(path) as f:
+                    content = f.read()
+                with open(path, 'w') as f:
+                    f.write(update_codelist_urls(content, codelists))
