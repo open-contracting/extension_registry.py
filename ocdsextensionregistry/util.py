@@ -6,7 +6,7 @@ from .exceptions import UnknownLatestVersion
 
 def json_dump(data, io):
     """
-    Loads JSON data, preserving order.
+    Dumps JSON to a file-like object.
     """
     json.dump(data, io, ensure_ascii=False, indent=2, separators=(',', ': '))
 
