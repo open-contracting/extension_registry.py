@@ -69,8 +69,8 @@ class ProfileBuilder:
         """
         Returns the consolidated release schema patch.
 
-        :param str extension_field: the schema field with which to annotate all definitions and properties with
-                                    extension names
+        :param str extension_field: the property with which to annotate each definition and field with the name of the
+                                    extension in which the definition or field is defined
         """
         output = OrderedDict()
 
@@ -88,8 +88,8 @@ class ProfileBuilder:
         Returns the patched release schema.
 
         :param dict schema: the release schema
-        :param str extension_field: the schema field with which to annotate all definitions and properties with
-                                    extension names
+        :param str extension_field: the property with which to annotate each definition and field with the name of the
+                                    extension in which the definition or field is defined
         """
         if not schema:
             schema = json_loads(self.get_standard_file_contents('release-schema.json'))
