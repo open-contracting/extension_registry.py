@@ -29,7 +29,7 @@ To work with the files within a version of an extension:
 * :func:`codelists <ocdsextensionregistry.extension_version.ExtensionVersion.codelists>` returns the parsed contents of codelist files (see more below)
 * :func:`files <ocdsextensionregistry.extension_version.ExtensionVersion.files>` returns the unparsed contents of all files
 
-See additional details in :doc:`api/extension_version`.
+See additional details in :doc:`extension_version`.
 
 API
 ---

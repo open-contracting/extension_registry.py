@@ -140,7 +140,7 @@ The data file is organized as below. To keep it short, the sample shows only one
               "release-schema.json": {
                 "en": {
                   "definitions": {
-                    …
+                    "Risk": "<rest of schema>"
                   }
                 }
               }
@@ -159,18 +159,20 @@ The data file is organized as below. To keep it short, the sample shows only one
                       "Title": "Public authority",
                       "Description": "The risk is wholly or mostly retained by the public authority"
                     },
-                    …
+                    {
+                      "…": "<rest of codes>"
+                    }
                   ]
                 }
               },
-              …
+              "…": "<rest of codelists>"
             },
             "readme": {
               "en": "# Risk allocation\n\nThe [framework for disclosure in PPPs](http://pubdocs.worldbank.org/en/773541448296707678/Disclosure-in-PPPs-Framework.pdf) …"
             }
           },
-          …
+          "…": "<rest of versions>"
         }
       },
-      …
+      "…": "<rest of extensions>"
     }

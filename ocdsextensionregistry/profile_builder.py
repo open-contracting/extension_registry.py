@@ -34,7 +34,6 @@ class ProfileBuilder:
         :param str schema_base_url: the schema's base URL, e.g.
                                     ``'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/'``
         :type extension_versions: dict or list
-        :
         """
         self.standard_tag = standard_tag
         self.extension_versions = extension_versions
