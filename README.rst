@@ -8,18 +8,13 @@ It includes Python classes for programmatic access, as well as a suite of comman
 * generate POT files (message catalogs) from extension files, as part of a translation worlflow
 * generate a data file in JSON format, that provides all the information about versions of extensions
 
-The command-line tools have additional requirements, including Sphinx. To install without command-line tools::
+The basic package includes only the Python classes for programmatic access:
+
+.. code-block:: bash
 
     pip install ocdsextensionregistry
 
-To install with command-line tools::
-
-    pip install ocdsextensionregistry[cli]
-    pip install -e git+https://github.com/rtfd/recommonmark.git@81d7c6f7b37981ac22571dd91a7cc9d24c3e66a1#egg=recommonmark
-
-To see all commands available, run::
-
-    ocdsextensionregistry --help
+To install the command-line tools, :doc:`follow these instructions<cli>`.
 
 If you are viewing this on GitHub or PyPi, open the `full documentation <https://ocdsextensionregistry.readthedocs.io/>`__ for additional details.
 

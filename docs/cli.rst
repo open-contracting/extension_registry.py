@@ -1,10 +1,13 @@
 Command-Line Tools
 ==================
 
-To install::
+To install this package with command-line tools, run:
+
+.. code-block:: bash
 
     pip install ocdsextensionregistry[cli]
-    pip install -e git+https://github.com/rtfd/recommonmark.git@81d7c6f7b37981ac22571dd91a7cc9d24c3e66a1#egg=recommonmark
+
+Then, `install the ocds-babel requirements for Markdown translation <https://ocds-babel.readthedocs.io/en/latest/api/translate.html#install-requirements-for-markdown-translation>`__.
 
 To see all commands available, run::
 
@@ -14,10 +17,7 @@ If you see a message at the start of the output like::
 
     exception "No module named 'babel'" prevented loading of ocdsextensionregistry.cli.commands.generate_pot_files module
 
-then you installed ``ocdsextensionregistry`` without command-line tools. To fix, run::
-
-    pip install ocdsextensionregistry[cli]
-    pip install -e git+https://github.com/rtfd/recommonmark.git@81d7c6f7b37981ac22571dd91a7cc9d24c3e66a1#egg=recommonmark
+then you installed ``ocdsextensionregistry`` without command-line tools. To fix this, install as above.
 
 download
 --------

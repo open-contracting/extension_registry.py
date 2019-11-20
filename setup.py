@@ -20,9 +20,7 @@ setup(
     ],
     extras_require={
         'test': [
-            'coveralls',
             'pytest',
-            'pytest-cov',
         ],
         'docs': [
             'Sphinx',
@@ -30,7 +28,12 @@ setup(
             'sphinx_rtd_theme',
         ],
         'cli': [
-            'ocds-babel[markdown]>=0.1.0',
+            'Babel',
+            'docutils',
+            'ocds-babel[markdown]>=0.2.0',
+            # See docs/api/translate.rst in ocds-babel.
+            # 'recommonmark',
+            'Sphinx',
         ]
     },
     classifiers=[
