@@ -14,7 +14,7 @@ The basic package includes only the Python classes for programmatic access:
 
     pip install ocdsextensionregistry
 
-To install the command-line tools, :doc:`follow these instructions<cli>`.
+To install the command-line tools, `follow these instructions <https://ocdsextensionregistry.readthedocs.io/en/latest/cli.html>`__.
 
 If you are viewing this on GitHub or PyPi, open the `full documentation <https://ocdsextensionregistry.readthedocs.io/>`__ for additional details.
 
