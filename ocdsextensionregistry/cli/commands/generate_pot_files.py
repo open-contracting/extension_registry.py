@@ -1,10 +1,11 @@
 import logging
 import subprocess
-from contextlib import closing
+from contextlib import closing, contextmanager
 from glob import glob
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
+import sphinx
 from babel.messages.catalog import Catalog
 from babel.messages.extract import extract, pathmatch
 from babel.messages.pofile import write_po
@@ -14,10 +15,19 @@ from ocds_babel.directives import NullDirective
 from recommonmark.parser import CommonMarkParser
 from recommonmark.transform import AutoStructify
 from sphinx.application import Sphinx
+from sphinx.util.docutils import docutils_namespace
 from sphinx.util.osutil import cd
 
 from .base import BaseCommand
 from ocdsextensionregistry import EXTENSIONS_DATA, EXTENSION_VERSIONS_DATA
+
+# patch_docutils is added in Sphinx 1.6. Copied from ocds-babel's translate_markdown.py.
+if sphinx.version_info >= (1, 6):
+    from sphinx.util.docutils import patch_docutils
+else:
+    @contextmanager
+    def patch_docutils(confdir=None):
+        yield
 
 logger = logging.getLogger('ocdsextensionregistry')
 
@@ -50,23 +60,29 @@ class Command(BaseCommand):
 
         # For sphinx-build, the code path is:
         #
-        # * bin/sphinx-build calls main() in sphinx, which calls build_main(), which calls main() in sphinx.cmdline
-        # * main() calls Sphinx(…).build(…) in sphinx.application
+        # * bin/sphinx-build calls main() in sphinx.cmd.build, which calls build_main(), which calls Sphinx(…).build(…)
+
+        if sphinx.version_info >= (1, 6):
+            # https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-suppress_warnings
+            warning_type = 'image.not_readable'
+        else:
+            # https://sphinx.readthedocs.io/en/1.5/config.html
+            warning_type = 'image.nonlocal_uri'
 
         kwargs = {
             # sphinx-build -E …
             'freshenv': True,
+            # sphinx-build -D suppress_warnings=image.not_readable …
             'confoverrides': {
-                'source_suffix': ['.rst', '.md'],
-                'source_parsers': {
-                    '.md': CommonMarkParser,
-                },
-                'suppress_warnings': ['image.nonlocal_uri'],
+                # 'contents' is the default in Sphinx<2. 'index' is the default in Sphinx>=2.
+                'master_doc': 'index',
+                'suppress_warnings': [warning_type],
             },
         }
+        # Verbose is useful for debugging.
         if not self.args.verbose:
             # sphinx-build -q …
-            kwargs.update(status=None)
+            kwargs['status'] = None
 
         # Silence warnings about unregistered directives.
         for name in ('csv-table-no-translate', 'extensiontable'):
@@ -156,6 +172,11 @@ class Command(BaseCommand):
                         with open(outdir / output_file, 'wb') as outfile:
                             write_po(outfile, catalog)
 
+                # This section is equivalent to running:
+                #
+                # echo -e '.. toctree::\n   :hidden:\n\n   README' > index.rst
+                # sphinx-build -v -b gettext -a -E -C -D extensions=recommonmark . outdir
+                # msgcat outdir/*.pot
                 with TemporaryDirectory() as srcdir:
                     infos = zipfile.infolist()
                     start = len(infos[0].filename)
@@ -163,27 +184,32 @@ class Command(BaseCommand):
                     for info in infos[1:]:
                         filename = info.filename[start:]
                         if filename == 'README.md':
+                            # This avoids writing an unnecessary directory.
                             info.filename = filename
                             zipfile.extract(info, srcdir)
+                            break
 
                     with cd(srcdir):
                         # Eliminates a warning, without changing the output.
-                        with open('contents.rst', 'w') as f:
+                        with open('index.rst', 'w') as f:
                             f.write('.. toctree::\n   :hidden:\n\n   README')
 
-                        # sphinx-build -b gettext $(DOCS_DIR) $(POT_DIR)
-                        app = Sphinx('.', None, '.', '.', 'gettext', **kwargs)
+                        # Sphinx's config.py pop()'s extensions.
+                        kwargs['confoverrides']['extensions'] = ['recommonmark']
 
-                        # Avoid "recommonmark_config not setted, proceed default setting".
-                        app.add_config_value('recommonmark_config', {}, True)
-                        # To extract messages from `.. list-table`.
-                        app.add_transform(AutoStructify)
-
-                        # sphinx-build -a …
-                        app.build(True)
+                        with patch_docutils(), docutils_namespace():
+                            # sphinx-build -b gettext $(DOCS_DIR) $(POT_DIR)
+                            app = Sphinx('.', None, 'outdir', '.', 'gettext', **kwargs)
+                            # Avoid "recommonmark_config not setted, proceed default setting".
+                            app.add_config_value('recommonmark_config', {}, True)
+                            # To extract messages from `.. list-table`.
+                            app.add_transform(AutoStructify)
+                            # sphinx-build -a …
+                            app.build(True)
 
                         # https://stackoverflow.com/questions/15408348
-                        content = subprocess.run(['msgcat', *glob('*.pot')], check=True, stdout=subprocess.PIPE).stdout
+                        content = subprocess.run(['msgcat', *glob('outdir/*.pot')],
+                                                 check=True, stdout=subprocess.PIPE).stdout
 
                 with open(outdir / 'docs.pot', 'wb') as f:
                     f.write(content)
