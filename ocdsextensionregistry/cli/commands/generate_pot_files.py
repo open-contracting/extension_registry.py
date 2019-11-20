@@ -12,7 +12,6 @@ from babel.messages.pofile import write_po
 from docutils.parsers.rst import directives
 from ocds_babel.extract import extract_codelist, extract_schema, extract_extension_metadata
 from ocds_babel.directives import NullDirective
-from recommonmark.parser import CommonMarkParser
 from recommonmark.transform import AutoStructify
 from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
