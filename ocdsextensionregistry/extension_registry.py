@@ -52,7 +52,7 @@ class ExtensionRegistry:
         try:
             return next(ver for ver in self.versions if all(getattr(ver, k) == v for k, v in kwargs.items()))
         except StopIteration:
-            raise DoesNotExist('Extension version matching {} does not exist.'.format(repr(kwargs)))
+            raise DoesNotExist('Extension version matching {!r} does not exist.'.format(kwargs))
         except AttributeError as e:
             self._handle_attribute_error(e)
 
