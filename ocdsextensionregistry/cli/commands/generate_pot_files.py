@@ -194,6 +194,7 @@ class Command(BaseCommand):
                             f.write('.. toctree::\n   :hidden:\n\n   README')
 
                         # Sphinx's config.py pop()'s extensions.
+                        # https://github.com/sphinx-doc/sphinx/issues/6848
                         kwargs['confoverrides']['extensions'] = ['recommonmark']
 
                         with patch_docutils(), docutils_namespace():
