@@ -31,7 +31,7 @@ setup(
             'Babel',
             'docutils',
             'ocds-babel[markdown]>=0.2.0',
-            # See docs/api/translate.rst in ocds-babel.
+            # See https://ocds-babel.readthedocs.io/en/latest/api/translate.html#install-requirements-for-markdown-translation
             # 'recommonmark',
             'Sphinx',
         ]
