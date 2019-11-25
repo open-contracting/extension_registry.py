@@ -1,7 +1,6 @@
 from collections import defaultdict
 
 from ocdsextensionregistry import ExtensionRegistry
-
 from ocdsextensionregistry.exceptions import CommandError
 
 

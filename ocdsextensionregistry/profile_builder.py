@@ -5,8 +5,8 @@ import os
 import re
 from collections import OrderedDict
 from io import BytesIO, StringIO
-from zipfile import ZipFile
 from urllib.parse import urljoin
+from zipfile import ZipFile
 
 import json_merge_patch
 import requests

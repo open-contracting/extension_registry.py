@@ -3,8 +3,8 @@ import shutil
 from contextlib import closing
 from pathlib import Path
 
-from .base import BaseCommand
-from ocdsextensionregistry import EXTENSIONS_DATA, EXTENSION_VERSIONS_DATA
+from ocdsextensionregistry import EXTENSION_VERSIONS_DATA, EXTENSIONS_DATA
+from ocdsextensionregistry.cli.commands.base import BaseCommand
 from ocdsextensionregistry.exceptions import CommandError
 
 logger = logging.getLogger('ocdsextensionregistry')

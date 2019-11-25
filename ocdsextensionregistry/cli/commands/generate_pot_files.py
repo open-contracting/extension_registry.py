@@ -10,15 +10,15 @@ from babel.messages.catalog import Catalog
 from babel.messages.extract import extract, pathmatch
 from babel.messages.pofile import write_po
 from docutils.parsers.rst import directives
-from ocds_babel.extract import extract_codelist, extract_schema, extract_extension_metadata
 from ocds_babel.directives import NullDirective
+from ocds_babel.extract import extract_codelist, extract_extension_metadata, extract_schema
 from recommonmark.transform import AutoStructify
 from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
 from sphinx.util.osutil import cd
 
-from .base import BaseCommand
-from ocdsextensionregistry import EXTENSIONS_DATA, EXTENSION_VERSIONS_DATA
+from ocdsextensionregistry import EXTENSION_VERSIONS_DATA, EXTENSIONS_DATA
+from ocdsextensionregistry.cli.commands.base import BaseCommand
 
 # patch_docutils is added in Sphinx 1.6. Copied from ocds-babel's translate_markdown.py.
 if sphinx.version_info >= (1, 6):

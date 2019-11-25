@@ -8,11 +8,11 @@ from urllib.parse import urlparse
 
 import requests
 from ocds_babel import TRANSLATABLE_EXTENSION_METADATA_KEYWORDS
-from ocds_babel.translate import (translate_codelist_data, translate_schema_data, translate_extension_metadata_data,
-                                  translate_markdown_data)
+from ocds_babel.translate import (translate_codelist_data, translate_extension_metadata_data, translate_markdown_data,
+                                  translate_schema_data)
 
-from .base import BaseCommand
-from ocdsextensionregistry import EXTENSIONS_DATA, EXTENSION_VERSIONS_DATA
+from ocdsextensionregistry import EXTENSION_VERSIONS_DATA, EXTENSIONS_DATA
+from ocdsextensionregistry.cli.commands.base import BaseCommand
 from ocdsextensionregistry.exceptions import CommandError
 from ocdsextensionregistry.util import json_dump
 

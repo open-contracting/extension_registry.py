@@ -5,9 +5,9 @@ from urllib.parse import urlparse
 import requests
 import requests_cache
 
+from .exceptions import DoesNotExist, MissingExtensionMetadata
 from .extension import Extension
 from .extension_version import ExtensionVersion
-from .exceptions import DoesNotExist, MissingExtensionMetadata
 
 requests_cache.install_cache(backend='memory')
 
