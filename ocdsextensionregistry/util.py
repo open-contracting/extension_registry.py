@@ -1,5 +1,4 @@
 import json
-from collections import OrderedDict
 
 from .exceptions import UnknownLatestVersion
 
@@ -9,13 +8,6 @@ def json_dump(data, io):
     Dumps JSON to a file-like object.
     """
     json.dump(data, io, ensure_ascii=False, indent=2, separators=(',', ': '))
-
-
-def json_loads(data):
-    """
-    Loads JSON data, preserving order.
-    """
-    return json.loads(data, object_pairs_hook=OrderedDict)
 
 
 def get_latest_version(versions):

@@ -2,7 +2,6 @@ import gettext
 import logging
 import os
 import sys
-from collections import OrderedDict
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -49,7 +48,7 @@ class Command(BaseCommand):
         if self.args.versions_dir:
             versions_directory = Path(self.args.versions_dir)
 
-        data = OrderedDict()
+        data = {}
         languages = {'en'}
         localedir = self.args.locale_dir
         headers = ['Title', 'Description', 'Extension']
@@ -71,32 +70,32 @@ class Command(BaseCommand):
 
             # Add the extension's data.
             if version.id not in data:
-                data[version.id] = OrderedDict([
-                    ('id', version.id),
-                    ('category', version.category),
-                    ('core', version.core),
-                    ('name', OrderedDict()),
-                    ('description', OrderedDict()),
-                    ('latest_version', None),
-                    ('versions', OrderedDict()),
-                ])
+                data[version.id] = {
+                    'id': version.id,
+                    'category': version.category,
+                    'core': version.core,
+                    'name': {},
+                    'description': {},
+                    'latest_version': None,
+                    'versions': {},
+                }
 
             # Add the version's metadata.
-            version_data = OrderedDict([
-                ('id', version.id),
-                ('date', version.date),
-                ('version', version.version),
-                ('base_url', version.base_url),
-                ('download_url', version.download_url),
-                ('publisher', OrderedDict([
-                    ('name', version.repository_user),
-                    ('url', version.repository_user_page),
-                ])),
-                ('metadata', version.metadata),
-                ('schemas', OrderedDict()),
-                ('codelists', OrderedDict()),
-                ('readme', OrderedDict()),
-            ])
+            version_data = {
+                'id': version.id,
+                'date': version.date,
+                'version': version.version,
+                'base_url': version.base_url,
+                'download_url': version.download_url,
+                'publisher': {
+                    'name': version.repository_user,
+                    'url': version.repository_user_page,
+                },
+                'metadata': version.metadata,
+                'schemas': {},
+                'codelists': {},
+                'readme': {},
+            }
 
             parsed = urlparse(version_data['publisher']['url'])
             if parsed.netloc == 'github.com' and 'GITHUB_ACCESS_TOKEN' in os.environ:
@@ -114,7 +113,7 @@ class Command(BaseCommand):
 
                 for name in ('record-package-schema.json', 'release-package-schema.json', 'release-schema.json'):
                     if name not in version_data['schemas']:
-                        version_data['schemas'][name] = OrderedDict()
+                        version_data['schemas'][name] = {}
 
                     if name in version.schemas:
                         translation = translate_schema_data(version.schemas[name], translator)
@@ -125,10 +124,10 @@ class Command(BaseCommand):
                     translator = _translator(version, 'codelists', localedir, language)
                     for name in sorted(version.codelists):
                         if name not in version_data['codelists']:
-                            version_data['codelists'][name] = OrderedDict()
+                            version_data['codelists'][name] = {}
 
                         codelist = version.codelists[name]
-                        version_data['codelists'][name][language] = OrderedDict()
+                        version_data['codelists'][name][language] = {}
 
                         translation = [translator.gettext(fieldname) for fieldname in codelist.fieldnames]
                         version_data['codelists'][name][language]['fieldnames'] = translation

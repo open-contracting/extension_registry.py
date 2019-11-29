@@ -1,5 +1,5 @@
 import csv
-from collections import OrderedDict
+import sys
 from io import StringIO
 
 from ocdsextensionregistry import Codelist, CodelistCode
@@ -22,11 +22,11 @@ def test_init():
 def test_getitem():
     obj = fixture()
 
-    assert obj[0] == CodelistCode(OrderedDict([
-        ('Code', 'open'),
-        ('Title', 'Open'),
-        ('Description', 'All interested suppliers may submit a tender.'),
-    ]), 'OCDS Core')
+    assert obj[0] == CodelistCode({
+        'Code': 'open',
+        'Title': 'Open',
+        'Description': 'All interested suppliers may submit a tender.',
+    }, 'OCDS Core')
 
 
 def test_iter():
@@ -46,7 +46,12 @@ def test_len():
 def test_repr():
     obj = fixture()
 
-    assert repr(obj) == "Codelist(name='test.csv', rows=[CodelistCode(data=OrderedDict([('Code', 'open'), ('Title', 'Open'), ('Description', 'All interested suppliers may submit a tender.')]), extension_name='OCDS Core'), CodelistCode(data=OrderedDict([('Code', 'selective'), ('Title', 'Selective'), ('Description', 'Only qualified suppliers are invited to submit a tender.')]), extension_name='OCDS Core'), CodelistCode(data=OrderedDict([('Code', 'limited'), ('Title', 'Limited'), ('Description', 'The procuring entity contacts a number of suppliers of its choice.')]), extension_name='OCDS Core'), CodelistCode(data=OrderedDict([('Code', 'direct'), ('Title', 'Direct'), ('Description', 'The contract is awarded to a single supplier without competition.')]), extension_name='OCDS Core')])"  # noqa
+    if sys.version_info < (3, 8):
+        expected = "Codelist(name='test.csv', rows=[CodelistCode(data=OrderedDict([('Code', 'open'), ('Title', 'Open'), ('Description', 'All interested suppliers may submit a tender.')]), extension_name='OCDS Core'), CodelistCode(data=OrderedDict([('Code', 'selective'), ('Title', 'Selective'), ('Description', 'Only qualified suppliers are invited to submit a tender.')]), extension_name='OCDS Core'), CodelistCode(data=OrderedDict([('Code', 'limited'), ('Title', 'Limited'), ('Description', 'The procuring entity contacts a number of suppliers of its choice.')]), extension_name='OCDS Core'), CodelistCode(data=OrderedDict([('Code', 'direct'), ('Title', 'Direct'), ('Description', 'The contract is awarded to a single supplier without competition.')]), extension_name='OCDS Core')])"  # noqa
+    else:
+        expected = "Codelist(name='test.csv', rows=[CodelistCode(data={'Code': 'open', 'Title': 'Open', 'Description': 'All interested suppliers may submit a tender.'}, extension_name='OCDS Core'), CodelistCode(data={'Code': 'selective', 'Title': 'Selective', 'Description': 'Only qualified suppliers are invited to submit a tender.'}, extension_name='OCDS Core'), CodelistCode(data={'Code': 'limited', 'Title': 'Limited', 'Description': 'The procuring entity contacts a number of suppliers of its choice.'}, extension_name='OCDS Core'), CodelistCode(data={'Code': 'direct', 'Title': 'Direct', 'Description': 'The contract is awarded to a single supplier without competition.'}, extension_name='OCDS Core')}"  # noqa
+
+    assert repr(obj) == expected
 
 
 def test_extend():
@@ -55,32 +60,32 @@ def test_extend():
     obj.extend(csv.DictReader(StringIO('Code\nanother')))
 
     assert obj.rows == [
-        CodelistCode(OrderedDict([
-            ('Code', 'open'),
-            ('Title', 'Open'),
-            ('Description', 'All interested suppliers may submit a tender.'),
-        ]), 'OCDS Core'),
-        CodelistCode(OrderedDict([
-            ('Code', 'selective'),
-            ('Title', 'Selective'),
-            ('Description', 'Only qualified suppliers are invited to submit a tender.'),
-        ]), 'OCDS Core'),
-        CodelistCode(OrderedDict([
-            ('Code', 'limited'),
-            ('Title', 'Limited'),
-            ('Description', 'The procuring entity contacts a number of suppliers of its choice.'),
-        ]), 'OCDS Core'),
-        CodelistCode(OrderedDict([
-            ('Code', 'direct'),
-            ('Title', 'Direct'),
-            ('Description', 'The contract is awarded to a single supplier without competition.'),
-        ]), 'OCDS Core'),
-        CodelistCode(OrderedDict([
-            ('Code', 'other'),
-        ]), 'Other'),
-        CodelistCode(OrderedDict([
-            ('Code', 'another'),
-        ])),
+        CodelistCode({
+            'Code': 'open',
+            'Title': 'Open',
+            'Description': 'All interested suppliers may submit a tender.',
+        }, 'OCDS Core'),
+        CodelistCode({
+            'Code': 'selective',
+            'Title': 'Selective',
+            'Description': 'Only qualified suppliers are invited to submit a tender.',
+        }, 'OCDS Core'),
+        CodelistCode({
+            'Code': 'limited',
+            'Title': 'Limited',
+            'Description': 'The procuring entity contacts a number of suppliers of its choice.',
+        }, 'OCDS Core'),
+        CodelistCode({
+            'Code': 'direct',
+            'Title': 'Direct',
+            'Description': 'The contract is awarded to a single supplier without competition.',
+        }, 'OCDS Core'),
+        CodelistCode({
+            'Code': 'other',
+        }, 'Other'),
+        CodelistCode({
+            'Code': 'another',
+        }),
     ]
 
 

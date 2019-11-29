@@ -1,7 +1,7 @@
 import csv
+import json
 import os
 import re
-from collections import OrderedDict
 from contextlib import closing
 from io import BytesIO, StringIO
 from urllib.parse import urlparse
@@ -12,7 +12,6 @@ import requests_cache
 
 from .codelist import Codelist
 from .exceptions import NotAvailableInBulk
-from .util import json_loads
 
 SCHEMAS = ('record-package-schema.json', 'release-package-schema.json', 'release-schema.json')
 
@@ -133,7 +132,7 @@ class ExtensionVersion:
         Adds language maps if not present.
         """
         if self._metadata is None:
-            self._metadata = json_loads(self.remote('extension.json'))
+            self._metadata = json.loads(self.remote('extension.json'))
 
             for field in ('name', 'description', 'documentationUrl'):
                 # Add required fields.
@@ -141,7 +140,7 @@ class ExtensionVersion:
                     self._metadata[field] = {}
                 # Add language maps.
                 if not isinstance(self._metadata[field], dict):
-                    self._metadata[field] = OrderedDict({'en': self._metadata[field]})
+                    self._metadata[field] = {'en': self._metadata[field]}
 
             # Fix the compatibility.
             if 'compatibility' not in self._metadata or isinstance(self._metadata['compatibility'], str):
@@ -172,7 +171,7 @@ class ExtensionVersion:
 
             for name in names:
                 try:
-                    self._schemas[name] = json_loads(self.remote(name))
+                    self._schemas[name] = json.loads(self.remote(name))
                 except requests.exceptions.HTTPError:
                     if 'schemas' in self.metadata:
                         raise

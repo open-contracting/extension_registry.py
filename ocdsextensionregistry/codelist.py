@@ -1,5 +1,3 @@
-from collections import OrderedDict
-
 from .codelist_code import CodelistCode
 
 
@@ -53,7 +51,7 @@ class Codelist:
         """
         Returns all fieldnames used in any rows.
         """
-        fieldnames = OrderedDict()
+        fieldnames = {}
         for row in self.rows:
             for field in row:
                 fieldnames[field] = True

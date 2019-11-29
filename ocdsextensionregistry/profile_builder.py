@@ -3,7 +3,6 @@ import json
 import logging
 import os
 import re
-from collections import OrderedDict
 from io import BytesIO, StringIO
 from urllib.parse import urljoin
 from zipfile import ZipFile
@@ -15,7 +14,6 @@ import requests_cache
 from .codelist import Codelist
 from .extension_registry import ExtensionRegistry
 from .extension_version import ExtensionVersion
-from .util import json_loads
 
 logger = logging.getLogger('ocdsextensionregistry')
 requests_cache.install_cache(backend='memory')
@@ -71,16 +69,16 @@ class ProfileBuilder:
         :param str extension_field: the property with which to annotate each definition and field with the name of the
                                     extension in which the definition or field is defined
         """
-        output = OrderedDict()
+        output = {}
 
         # Replaces `null` with sentinel values, to preserve the null'ing of fields by extensions in the final patch.
         for extension in self.extensions():
-            patch = json_loads(re.sub(r':\s*null\b', ': "REPLACE_WITH_NULL"', extension.remote('release-schema.json')))
+            patch = json.loads(re.sub(r':\s*null\b', ': "REPLACE_WITH_NULL"', extension.remote('release-schema.json')))
             if extension_field:
                 _add_extension_field(patch, extension.metadata['name']['en'], extension_field)
             json_merge_patch.merge(output, patch)
 
-        return json_loads(json.dumps(output).replace('"REPLACE_WITH_NULL"', 'null'))
+        return json.loads(json.dumps(output).replace('"REPLACE_WITH_NULL"', 'null'))
 
     def patched_release_schema(self, schema=None, extension_field=None):
         """
@@ -91,7 +89,7 @@ class ProfileBuilder:
                                     extension in which the definition or field is defined
         """
         if not schema:
-            schema = json_loads(self.get_standard_file_contents('release-schema.json'))
+            schema = json.loads(self.get_standard_file_contents('release-schema.json'))
 
         json_merge_patch.merge(schema, self.release_schema_patch(extension_field=extension_field))
 
@@ -107,7 +105,7 @@ class ProfileBuilder:
         :param dict schema: the release schema
         """
         if not schema:
-            schema = json_loads(self.get_standard_file_contents('release-package-schema.json'))
+            schema = json.loads(self.get_standard_file_contents('release-package-schema.json'))
 
         if self.schema_base_url:
             schema['id'] = urljoin(self.schema_base_url, 'release-package-schema.json')
@@ -119,7 +117,7 @@ class ProfileBuilder:
         """
         Returns the standard's codelists as Codelist objects.
         """
-        codelists = OrderedDict()
+        codelists = {}
 
         # Populate the file cache.
         self.get_standard_file_contents('release-schema.json')
@@ -143,7 +141,7 @@ class ProfileBuilder:
         Codelist additions and removals are merged across extensions. If new codelists or codelist replacements differ
         across extensions, an error is raised.
         """
-        codelists = OrderedDict()
+        codelists = {}
 
         # Keep the original content of codelists, to compare across extensions.
         originals = {}
@@ -196,7 +194,7 @@ class ProfileBuilder:
         """
         Returns patched and new codelists as Codelist objects.
         """
-        codelists = OrderedDict()
+        codelists = {}
 
         for codelist in self.standard_codelists():
             codelists[codelist.name] = codelist

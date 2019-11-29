@@ -1,7 +1,6 @@
 import csv
 import json
 import os
-from collections import OrderedDict
 from contextlib import contextmanager
 
 from .profile_builder import ProfileBuilder
@@ -91,7 +90,7 @@ def build_profile(basedir, standard_tag, extension_versions, registry_base_url=N
 
     # Update the "codelists" field in extension.json.
     with open(os.path.join(basedir, 'profile', 'extension.json')) as f:
-        metadata = json.load(f, object_pairs_hook=OrderedDict)
+        metadata = json.load(f)
 
     codelists = [codelist.name for codelist in extension_codelists]
 
