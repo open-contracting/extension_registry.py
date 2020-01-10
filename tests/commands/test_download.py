@@ -12,12 +12,12 @@ from ocdsextensionregistry.cli.__main__ import main
 args = ['ocdsextensionregistry', 'download']
 
 
-def test_command(monkeypatch, tmpdir):
-    with patch('sys.stdout', new_callable=StringIO) as actual:
-        monkeypatch.setattr(sys, 'argv', args + [str(tmpdir), 'location==v1.1.3'])
-        main()
+@patch('sys.stdout', new_callable=StringIO)
+def test_command(stdout, monkeypatch, tmpdir):
+    monkeypatch.setattr(sys, 'argv', args + [str(tmpdir), 'location==v1.1.3'])
+    main()
 
-    assert actual.getvalue() == ''
+    assert stdout.getvalue() == ''
 
     tree = list(os.walk(tmpdir))
 
@@ -36,12 +36,12 @@ def test_command(monkeypatch, tmpdir):
     assert sorted(tree[3][2]) == ['geometryType.csv', 'locationGazetteers.csv']
 
 
-def test_command_versions(monkeypatch, tmpdir):
-    with patch('sys.stdout', new_callable=StringIO) as actual:
-        monkeypatch.setattr(sys, 'argv', args + [str(tmpdir), 'location'])
-        main()
+@patch('sys.stdout', new_callable=StringIO)
+def test_command_versions(stdout, monkeypatch, tmpdir):
+    monkeypatch.setattr(sys, 'argv', args + [str(tmpdir), 'location'])
+    main()
 
-    assert actual.getvalue() == ''
+    assert stdout.getvalue() == ''
 
     tree = list(os.walk(tmpdir))
 
@@ -49,27 +49,27 @@ def test_command_versions(monkeypatch, tmpdir):
 
 
 # Take the strictest of restrictions.
-def test_command_versions_collision(monkeypatch, tmpdir):
-    with patch('sys.stdout', new_callable=StringIO) as actual:
-        monkeypatch.setattr(sys, 'argv', args + [str(tmpdir), 'location==v1.1.3', 'location'])
-        main()
+@patch('sys.stdout', new_callable=StringIO)
+def test_command_versions_collision(stdout, monkeypatch, tmpdir):
+    monkeypatch.setattr(sys, 'argv', args + [str(tmpdir), 'location==v1.1.3', 'location'])
+    main()
 
-    assert actual.getvalue() == ''
+    assert stdout.getvalue() == ''
 
     tree = list(os.walk(tmpdir))
 
     assert len(tree[1][1]) == 1
 
 
-def test_command_versions_invalid(monkeypatch, tmpdir, caplog):
+@patch('sys.stdout', new_callable=StringIO)
+def test_command_versions_invalid(stdout, monkeypatch, tmpdir, caplog):
     caplog.set_level(logging.INFO)  # silence connectionpool.py DEBUG messages
 
     with pytest.raises(SystemExit) as excinfo:
-        with patch('sys.stdout', new_callable=StringIO) as actual:
-            monkeypatch.setattr(sys, 'argv', args + [str(tmpdir), 'location=v1.1.3'])
-            main()
+        monkeypatch.setattr(sys, 'argv', args + [str(tmpdir), 'location=v1.1.3'])
+        main()
 
-    assert actual.getvalue() == ''
+    assert stdout.getvalue() == ''
 
     assert len(caplog.records) == 1
     assert caplog.records[0].levelname == 'CRITICAL'
@@ -78,7 +78,8 @@ def test_command_versions_invalid(monkeypatch, tmpdir, caplog):
 
 
 # Require the user to decide what to overwrite.
-def test_command_repeated(monkeypatch, tmpdir, caplog):
+@patch('sys.stdout', new_callable=StringIO)
+def test_command_repeated(stdout, monkeypatch, tmpdir, caplog):
     caplog.set_level(logging.INFO)  # silence connectionpool.py DEBUG messages
     argv = args + [str(tmpdir), 'location==v1.1.3']
 
@@ -86,11 +87,10 @@ def test_command_repeated(monkeypatch, tmpdir, caplog):
     main()
 
     with pytest.raises(SystemExit) as excinfo:
-        with patch('sys.stdout', new_callable=StringIO) as actual:
-            monkeypatch.setattr(sys, 'argv', argv)
-            main()
+        monkeypatch.setattr(sys, 'argv', argv)
+        main()
 
-    assert actual.getvalue() == ''
+    assert stdout.getvalue() == ''
 
     assert len(caplog.records) == 1
     assert caplog.records[0].levelname == 'CRITICAL'
@@ -98,7 +98,8 @@ def test_command_repeated(monkeypatch, tmpdir, caplog):
     assert excinfo.value.code == 1
 
 
-def test_command_repeated_overwrite_any(monkeypatch, tmpdir):
+@patch('sys.stdout', new_callable=StringIO)
+def test_command_repeated_overwrite_any(stdout, monkeypatch, tmpdir):
     argv = args + [str(tmpdir), 'location==v1.1.3']
     pattern = str(tmpdir / '*' / '*' / 'extension.json')
 
@@ -108,16 +109,16 @@ def test_command_repeated_overwrite_any(monkeypatch, tmpdir):
     # Remove a file, to test whether its download is repeated.
     os.unlink(glob(pattern)[0])
 
-    with patch('sys.stdout', new_callable=StringIO) as actual:
-        monkeypatch.setattr(sys, 'argv', argv + ['--overwrite', 'any'])
-        main()
+    monkeypatch.setattr(sys, 'argv', argv + ['--overwrite', 'any'])
+    main()
 
-    assert actual.getvalue() == ''
+    assert stdout.getvalue() == ''
 
     assert len(glob(pattern)) == 1
 
 
-def test_command_repeated_overwrite_none(monkeypatch, tmpdir):
+@patch('sys.stdout', new_callable=StringIO)
+def test_command_repeated_overwrite_none(stdout, monkeypatch, tmpdir):
     argv = args + [str(tmpdir), 'location==v1.1.3']
     pattern = str(tmpdir / '*' / '*' / 'extension.json')
 
@@ -127,16 +128,16 @@ def test_command_repeated_overwrite_none(monkeypatch, tmpdir):
     # Remove a file, to test whether its download is repeated.
     os.unlink(glob(pattern)[0])
 
-    with patch('sys.stdout', new_callable=StringIO) as actual:
-        monkeypatch.setattr(sys, 'argv', argv + ['--overwrite', 'none'])
-        main()
+    monkeypatch.setattr(sys, 'argv', argv + ['--overwrite', 'none'])
+    main()
 
-    assert actual.getvalue() == ''
+    assert stdout.getvalue() == ''
 
     assert len(glob(pattern)) == 0
 
 
-def test_command_repeated_overwrite_live(monkeypatch, tmpdir):
+@patch('sys.stdout', new_callable=StringIO)
+def test_command_repeated_overwrite_live(stdout, monkeypatch, tmpdir):
     argv = args + [str(tmpdir), 'location==v1.1.3', 'location==master']
     pattern = str(tmpdir / '*' / '*' / 'extension.json')
 
@@ -147,11 +148,10 @@ def test_command_repeated_overwrite_live(monkeypatch, tmpdir):
     for filename in glob(pattern):
         os.unlink(filename)
 
-    with patch('sys.stdout', new_callable=StringIO) as actual:
-        monkeypatch.setattr(sys, 'argv', argv + ['--overwrite', 'live'])
-        main()
+    monkeypatch.setattr(sys, 'argv', argv + ['--overwrite', 'live'])
+    main()
 
-    assert actual.getvalue() == ''
+    assert stdout.getvalue() == ''
 
     filenames = glob(pattern)
 
@@ -159,13 +159,13 @@ def test_command_repeated_overwrite_live(monkeypatch, tmpdir):
     assert filenames[0].endswith('/location/master/extension.json')
 
 
-def test_command_help(monkeypatch, caplog):
+@patch('sys.stdout', new_callable=StringIO)
+def test_command_help(stdout, monkeypatch, caplog):
     with pytest.raises(SystemExit) as excinfo:
-        with patch('sys.stdout', new_callable=StringIO) as actual:
-            monkeypatch.setattr(sys, 'argv', ['ocdsextensionregistry', '--help'])
-            main()
+        monkeypatch.setattr(sys, 'argv', ['ocdsextensionregistry', '--help'])
+        main()
 
-    assert actual.getvalue().startswith('usage: ocdsextensionregistry [-h]')
+    assert stdout.getvalue().startswith('usage: ocdsextensionregistry [-h]')
 
     assert len(caplog.records) == 0
     assert excinfo.value.code == 0

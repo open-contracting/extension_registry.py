@@ -11,53 +11,54 @@ from tests import read
 args = ['ocdsextensionregistry', 'generate-data-file']
 
 
-def test_command(monkeypatch):
-    with patch('sys.stdout', new_callable=StringIO) as actual:
-        monkeypatch.setattr(sys, 'argv', args + ['location==v1.1.3'])
-        main()
+@patch('sys.stdout', new_callable=StringIO)
+def test_command(stdout, monkeypatch):
+    monkeypatch.setattr(sys, 'argv', args + ['location==v1.1.3'])
+    main()
 
-    assert actual.getvalue() == read('location-v1.1.3.json')
-
-
-def test_command_latest_version_master(monkeypatch):
-    with patch('sys.stdout', new_callable=StringIO) as actual:
-        monkeypatch.setattr(sys, 'argv', args + ['location==v1.1.3', 'location==master'])
-        main()
-
-    assert json.loads(actual.getvalue())['location']['latest_version'] == 'master'
+    assert stdout.getvalue() == read('location-v1.1.3.json')
 
 
-def test_command_latest_version_dated(monkeypatch):
-    with patch('sys.stdout', new_callable=StringIO) as actual:
-        monkeypatch.setattr(sys, 'argv', args + ['location==v1.1.3', 'location==v1.1.1'])
-        main()
+@patch('sys.stdout', new_callable=StringIO)
+def test_command_latest_version_master(stdout, monkeypatch):
+    monkeypatch.setattr(sys, 'argv', args + ['location==v1.1.3', 'location==master'])
+    main()
 
-    assert json.loads(actual.getvalue())['location']['latest_version'] == 'v1.1.3'
+    assert json.loads(stdout.getvalue())['location']['latest_version'] == 'master'
 
 
-def test_command_missing_locale_dir(monkeypatch):
+@patch('sys.stdout', new_callable=StringIO)
+def test_command_latest_version_dated(stdout, monkeypatch):
+    monkeypatch.setattr(sys, 'argv', args + ['location==v1.1.3', 'location==v1.1.1'])
+    main()
+
+    assert json.loads(stdout.getvalue())['location']['latest_version'] == 'v1.1.3'
+
+
+@patch('sys.stderr', new_callable=StringIO)
+@patch('sys.stdout', new_callable=StringIO)
+def test_command_missing_locale_dir(stdout, stderr, monkeypatch):
     with pytest.raises(SystemExit) as excinfo:
-        with patch('sys.stdout', new_callable=StringIO) as out, patch('sys.stderr', new_callable=StringIO) as err:
-            monkeypatch.setattr(sys, 'argv', args + ['--languages', 'es', 'location==v1.1.3'])
-            main()
+        monkeypatch.setattr(sys, 'argv', args + ['--languages', 'es', 'location==v1.1.3'])
+        main()
 
-    assert out.getvalue() == ''
-    assert '--locale-dir is required if --languages is set.' in err.getvalue()
+    assert stdout.getvalue() == ''
+    assert '--locale-dir is required if --languages is set.' in stderr.getvalue()
     assert excinfo.value.code == 2
 
 
-def test_command_directory(monkeypatch, tmpdir):
+@patch('sys.stdout', new_callable=StringIO)
+def test_command_directory(stdout, monkeypatch, tmpdir):
     versions_dir = tmpdir.mkdir('outputdir')
     version_dir = versions_dir.mkdir('location').mkdir('v1.1.3')
 
     version_dir.join('extension.json').write('{"name": "Location", "description": "…"}')
     version_dir.join('README.md').write('# Location')
 
-    with patch('sys.stdout', new_callable=StringIO) as actual:
-        monkeypatch.setattr(sys, 'argv', args + ['--versions-dir', str(versions_dir), 'location==v1.1.3'])
-        main()
+    monkeypatch.setattr(sys, 'argv', args + ['--versions-dir', str(versions_dir), 'location==v1.1.3'])
+    main()
 
-    assert json.loads(actual.getvalue()) == {
+    assert json.loads(stdout.getvalue()) == {
         'location': {
             'id': 'location',
             'category': 'item',

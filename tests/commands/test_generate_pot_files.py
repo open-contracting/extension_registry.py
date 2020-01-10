@@ -8,12 +8,12 @@ from ocdsextensionregistry.cli.__main__ import main
 args = ['ocdsextensionregistry', 'generate-pot-files']
 
 
-def test_command(monkeypatch, tmpdir):
-    with patch('sys.stdout', new_callable=StringIO) as actual:
-        monkeypatch.setattr(sys, 'argv', args + [str(tmpdir), 'location==v1.1.3'])
-        main()
+@patch('sys.stdout', new_callable=StringIO)
+def test_command(stdout, monkeypatch, tmpdir):
+    monkeypatch.setattr(sys, 'argv', args + [str(tmpdir), 'location==v1.1.3'])
+    main()
 
-    assert actual.getvalue() == ''
+    assert stdout.getvalue() == ''
 
     tree = list(os.walk(tmpdir))
 
@@ -29,18 +29,17 @@ def test_command(monkeypatch, tmpdir):
     assert sorted(tree[2][2]) == ['codelists.pot', 'docs.pot', 'schema.pot']
 
 
-def test_command_directory(monkeypatch, tmpdir):
+@patch('sys.stdout', new_callable=StringIO)
+def test_command_directory(stdout, monkeypatch, tmpdir):
     output_dir = tmpdir.mkdir('build').mkdir('locale')
     versions_dir = tmpdir.mkdir('outputdir')
 
     versions_dir.mkdir('location').mkdir('v1.1.3').join('README.md').write('# Location')
 
-    with patch('sys.stdout', new_callable=StringIO) as actual:
-        monkeypatch.setattr(sys, 'argv', args + ['--versions-dir', str(versions_dir),
-                                                 str(output_dir), 'location==v1.1.3'])
-        main()
+    monkeypatch.setattr(sys, 'argv', args + ['--versions-dir', str(versions_dir), str(output_dir), 'location==v1.1.3'])
+    main()
 
-    assert actual.getvalue() == ''
+    assert stdout.getvalue() == ''
 
     tree = list(os.walk(output_dir))
 
@@ -56,16 +55,15 @@ def test_command_directory(monkeypatch, tmpdir):
     assert sorted(tree[2][2]) == ['docs.pot']
 
 
-def test_command_missing_directory(monkeypatch, tmpdir, caplog):
+@patch('sys.stdout', new_callable=StringIO)
+def test_command_missing_directory(stdout, monkeypatch, tmpdir, caplog):
     output_dir = tmpdir.mkdir('build').mkdir('locale')
     versions_dir = tmpdir.mkdir('outputdir')
 
-    with patch('sys.stdout', new_callable=StringIO) as actual:
-        monkeypatch.setattr(sys, 'argv', args + ['--versions-dir', str(versions_dir),
-                                                 str(output_dir), 'location==v1.1.3'])
-        main()
+    monkeypatch.setattr(sys, 'argv', args + ['--versions-dir', str(versions_dir), str(output_dir), 'location==v1.1.3'])
+    main()
 
-    assert actual.getvalue() == ''
+    assert stdout.getvalue() == ''
 
     tree = list(os.walk(output_dir))
 
@@ -78,18 +76,18 @@ def test_command_missing_directory(monkeypatch, tmpdir, caplog):
     assert caplog.records[0].message == 'Not processing location==v1.1.3 (not in {})'.format(versions_dir)
 
 
-def test_command_missing_download_url(monkeypatch, tmpdir, caplog):
+@patch('sys.stdout', new_callable=StringIO)
+def test_command_missing_download_url(stdout, monkeypatch, tmpdir, caplog):
     output_dir = tmpdir.mkdir('build').mkdir('locale')
     file = tmpdir.join('extension_versions.csv')
 
     file.write('Id,Date,Version,Base URL,Download URL\nlocation,,v1.1.3,http://example.com/,')
 
-    with patch('sys.stdout', new_callable=StringIO) as actual:
-        monkeypatch.setattr(sys, 'argv', args + ['--extension-versions-url', 'file://{}'.format(file),
-                                                 str(output_dir), 'location==v1.1.3'])
-        main()
+    monkeypatch.setattr(sys, 'argv', args + ['--extension-versions-url', 'file://{}'.format(file), str(output_dir),
+                                             'location==v1.1.3'])
+    main()
 
-    assert actual.getvalue() == ''
+    assert stdout.getvalue() == ''
 
     tree = list(os.walk(output_dir))
 

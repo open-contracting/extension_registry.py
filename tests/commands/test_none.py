@@ -7,9 +7,9 @@ from ocdsextensionregistry.cli.__main__ import main
 args = ['ocdsextensionregistry']
 
 
-def test_command(monkeypatch, tmpdir):
-    with patch('sys.stdout', new_callable=StringIO) as actual:
-        monkeypatch.setattr(sys, 'argv', args)
-        main()
+@patch('sys.stdout', new_callable=StringIO)
+def test_command(stdout, monkeypatch, tmpdir):
+    monkeypatch.setattr(sys, 'argv', args)
+    main()
 
-    assert 'usage: ocdsextensionregistry' in actual.getvalue()
+    assert 'usage: ocdsextensionregistry' in stdout.getvalue()
