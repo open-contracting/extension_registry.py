@@ -25,7 +25,7 @@ After initializing the profile, you can then:
 * :func:`extension_codelists() <ocdsextensionregistry.profile_builder.ProfileBuilder.extension_codelists>` to get the profile's codelists
 * :func:`patched_codelists() <ocdsextensionregistry.profile_builder.ProfileBuilder.patched_codelists>` to get the codelists, after patching OCDS with the profile
 * :func:`extensions() <ocdsextensionregistry.profile_builder.ProfileBuilder.extensions>` to iterate over the profile's versions of extensions
-"""
+"""  # noqa
 
 import csv
 import json

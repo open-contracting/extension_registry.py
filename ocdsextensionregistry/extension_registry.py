@@ -28,7 +28,7 @@ To work with the files within a version of an extension:
 * :func:`files <ocdsextensionregistry.extension_version.ExtensionVersion.files>` returns the unparsed contents of all files
 
 See additional details in :doc:`extension_version`.
-"""
+"""  # noqa
 
 import csv
 from io import StringIO
