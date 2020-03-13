@@ -1,3 +1,7 @@
+"""
+Complex operations making use of this library's classes are organized into this API module.
+"""
+
 import csv
 import json
 import os
