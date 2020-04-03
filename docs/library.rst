@@ -10,5 +10,6 @@ Programmatic Access
    api/codelist
    api/codelist_code
    api/profile_builder
+   api/util
    api/api
    api/exceptions
