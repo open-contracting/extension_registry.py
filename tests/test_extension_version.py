@@ -7,6 +7,19 @@ from ocdsextensionregistry import Extension, ExtensionVersion
 from ocdsextensionregistry.exceptions import DoesNotExist, NotAvailableInBulk
 
 
+def arguments(**kwargs):
+    data = {
+        'Id': 'location',
+        'Date': '2018-02-01',
+        'Version': 'v1.1.3',
+        'Base URL': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/',
+        'Download URL': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.3',  # noqa: E501
+    }
+
+    data.update(kwargs)
+    return data
+
+
 def test_init():
     args = arguments()
     obj = ExtensionVersion(args)
@@ -18,10 +31,22 @@ def test_init():
     assert obj.download_url == args['Download URL']
 
 
-def test_repr():
-    obj = ExtensionVersion(arguments())
+@pytest.mark.parametrize('args,expected', [
+    (arguments(), 'location==v1.1.3'),
+    (arguments(**{
+        'Id': None,
+        'Base URL': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/',  # noqa: E501
+    }), 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/'),
+    (arguments(**{
+        'Id': None,
+        'Base URL': None,
+        'Download URL': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.3',  # noqa: E501
+    }), 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.3'),
+])
+def test_repr(args, expected):
+    obj = ExtensionVersion(args)
 
-    assert repr(obj) == 'location==v1.1.3'
+    assert repr(obj) == expected
 
 
 def test_update():
@@ -94,7 +119,7 @@ def test_remote_nonexistent():
     with pytest.raises(requests.exceptions.HTTPError) as excinfo:
         obj.remote('nonexistent')
 
-    assert str(excinfo.value) == "404 Client Error: Not Found for url: https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/nonexistent"  # noqa
+    assert str(excinfo.value) == "404 Client Error: Not Found for url: https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/nonexistent"  # noqa: E501
 
 
 def test_remote_download_url_nonexistent():
@@ -187,7 +212,8 @@ def test_codelists():
     result = obj.codelists
 
     assert len(result) == 2
-    assert result['locationGazetteers.csv'].fieldnames == ['Category', 'Code', 'Title', 'Description', 'Source', 'URI Pattern']  # noqa
+    assert result['locationGazetteers.csv'].fieldnames == ['Category', 'Code', 'Title', 'Description', 'Source',
+                                                           'URI Pattern']
 
 
 def test_codelists_without_metadata():
@@ -196,7 +222,8 @@ def test_codelists_without_metadata():
     result = obj.codelists
 
     assert len(result) == 1
-    assert result['locationGazeteers.csv'].fieldnames == ['Category', 'Code', 'Title', 'Description', 'Source', 'URI_Pattern']  # noqa
+    assert result['locationGazeteers.csv'].fieldnames == ['Category', 'Code', 'Title', 'Description', 'Source',
+                                                          'URI_Pattern']
 
 
 def test_codelists_without_metadata_or_download_url():
@@ -214,7 +241,8 @@ def test_codelists_with_CR_newlines():
     result = obj.codelists
 
     assert len(result) == 2
-    assert result['bidStatistics.csv'].fieldnames == ['Category', 'Code', 'Title', 'Description', 'Min', 'Max', 'Required by']  # noqa
+    assert result['bidStatistics.csv'].fieldnames == ['Category', 'Code', 'Title', 'Description', 'Min', 'Max',
+                                                      'Required by']
 
 
 def test_repository_full_name():
@@ -257,16 +285,3 @@ def test_repository_url():
     result = obj.repository_url
 
     assert result == 'git@github.com:open-contracting-extensions/ocds_location_extension.git'
-
-
-def arguments(**kwargs):
-    data = {
-        'Id': 'location',
-        'Date': '2018-02-01',
-        'Version': 'v1.1.3',
-        'Base URL': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/',
-        'Download URL': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.3',  # noqa
-    }
-
-    data.update(kwargs)
-    return data

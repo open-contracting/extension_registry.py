@@ -35,7 +35,12 @@ class ExtensionVersion:
         self._codelists = None
 
     def __repr__(self):
-        return '{}=={}'.format(self.id, self.version)
+        if self.id and self.version:
+            return '{}=={}'.format(self.id, self.version)
+        elif self.base_url:
+            return self.base_url
+        else:
+            return self.download_url
 
     def update(self, other):
         """
