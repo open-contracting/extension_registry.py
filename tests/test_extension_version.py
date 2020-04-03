@@ -4,7 +4,7 @@ import pytest
 import requests
 
 from ocdsextensionregistry import Extension, ExtensionVersion
-from ocdsextensionregistry.exceptions import NotAvailableInBulk
+from ocdsextensionregistry.exceptions import DoesNotExist, NotAvailableInBulk
 
 
 def test_init():
@@ -99,10 +99,10 @@ def test_remote_nonexistent():
 
 def test_remote_download_url_nonexistent():
     obj = ExtensionVersion(arguments())
-    with pytest.raises(KeyError) as excinfo:
+    with pytest.raises(DoesNotExist) as excinfo:
         obj.remote('nonexistent')
 
-    assert str(excinfo.value) == "'nonexistent'"
+    assert str(excinfo.value) == "File 'nonexistent' does not exist in location==v1.1.3"
 
 
 def test_zipfile_not_available_in_bulk():

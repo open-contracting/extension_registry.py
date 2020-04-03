@@ -11,7 +11,7 @@ import requests
 import requests_cache
 
 from .codelist import Codelist
-from .exceptions import NotAvailableInBulk
+from .exceptions import DoesNotExist, NotAvailableInBulk
 
 SCHEMAS = ('record-package-schema.json', 'release-package-schema.json', 'release-schema.json')
 
@@ -69,8 +69,9 @@ class ExtensionVersion:
         Returns the contents of the file within the extension.
 
         If the extension has a download URL or a local directory, caches all the files' contents. Otherwise, downloads
-        and caches the requested file's contents. Raises an HTTPError if a download fails. Raises a KeyError if the
-        requested file isn't in the ZIP archive.
+        and caches the requested file's contents. Raises an HTTPError if a download fails.
+
+        :raises DoesNotExist: if the file isn't in the extension
         """
         if basename not in self.files:
             if not self.available_in_bulk():
@@ -78,7 +79,10 @@ class ExtensionVersion:
                 response.raise_for_status()
                 self._files[basename] = response.text
 
-        return self.files[basename]
+        try:
+            return self.files[basename]
+        except KeyError:
+            raise DoesNotExist('File {!r} does not exist in {}'.format(basename, self))
 
     @property
     def files(self):
@@ -110,6 +114,8 @@ class ExtensionVersion:
         """
         If the extension has a local directory, returns a ZIP archive of the files it contains. If the extension has a
         download URL, downloads and returns the ZIP archive.
+
+        :raises NotAvailableInBulk: if the extension has neither a local directory nor a download URL
         """
         if self.directory:
             io = BytesIO()
