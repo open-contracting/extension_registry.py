@@ -34,6 +34,9 @@ class ExtensionVersion:
         self._schemas = None
         self._codelists = None
 
+    def __repr__(self):
+        return '{}=={}'.format(self.id, self.version)
+
     def update(self, other):
         """
         Merges in the properties of another Extension or ExtensionVersion object.

@@ -10,6 +10,12 @@ def test_init():
     assert obj.core is True
 
 
+def test_repr():
+    obj = Extension(arguments(Core='true'))
+
+    assert repr(obj) == 'location'
+
+
 def test_init_non_core():
     for core in ('TRUE', 'True', 'false', 'foo', '', None):
         obj = Extension(arguments(Core=core))

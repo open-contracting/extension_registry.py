@@ -18,6 +18,12 @@ def test_init():
     assert obj.download_url == args['Download URL']
 
 
+def test_repr():
+    obj = ExtensionVersion(arguments())
+
+    assert repr(obj) == 'location==v1.1.3'
+
+
 def test_update():
     obj = ExtensionVersion(arguments())
     obj.update(Extension({'Id': 'location', 'Category': 'item', 'Core': 'true'}))
