@@ -13,6 +13,8 @@ def json_dump(data, io):
 def get_latest_version(versions):
     """
     Returns the identifier of the latest version from a list of versions of the same extension.
+
+    :raises UnknownLatestVersion: if the latest version of the extension can't be determined
     """
     if len(versions) == 1:
         return versions[0]

@@ -71,6 +71,9 @@ class ExtensionRegistry:
     def filter(self, **kwargs):
         """
         Returns the extension versions in the registry that match the keyword arguments.
+
+        :raises MissingExtensionMetadata: if the keyword arguments refer to extensions data, but the extension registry
+                                          was not initialized with extensions data
         """
         try:
             return list(filter(lambda ver: all(getattr(ver, k) == v for k, v in kwargs.items()), self.versions))
@@ -80,6 +83,10 @@ class ExtensionRegistry:
     def get(self, **kwargs):
         """
         Returns the first extension version in the registry that matches the keyword arguments.
+
+        :raises DoesNotExist: if no extension version matches the keyword arguments
+        :raises MissingExtensionMetadata: if the keyword arguments refer to extensions data, but the extension registry
+                                          was not initialized with extensions data
         """
         try:
             return next(ver for ver in self.versions if all(getattr(ver, k) == v for k, v in kwargs.items()))
