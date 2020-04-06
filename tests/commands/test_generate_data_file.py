@@ -51,11 +51,15 @@ def test_command_missing_locale_dir(stdout, stderr, monkeypatch):
 def test_command_directory(stdout, monkeypatch, tmpdir):
     versions_dir = tmpdir.mkdir('outputdir')
     version_dir = versions_dir.mkdir('location').mkdir('v1.1.3')
+    locale_dir = tmpdir.mkdir('localedir')
+    for locale in ('en', 'es'):
+        locale_dir.mkdir(locale)
 
     version_dir.join('extension.json').write('{"name": "Location", "description": "…"}')
     version_dir.join('README.md').write('# Location')
 
-    monkeypatch.setattr(sys, 'argv', args + ['--versions-dir', str(versions_dir), 'location==v1.1.3'])
+    monkeypatch.setattr(sys, 'argv', args + ['--versions-dir', str(versions_dir), '--locale-dir', str(locale_dir),
+                                             'location==v1.1.3'])
     main()
 
     assert json.loads(stdout.getvalue()) == {
@@ -65,9 +69,11 @@ def test_command_directory(stdout, monkeypatch, tmpdir):
             'core': True,
             'name': {
                 'en': 'Location',
+                'es': 'Location',
             },
             'description': {
                 'en': '…',
+                'es': '…',
             },
             'latest_version': 'v1.1.3',
             'versions': {
@@ -84,9 +90,11 @@ def test_command_directory(stdout, monkeypatch, tmpdir):
                     'metadata': {
                         'name': {
                             'en': 'Location',
+                            'es': 'Location',
                         },
                         'description': {
                             'en': '…',
+                            'es': '…',
                         },
                         'documentationUrl': {},
                         'compatibility': ['1.1'],
@@ -99,6 +107,7 @@ def test_command_directory(stdout, monkeypatch, tmpdir):
                     'codelists': {},
                     'readme': {
                         'en': '# Location\n',
+                        'es': '# Location\n',
                     },
                 },
             },
