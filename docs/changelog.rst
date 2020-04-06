@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.0.19 (Unreleased)
+~~~~~~~~~~~~~~~~~~~
+
+-  The ``generate-data-files`` command warns if an MO file is missing.
+
 0.0.18 (2020-04-06)
 ~~~~~~~~~~~~~~~~~~~
 
