@@ -20,7 +20,10 @@ logger = logging.getLogger('ocdsextensionregistry')
 
 def _translator(version, domain, localedir, language):
     domain = '{}/{}/{}'.format(version.id, version.version, domain)
-    return gettext.translation(domain, localedir, languages=[language], fallback=language == 'en')
+    try:
+        return gettext.translation(domain, localedir, languages=[language], fallback=language == 'en')
+    except FileNotFoundError:
+        return gettext.NullTranslations()
 
 
 class Command(BaseCommand):

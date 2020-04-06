@@ -1,11 +1,11 @@
 Changelog
 =========
 
-0.0.18 (Unreleased)
+0.0.18 (2020-04-06)
 ~~~~~~~~~~~~~~~~~~~
 
--  -  :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`: :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.__repr__` falls back to Base URL and Download URL if Id or Version is blank.
-
+-  :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`: :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.__repr__` falls back to Base URL and Download URL if Id or Version is blank.
+-  The ``generate-data-files`` command uses a null translator if an MO file is missing.
 
 0.0.17 (2020-04-03)
 ~~~~~~~~~~~~~~~~~~~
