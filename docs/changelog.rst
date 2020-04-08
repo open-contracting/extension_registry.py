@@ -1,10 +1,11 @@
 Changelog
 =========
 
-0.0.19 (Unreleased)
+0.0.19 (2020-04-07)
 ~~~~~~~~~~~~~~~~~~~
 
 -  The ``generate-data-files`` command warns if an MO file is missing.
+-  Rename environment variable from ``GITHUB_ACCESS_TOKEN`` to ``OCDS_GITHUB_ACCESS_TOKEN``.
 
 0.0.18 (2020-04-06)
 ~~~~~~~~~~~~~~~~~~~

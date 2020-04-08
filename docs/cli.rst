@@ -84,7 +84,7 @@ The default behavior is to add all available translations, To select translation
 
 To create MO files from existing translations, see :doc:`translation`.
 
-By default, the publisher name of an extension version is like "open-contracting-extensions". If the version is on GitHub, you can have the publisher name be like "Open Contracting Data Standard Extensions" by `generating a personal access token <https://github.com/settings/tokens/new>`__ (do not select any scopes), copying it, and setting a ``GITHUB_ACCESS_TOKEN`` environment variable to it.
+By default, the publisher name of an extension version is like "open-contracting-extensions". If the version is on GitHub, you can have the publisher name be like "Open Contracting Data Standard Extensions" by `generating a personal access token <https://github.com/settings/tokens/new>`__ (do not select any scopes), copying it, and setting a ``OCDS_GITHUB_ACCESS_TOKEN`` environment variable to it.
 
 This command can be run offline if ``--versions-dir`` is set to a local directory organized like the output directory of the ``download`` command, and if ``--extension-versions-url`` and ``--extensions-url`` are set to local files, for example::
 
