@@ -4,7 +4,7 @@ import os
 from .exceptions import UnknownLatestVersion
 
 if os.name == 'nt':
-    encoding = 'cp437'
+    encoding = 'cp1252'
 else:
     encoding = 'utf-8'
 
