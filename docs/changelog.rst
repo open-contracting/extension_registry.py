@@ -1,6 +1,15 @@
 Changelog
 =========
 
+0.0.20 (Unreleased)
+~~~~~~~~~~~~~~~~~~~
+
+-  Add Windows support for:
+
+   -  :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.files`
+   -  :meth:`ocdsextensionregistry.profile_builder.ProfileBuilder.get_standard_file_contents`
+   -  :meth:`ocdsextensionregistry.profile_builder.ProfileBuilder.standard_codelists`
+
 0.0.19 (2020-04-07)
 ~~~~~~~~~~~~~~~~~~~
 

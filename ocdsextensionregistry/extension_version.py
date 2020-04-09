@@ -110,7 +110,7 @@ class ExtensionVersion:
                         if filename[-1] != '/' and filename != '.travis.yml':
                             content = zipfile.read(name)
                             if os.path.splitext(name)[1] in ('.csv', '.json', '.md'):
-                                content = content.decode('utf-8')
+                                content = content.decode()
                             self._files[filename] = content
 
         return self._files

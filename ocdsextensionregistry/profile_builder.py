@@ -155,7 +155,7 @@ class ProfileBuilder:
         # This method shouldn't need to know about `_file_cache`.
         for path, content in self._file_cache.items():
             name = os.path.basename(path)
-            if 'codelists' in path.split(os.sep) and name:
+            if 'codelists' in path.split('/') and name:
                 codelists[name] = Codelist(name)
                 codelists[name].extend(csv.DictReader(StringIO(content)), 'OCDS Core')
 
@@ -260,14 +260,14 @@ class ProfileBuilder:
             names = zipfile.namelist()
 
             if self.standard_tag < '1__1__5':
-                path = os.path.join('standard', 'schema', '')
+                path = 'standard/schema/'
             else:
-                path = os.path.join('schema', '')
+                path = 'schema/'
             start = len(names[0] + path)
 
             for name in names[1:]:
                 if path in name:
-                    self._file_cache[name[start:]] = zipfile.read(name).decode('utf-8')
+                    self._file_cache[name[start:]] = zipfile.read(name).decode()
 
         return self._file_cache[basename]
 
