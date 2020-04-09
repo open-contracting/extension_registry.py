@@ -12,6 +12,7 @@ import requests_cache
 
 from .codelist import Codelist
 from .exceptions import DoesNotExist, NotAvailableInBulk
+from .util import encoding
 
 SCHEMAS = ('record-package-schema.json', 'release-package-schema.json', 'release-schema.json')
 
@@ -110,7 +111,7 @@ class ExtensionVersion:
                         if filename[-1] != '/' and filename != '.travis.yml':
                             content = zipfile.read(name)
                             if os.path.splitext(name)[1] in ('.csv', '.json', '.md'):
-                                content = content.decode()
+                                content = content.decode(encoding)
                             self._files[filename] = content
 
         return self._files

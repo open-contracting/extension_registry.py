@@ -44,6 +44,7 @@ import requests_cache
 from .codelist import Codelist
 from .extension_registry import ExtensionRegistry
 from .extension_version import ExtensionVersion
+from .util import encoding
 
 logger = logging.getLogger('ocdsextensionregistry')
 requests_cache.install_cache(backend='memory')
@@ -267,7 +268,7 @@ class ProfileBuilder:
 
             for name in names[1:]:
                 if path in name:
-                    self._file_cache[name[start:]] = zipfile.read(name).decode()
+                    self._file_cache[name[start:]] = zipfile.read(name).decode(encoding)
 
         return self._file_cache[basename]
 

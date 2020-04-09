@@ -2,6 +2,11 @@ import json
 
 from .exceptions import UnknownLatestVersion
 
+if os.name == 'nt':
+    encoding = 'cp437'
+else:
+    encoding = 'utf-8'
+
 
 def json_dump(data, io):
     """

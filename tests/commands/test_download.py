@@ -156,7 +156,7 @@ def test_command_repeated_overwrite_live(stdout, monkeypatch, tmpdir):
     filenames = glob(pattern)
 
     assert len(filenames) == 1
-    assert filenames[0].endswith('/location/master/extension.json')
+    assert filenames[0] == str(tmpdir / 'location' / 'master' / 'extension.json')
 
 
 @patch('sys.stdout', new_callable=StringIO)
