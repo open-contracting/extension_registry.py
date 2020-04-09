@@ -1,4 +1,4 @@
-|PyPI Version| |Build Status| |Coverage Status| |Python Version|
+|PyPI Version| |Build Status| |Lint Status| |Coverage Status| |Python Version|
 
 This Python package eases access to information about extensions in the `Open Contracting Data Standard <https://standard.open-contracting.org>`__'s `extension registry <https://github.com/open-contracting/extension_registry>`__.
 
@@ -20,8 +20,8 @@ If you are viewing this on GitHub or PyPi, open the `full documentation <https:/
 
 .. |PyPI Version| image:: https://img.shields.io/pypi/v/ocdsextensionregistry.svg
    :target: https://pypi.org/project/ocdsextensionregistry/
-.. |Build Status| image:: https://secure.travis-ci.org/open-contracting/extension_registry.py.png
-   :target: https://travis-ci.org/open-contracting/extension_registry.py
+.. |Build Status| image:: https://github.com/open-contracting/extension_registry.py/workflows/CI/badge.svg
+.. |Lint Status| image:: https://github.com/open-contracting/extension_registry.py/workflows/Lint/badge.svg
 .. |Coverage Status| image:: https://coveralls.io/repos/github/open-contracting/extension_registry.py/badge.png?branch=master
    :target: https://coveralls.io/github/open-contracting/extension_registry.py?branch=master
 .. |Python Version| image:: https://img.shields.io/pypi/pyversions/ocdsextensionregistry.svg
