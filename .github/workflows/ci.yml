@@ -23,15 +23,15 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-tox-
     - name: Install gettext (Linux)
-      if: matrix.packages && matrix.os == 'ubuntu-latest'
+      if: matrix.os == 'ubuntu-latest'
       run: sudo apt-get install gettext
     - name: Install gettext (macOS)
-      if: matrix.packages && matrix.os == 'macos-latest'
+      if: matrix.os == 'macos-latest'
       run: |
         brew install gettext
         brew link gettext --force
     - name: Install gettext (Windows)
-      if: matrix.packages && matrix.os == 'windows-latest'
+      if: matrix.os == 'windows-latest'
       run: |
         iwr -useb get.scoop.sh | iex
         scoop install gettext
