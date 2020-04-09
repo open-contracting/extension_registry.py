@@ -258,8 +258,13 @@ class ProfileBuilder:
             response.raise_for_status()
             zipfile = ZipFile(BytesIO(response.content))
             names = zipfile.namelist()
-            path = 'standard/schema/'
+
+            if self.standard_tag < '1__1__5':
+                path = os.path.join('standard', 'schema', '')
+            else:
+                path = os.path.join('schema', '')
             start = len(names[0] + path)
+
             for name in names[1:]:
                 if path in name:
                     self._file_cache[name[start:]] = zipfile.read(name).decode('utf-8')
