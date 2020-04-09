@@ -22,13 +22,13 @@ Output::
 
 To work with the files within a version of an extension:
 
-* :func:`metadata <ocdsextensionregistry.extension_version.ExtensionVersion.metadata>` parses and provides consistent access to the information in ``extension.json``
-* :func:`schemas <ocdsextensionregistry.extension_version.ExtensionVersion.schemas>` returns the parsed contents of schema files
-* :func:`codelists <ocdsextensionregistry.extension_version.ExtensionVersion.codelists>` returns the parsed contents of codelist files (see more below)
-* :func:`files <ocdsextensionregistry.extension_version.ExtensionVersion.files>` returns the unparsed contents of all files
+-  :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.metadata` parses and provides consistent access to the information in ``extension.json``
+-  :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.schemas` returns the parsed contents of schema files
+-  :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.codelists` returns the parsed contents of codelist files (see more below)
+-  :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.files` returns the unparsed contents of all files
 
 See additional details in :doc:`extension_version`.
-"""  # noqa
+"""  # noqa: E501
 
 import csv
 from io import StringIO
