@@ -7,7 +7,7 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
         python-version: [3.6, 3.7, 3.8]
-        Tox: "OSError: [WinError 193] %1 is not a valid Win32 application"
+        # Tox: "OSError: [WinError 193] %1 is not a valid Win32 application"
         exclude:
           - os: windows-latest
             python-version: 3.7
