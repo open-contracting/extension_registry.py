@@ -1,5 +1,5 @@
-Command-Line Tools
-==================
+Command-Line Interface
+======================
 
 To install this package with command-line tools, run:
 

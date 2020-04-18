@@ -1,5 +1,5 @@
-Programmatic Access
-===================
+API Reference
+=============
 
 .. toctree::
    :maxdepth: 1
