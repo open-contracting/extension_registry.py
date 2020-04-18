@@ -1,5 +1,5 @@
-Public API
-==========
+Utilities
+=========
 
 .. automodule:: ocdsextensionregistry.api
    :members:
