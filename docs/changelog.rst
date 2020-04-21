@@ -25,7 +25,7 @@ Changelog
 0.0.17 (2020-04-03)
 ~~~~~~~~~~~~~~~~~~~
 
--  :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`: :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.remote` raises :exception:`~ocdsextensionregistry.exceptions.DoesNotExist` instead of :exception:`KeyError` if a file does not exist.
+-  :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`: :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.remote` raises :exc:`~ocdsextensionregistry.exceptions.DoesNotExist` instead of :exc:`KeyError` if a file does not exist.
 -  :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`: Add :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.__repr__`.
 -  :class:`~ocdsextensionregistry.extension.Extension`: Add :meth:`~ocdsextensionregistry.extension.Extension.__repr__`.
 
