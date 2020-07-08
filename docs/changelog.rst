@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.0.20 (Unreleased)
+0.0.20 (2020-06-08)
 ~~~~~~~~~~~~~~~~~~~
 
 -  Add Windows support for:
