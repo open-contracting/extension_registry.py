@@ -108,7 +108,7 @@ class ExtensionVersion:
 
                     for name in names[1:]:
                         filename = name[start:]
-                        if filename[-1] != '/' and filename != '.travis.yml':
+                        if filename[-1] != '/' and not filename.startswith('.'):
                             content = zipfile.read(name)
                             if os.path.splitext(name)[1] in ('.csv', '.json', '.md'):
                                 content = content.decode(encoding)

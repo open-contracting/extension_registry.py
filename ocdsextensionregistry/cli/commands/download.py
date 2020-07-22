@@ -53,7 +53,7 @@ class Command(BaseCommand):
 
                     for info in infos[1:]:
                         filename = info.filename[start:]
-                        if filename[-1] != '/' and filename != '.travis.yml':
+                        if filename[-1] != '/' and not filename.startswith('.'):
                             info.filename = filename
                             zipfile.extract(info, version_directory)
             except FileExistsError as e:
