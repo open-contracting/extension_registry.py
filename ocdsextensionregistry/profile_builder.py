@@ -153,8 +153,26 @@ class ProfileBuilder:
             schema = json.loads(self.get_standard_file_contents('release-package-schema.json'))
 
         if self.schema_base_url:
+            url = urljoin(self.schema_base_url, 'release-schema.json')
             schema['id'] = urljoin(self.schema_base_url, 'release-package-schema.json')
-            schema['properties']['releases']['items']['$ref'] = urljoin(self.schema_base_url, 'release-schema.json')
+            schema['properties']['releases']['items']['$ref'] = url
+
+        return schema
+
+    def record_package_schema(self, schema=None):
+        """
+        Returns a record package schema. If `schema_base_url` was provided, updates schema URLs.
+
+        :param dict schema: the record schema
+        """
+        if not schema:
+            schema = json.loads(self.get_standard_file_contents('record-package-schema.json'))
+
+        if self.schema_base_url:
+            url = urljoin(self.schema_base_url, 'release-schema.json')
+            schema['id'] = urljoin(self.schema_base_url, 'record-package-schema.json')
+            schema['definitions']['record']['properties']['compiledRelease']['$ref'] = url
+            schema['definitions']['record']['properties']['releases']['oneOf'][1]['items']['$ref'] = url
 
         return schema
 

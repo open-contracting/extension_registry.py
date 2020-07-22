@@ -8,11 +8,12 @@ Changelog
 
    -  The ``extension_versions`` argument to :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.__init__` can be a list of extensions' local directories.
    -  :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.__init__`: Add a ``standard_base_url`` argument, which can be a ``file://`` URL to the standard's directory.
+   -  Add :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.record_package_schema` method, to match :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_package_schema`.
 
 -  :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`:
 
-   -  Remove :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.available_in_bulk`.
-   -  Remove :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.directory` (overload ``download_url`` instead).
+   -  Remove :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.available_in_bulk` method.
+   -  Remove :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.directory` property (overload ``download_url`` instead).
 
 -  Add a ``standard_base_url`` parameter to :meth:`ocdsextensionregistry.api.build_profile` to modify the standard base URL.
 

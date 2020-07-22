@@ -157,6 +157,17 @@ def test_release_package_schema_with_schema_base_url():
     assert result['properties']['releases']['items']['$ref'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa
 
 
+def test_record_package_schema_with_schema_base_url():
+    schema_base_url = 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/'
+    builder = ProfileBuilder('1__1__3', {}, schema_base_url=schema_base_url)
+    result = builder.record_package_schema()
+
+    # Changes `id` and `$ref`.
+    assert result['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/record-package-schema.json'  # noqa
+    assert result['definitions']['record']['properties']['compiledRelease']['$ref'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa
+    assert result['definitions']['record']['properties']['releases']['oneOf'][1]['items']['$ref'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa
+
+
 def test_standard_codelists():
     builder = ProfileBuilder('1__1__3', {})
     result = builder.standard_codelists()
