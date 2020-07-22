@@ -49,7 +49,7 @@ class ExtensionRegistry:
         """
         Accepts extension_versions.csv and, optionally, extensions.csv as either URLs or data (as string) and reads
         them into ExtensionVersion objects. If extensions_data is not provided, the extension versions will not have
-        category or core properties.
+        category or core properties. URLs starting with ``file://`` will be read from the filesystem.
         """
         self.versions = []
 
