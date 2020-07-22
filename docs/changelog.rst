@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.0.21 (Unreleased)
+0.0.21 (2020-07-22)
 ~~~~~~~~~~~~~~~~~~~
 
 -  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`:
