@@ -1,4 +1,5 @@
 import logging
+import os.path
 import subprocess
 from contextlib import closing, contextmanager
 from glob import glob
@@ -121,13 +122,12 @@ class Command(BaseCommand):
 
         for version in self.versions():
             if self.args.versions_dir:
-                version.directory = versions_directory / version.id / version.version
-
-            if self.args.versions_dir:
-                if not version.directory.is_dir():
+                download_dir = versions_directory / version.id / version.version
+                if not download_dir.is_dir():
                     logger.warning('Not processing {}=={} (not in {})'.format(
                         version.id, version.version, versions_directory))
                     continue
+                version.download_url = download_dir.as_uri()
             else:
                 if not version.download_url:
                     logger.warning('Not processing {}=={} (no Download URL)'.format(

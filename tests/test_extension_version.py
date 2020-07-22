@@ -105,7 +105,7 @@ def test_remote_directory(tmpdir):
     file.write('{"key": "value"}')
 
     obj = ExtensionVersion(arguments(**{'Download URL': None}))
-    obj.directory = tmpdir
+    obj.download_url = 'file://{}'.format(tmpdir)
 
     data = obj.remote('extension.json')
     # Repeat requests should return the same result.
@@ -135,7 +135,7 @@ def test_zipfile_not_available_in_bulk():
     with pytest.raises(NotAvailableInBulk) as excinfo:
         obj.zipfile()
 
-    assert str(excinfo.value) == "ExtensionVersion.zipfile() requires either a directory or a download_url."
+    assert str(excinfo.value) == "ExtensionVersion.zipfile() requires a download_url."
 
 
 def test_files():

@@ -40,20 +40,18 @@ from urllib.parse import urljoin, urlparse
 from zipfile import ZipFile
 
 import json_merge_patch
-import requests
-import requests_cache
 
 from .codelist import Codelist
 from .extension_registry import ExtensionRegistry
 from .extension_version import ExtensionVersion
-from .util import encoding
+from .util import _resolve_zip, encoding
 
 logger = logging.getLogger('ocdsextensionregistry')
-requests_cache.install_cache(backend='memory')
 
 
 class ProfileBuilder:
-    def __init__(self, standard_tag, extension_versions, registry_base_url=None, schema_base_url=None):
+    def __init__(self, standard_tag, extension_versions, registry_base_url=None, standard_base_url=None,
+                 schema_base_url=None):
         """
         Accepts an OCDS version and either a dictionary of extension identifiers and versions, or a list of extensions'
         metadata URLs, base URLs and/or download URLs, and initializes a reader of the extension registry.
@@ -62,6 +60,8 @@ class ProfileBuilder:
         :param extension_versions: the extension versions
         :param str registry_base_url: the registry's base URL, defaults to
                                       ``'https://raw.githubusercontent.com/open-contracting/extension_registry/master/'``
+        :param str standard_base_url: the standard's base URL, defaults to
+                                      ``'https://codeload.github.com/open-contracting/standard/zip/' + standard_tag``
         :param str schema_base_url: the schema's base URL, e.g.
                                     ``'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/'``
         :type extension_versions: dict or list
@@ -69,11 +69,15 @@ class ProfileBuilder:
         # Allows setting the registry URL to e.g. a pull request, when working on a profile.
         if not registry_base_url:
             registry_base_url = 'https://raw.githubusercontent.com/open-contracting/extension_registry/master/'
+        if not standard_base_url:
+            standard_base_url = 'https://codeload.github.com/open-contracting/standard/zip/' + standard_tag
 
         self.standard_tag = standard_tag
         self.extension_versions = extension_versions
-        self.schema_base_url = schema_base_url
         self.registry_base_url = registry_base_url
+        self.standard_base_url = standard_base_url
+        self.schema_base_url = schema_base_url
+        self._registry = None
         self._file_cache = {}
 
     @property
@@ -95,7 +99,7 @@ class ProfileBuilder:
                 parsed = urlparse(url)
                 data = dict.fromkeys(['Id', 'Date', 'Version', 'Base URL', 'Download URL'])
                 if parsed.scheme == 'file':
-                    data['Directory'] = url[7:]
+                    data['Download URL'] = url
                 elif url.endswith('/extension.json'):
                     data['Base URL'] = url[:-14]
                 elif url.endswith('/'):
@@ -265,10 +269,7 @@ class ProfileBuilder:
         Downloads the given version of the standard, and caches the contents of files in the schema/ directory.
         """
         if not self._file_cache:
-            url = 'https://codeload.github.com/open-contracting/standard/zip/' + self.standard_tag
-            response = requests.get(url)
-            response.raise_for_status()
-            zipfile = ZipFile(BytesIO(response.content))
+            zipfile = _resolve_zip(self.standard_base_url, 'schema')
             names = zipfile.namelist()
 
             if self.standard_tag < '1__1__5':

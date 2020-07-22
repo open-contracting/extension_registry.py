@@ -129,7 +129,7 @@ def test_patched_release_schema_with_absolute_path():
     assert 'coveredBy' in result['definitions']['Tender']['properties']
 
 
-def test_patched_release_schema_with_absolute_path():
+def test_patched_release_schema_with_relative_path():
     url = 'file://{}'.format(path('ocds_coveredBy_extension'))
     builder = ProfileBuilder('1__1__3', [url])
     result = builder.patched_release_schema()

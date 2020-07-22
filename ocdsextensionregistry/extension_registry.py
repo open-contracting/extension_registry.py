@@ -32,16 +32,11 @@ See additional details in :doc:`extension_version`.
 
 import csv
 from io import StringIO
-from urllib.parse import urlparse
-
-import requests
-import requests_cache
 
 from .exceptions import DoesNotExist, MissingExtensionMetadata
 from .extension import Extension
 from .extension_version import ExtensionVersion
-
-requests_cache.install_cache(backend='memory')
+from .util import _resolve
 
 
 class ExtensionRegistry:
@@ -56,12 +51,12 @@ class ExtensionRegistry:
         # If extensions data is provided, prepare to merge it with extension versions data.
         extensions = {}
         if extensions_data:
-            extensions_data = self._resolve(extensions_data)
+            extensions_data = _resolve(extensions_data)
             for row in csv.DictReader(StringIO(extensions_data)):
                 extension = Extension(row)
                 extensions[extension.id] = extension
 
-        extension_versions_data = self._resolve(extension_versions_data)
+        extension_versions_data = _resolve(extension_versions_data)
         for row in csv.DictReader(StringIO(extension_versions_data)):
             version = ExtensionVersion(row)
             if version.id in extensions:
@@ -101,15 +96,6 @@ class ExtensionRegistry:
         """
         for version in self.versions:
             yield version
-
-    def _resolve(self, data_or_url):
-        parsed = urlparse(data_or_url)
-        if parsed.scheme:
-            if parsed.scheme == 'file':
-                with open(data_or_url[7:]) as f:
-                    return f.read()
-            return requests.get(data_or_url).text
-        return data_or_url
 
     def _handle_attribute_error(self, e):
         if "'category'" in str(e.args) or "'core'" in str(e.args):

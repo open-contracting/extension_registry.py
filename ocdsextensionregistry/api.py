@@ -17,8 +17,8 @@ def identity(text, *args, **kwargs):
     return text
 
 
-def build_profile(basedir, standard_tag, extension_versions, registry_base_url=None, schema_base_url=None,
-                  update_codelist_urls=None):
+def build_profile(basedir, standard_tag, extension_versions, registry_base_url=None, standard_base_url=None,
+                  schema_base_url=None, update_codelist_urls=None):
     """
     Pulls extensions into a profile.
 
@@ -35,6 +35,8 @@ def build_profile(basedir, standard_tag, extension_versions, registry_base_url=N
     :param extension_versions: the extension versions
     :param str registry_base_url: the registry's base URL, defaults to
                                   ``'https://raw.githubusercontent.com/open-contracting/extension_registry/master/'``
+    :param str standard_base_url: the standard's base URL, defaults to
+                                  ``'https://codeload.github.com/open-contracting/standard/zip/' + standard_tag``
     :param str schema_base_url: the schema's base URL, e.g.
                                 ``'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/'``
     :param update_codelist_urls: a function that accepts a schema as text and a list of names of codelists and replaces
@@ -64,7 +66,7 @@ def build_profile(basedir, standard_tag, extension_versions, registry_base_url=N
             writer.writeheader()
             writer.writerows(codelist)
 
-    builder = ProfileBuilder(standard_tag, extension_versions, registry_base_url, schema_base_url)
+    builder = ProfileBuilder(standard_tag, extension_versions, registry_base_url, standard_base_url, schema_base_url)
     extension_codelists = builder.extension_codelists()
     directories_and_schemas = {
         'profile': {

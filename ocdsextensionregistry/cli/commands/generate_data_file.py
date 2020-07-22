@@ -69,8 +69,9 @@ class Command(BaseCommand):
                 languages.update(available_translations)
 
         for version in self.versions():
+            public_download_url = version.download_url
             if self.args.versions_dir:
-                version.directory = versions_directory / version.id / version.version
+                version.download_url = (versions_directory / version.id / version.version).as_uri()
 
             # Add the extension's data.
             if version.id not in data:
@@ -90,7 +91,7 @@ class Command(BaseCommand):
                 'date': version.date,
                 'version': version.version,
                 'base_url': version.base_url,
-                'download_url': version.download_url,
+                'download_url': public_download_url,
                 'publisher': {
                     'name': version.repository_user,
                     'url': version.repository_user_page,

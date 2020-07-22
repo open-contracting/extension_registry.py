@@ -4,7 +4,17 @@ Changelog
 0.0.21 (Unreleased)
 ~~~~~~~~~~~~~~~~~~~
 
--  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder` can be initialized with a list of extensions' local directories.
+-  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`:
+
+   -  The ``extension_versions`` argument to :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.__init__` can be a list of extensions' local directories.
+   -  :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.__init__`: Add a ``standard_base_url`` argument, which can be a ``file://`` URL to the standard's directory.
+
+-  :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`:
+
+   -  Remove :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.available_in_bulk`.
+   -  Remove :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.directory` (overload ``download_url`` instead).
+
+-  Add a ``standard_base_url`` parameter to :meth:`ocdsextensionregistry.api.build_profile` to modify the standard base URL.
 
 0.0.20 (2020-06-08)
 ~~~~~~~~~~~~~~~~~~~
