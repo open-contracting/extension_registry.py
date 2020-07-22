@@ -29,7 +29,7 @@ class ExtensionVersion:
         self.version = data['Version']
         self.base_url = data['Base URL']
         self.download_url = data['Download URL']
-        self._directory = None
+        self._directory = data.get('Directory')
         self._files = None
         self._metadata = None
         self._schemas = None

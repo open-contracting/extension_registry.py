@@ -1,7 +1,9 @@
 import json
 import logging
+import os.path
 
 from ocdsextensionregistry import ProfileBuilder
+from tests import path
 
 standard_codelists = [
     'awardCriteria.csv',
@@ -111,6 +113,24 @@ def test_patched_release_schema_with_base_url():
 
 def test_patched_release_schema_with_download_url():
     url = 'https://github.com/open-contracting-extensions/ocds_coveredBy_extension/archive/master.zip'
+    builder = ProfileBuilder('1__1__3', [url])
+    result = builder.patched_release_schema()
+
+    assert '$schema' in result
+    assert 'coveredBy' in result['definitions']['Tender']['properties']
+
+
+def test_patched_release_schema_with_absolute_path():
+    url = 'file://{}'.format(os.path.abspath(path('ocds_coveredBy_extension')))
+    builder = ProfileBuilder('1__1__3', [url])
+    result = builder.patched_release_schema()
+
+    assert '$schema' in result
+    assert 'coveredBy' in result['definitions']['Tender']['properties']
+
+
+def test_patched_release_schema_with_absolute_path():
+    url = 'file://{}'.format(path('ocds_coveredBy_extension'))
     builder = ProfileBuilder('1__1__3', [url])
     result = builder.patched_release_schema()
 

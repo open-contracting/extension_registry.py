@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.0.21 (Unreleased)
+~~~~~~~~~~~~~~~~~~~
+
+-  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder` can be initialized with a list of extensions' local directories.
+
 0.0.20 (2020-06-08)
 ~~~~~~~~~~~~~~~~~~~
 

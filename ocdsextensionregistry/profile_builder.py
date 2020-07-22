@@ -9,7 +9,7 @@
     })
 
 This initializes a profile of OCDS 1.1.3 with two extensions. Alternately, you can pass a list of extensions' metadata
-URLs, base URLs and/or download URLs, for example:
+URLs, base URLs, download URLs, and/or local directories, for example:
 
 .. code:: python
 
@@ -17,6 +17,8 @@ URLs, base URLs and/or download URLs, for example:
       'https://raw.githubusercontent.com/open-contracting-extensions/ocds_coveredBy_extension/master/extension.json',
       'https://raw.githubusercontent.com/open-contracting-extensions/ocds_options_extension/master/',
       'https://github.com/open-contracting-extensions/ocds_techniques_extension/archive/master.zip',
+      'file:///absolute/path/to/ocds_lots_extension',
+      'file://relative/path/to/ocds_location_extension',
     ])
 
 After initializing the profile, you can then:
@@ -34,7 +36,7 @@ import logging
 import os
 import re
 from io import BytesIO, StringIO
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 from zipfile import ZipFile
 
 import json_merge_patch
@@ -84,8 +86,11 @@ class ProfileBuilder:
                 yield self.registry.get(id=identifier, version=version)
         else:
             for url in self.extension_versions:
+                parsed = urlparse(url)
                 data = dict.fromkeys(['Id', 'Date', 'Version', 'Base URL', 'Download URL'])
-                if url.endswith('/extension.json'):
+                if parsed.scheme == 'file':
+                    data['Directory'] = url[7:]
+                elif url.endswith('/extension.json'):
                     data['Base URL'] = url[:-14]
                 elif url.endswith('/'):
                     data['Base URL'] = url
