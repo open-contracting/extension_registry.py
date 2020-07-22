@@ -66,16 +66,22 @@ class ProfileBuilder:
                                     ``'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/'``
         :type extension_versions: dict or list
         """
-        self.standard_tag = standard_tag
-        self.extension_versions = extension_versions
-        self.schema_base_url = schema_base_url
-        self._file_cache = {}
-
         # Allows setting the registry URL to e.g. a pull request, when working on a profile.
         if not registry_base_url:
             registry_base_url = 'https://raw.githubusercontent.com/open-contracting/extension_registry/master/'
 
-        self.registry = ExtensionRegistry(registry_base_url + 'extension_versions.csv')
+        self.standard_tag = standard_tag
+        self.extension_versions = extension_versions
+        self.schema_base_url = schema_base_url
+        self.registry_base_url = registry_base_url
+        self._file_cache = {}
+
+    @property
+    def registry(self):
+        if self._registry is None:
+            self._registry = ExtensionRegistry(self.registry_base_url + 'extension_versions.csv')
+
+        return self._registry
 
     def extensions(self):
         """
