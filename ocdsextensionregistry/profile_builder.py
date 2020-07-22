@@ -35,9 +35,8 @@ import json
 import logging
 import os
 import re
-from io import BytesIO, StringIO
+from io import StringIO
 from urllib.parse import urljoin, urlparse
-from zipfile import ZipFile
 
 import json_merge_patch
 
