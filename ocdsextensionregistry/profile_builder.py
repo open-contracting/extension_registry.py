@@ -39,6 +39,7 @@ from io import StringIO
 from urllib.parse import urljoin, urlparse
 
 import json_merge_patch
+from jsonref import JsonRef
 
 from .codelist import Codelist
 from .extension_registry import ExtensionRegistry
@@ -143,36 +144,52 @@ class ProfileBuilder:
 
         return schema
 
-    def release_package_schema(self, schema=None):
+    def _dereferenced_patched_release_schema(self):
+        return JsonRef.replace_refs(self.patched_release_schema())
+
+    def release_package_schema(self, schema=None, embed=False):
         """
-        Returns a release package schema. If `schema_base_url` was provided, updates schema URLs.
+        Returns a release package schema. If the profile builder was initialized with ``schema_base_url``, updates
+        schema URLs.
 
         :param dict schema: the release schema
+        :param bool embed: whether to embed or ``$ref``erence the patched release schema
         """
         if not schema:
             schema = json.loads(self.get_standard_file_contents('release-package-schema.json'))
 
         if self.schema_base_url:
-            url = urljoin(self.schema_base_url, 'release-schema.json')
             schema['id'] = urljoin(self.schema_base_url, 'release-package-schema.json')
-            schema['properties']['releases']['items']['$ref'] = url
+            if embed:
+                patched = self._dereferenced_patched_release_schema()
+                schema['properties']['releases']['items'] = patched
+            else:
+                url = urljoin(self.schema_base_url, 'release-schema.json')
+                schema['properties']['releases']['items']['$ref'] = url
 
         return schema
 
-    def record_package_schema(self, schema=None):
+    def record_package_schema(self, schema=None, embed=False):
         """
-        Returns a record package schema. If `schema_base_url` was provided, updates schema URLs.
+        Returns a record package schema. If the profile builder was initialized with ``schema_base_url``, updates
+        schema URLs.
 
         :param dict schema: the record schema
+        :param bool embed: whether to embed or ``$ref``erence the patched release schema
         """
         if not schema:
             schema = json.loads(self.get_standard_file_contents('record-package-schema.json'))
 
         if self.schema_base_url:
-            url = urljoin(self.schema_base_url, 'release-schema.json')
             schema['id'] = urljoin(self.schema_base_url, 'record-package-schema.json')
-            schema['definitions']['record']['properties']['compiledRelease']['$ref'] = url
-            schema['definitions']['record']['properties']['releases']['oneOf'][1]['items']['$ref'] = url
+            if embed:
+                patched = self._dereferenced_patched_release_schema()
+                schema['definitions']['record']['properties']['compiledRelease'] = patched
+                schema['definitions']['record']['properties']['releases']['oneOf'][1]['items'] = patched
+            else:
+                url = urljoin(self.schema_base_url, 'release-schema.json')
+                schema['definitions']['record']['properties']['compiledRelease']['$ref'] = url
+                schema['definitions']['record']['properties']['releases']['oneOf'][1]['items']['$ref'] = url
 
         return schema
 

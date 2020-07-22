@@ -15,6 +15,7 @@ setup(
     long_description=long_description,
     install_requires=[
         'json-merge-patch',
+        'jsonref',
         'requests',
         'requests-cache',
     ],

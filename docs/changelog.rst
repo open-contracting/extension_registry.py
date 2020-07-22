@@ -8,6 +8,7 @@ Changelog
 
    -  The ``extension_versions`` argument to :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.__init__` can be a list of extensions' local directories.
    -  :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.__init__`: Add a ``standard_base_url`` argument, which can be a ``file://`` URL to the standard's directory.
+   -  :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_package_schema`: Add a ``embed`` argument to indicate whether to embed the patched release schema in the release package schema, which a JSON Schema validator can then use.
    -  Add :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.record_package_schema` method, to match :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_package_schema`.
 
 -  :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`:
@@ -15,7 +16,7 @@ Changelog
    -  Remove :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.available_in_bulk` method.
    -  Remove :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.directory` property (overload ``download_url`` instead).
 
--  Add a ``standard_base_url`` parameter to :meth:`ocdsextensionregistry.api.build_profile` to modify the standard base URL.
+-  Add a ``standard_base_url`` argument to :meth:`ocdsextensionregistry.api.build_profile` to modify the standard base URL.
 
 0.0.20 (2020-06-08)
 ~~~~~~~~~~~~~~~~~~~
@@ -53,7 +54,7 @@ Changelog
 0.0.15 (2019-09-30)
 ~~~~~~~~~~~~~~~~~~~
 
--  Add a ``update_codelist_urls`` parameter to :meth:`ocdsextensionregistry.api.build_profile` to modify codelist reference URLs.
+-  Add a ``update_codelist_urls`` argument to :meth:`ocdsextensionregistry.api.build_profile` to modify codelist reference URLs.
 
 0.0.14 (2019-09-18)
 ~~~~~~~~~~~~~~~~~~~
@@ -63,13 +64,13 @@ Changelog
 0.0.13 (2019-08-29)
 ~~~~~~~~~~~~~~~~~~~
 
--  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`: Add a ``schema`` parameter to :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.patched_release_schema` and :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_package_schema` methods to override the release schema or release package schema.
+-  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`: Add a ``schema`` argument to :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.patched_release_schema` and :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_package_schema` methods to override the release schema or release package schema.
 
 0.0.12 (2019-08-29)
 ~~~~~~~~~~~~~~~~~~~
 
 -  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`: Unregistered extensions are now supported by the profile builder. The ``extension_versions`` argument to :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.__init__` can be a list of extensions' metadata URLs, base URLs and/or download URLs.
--  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`: Add an ``extension_field`` parameter to :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_schema_patch` and :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.patched_release_schema` methods to annotate all definitions and properties with extension names.
+-  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`: Add an ``extension_field`` argument to :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_schema_patch` and :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.patched_release_schema` methods to annotate all definitions and properties with extension names.
 -  Add :meth:`ocdsextensionregistry.utils.get_latest_version`, to return the identifier of the latest version from a list of versions of the same extension.
 
 0.0.11 (2019-06-26)

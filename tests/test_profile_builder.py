@@ -157,6 +157,17 @@ def test_release_package_schema_with_schema_base_url():
     assert result['properties']['releases']['items']['$ref'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa
 
 
+def test_dereferened_release_package_schema_with_schema_base_url():
+    schema_base_url = 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/'
+    builder = ProfileBuilder('1__1__3', {}, schema_base_url=schema_base_url)
+    result = builder.release_package_schema(dereferenced=True)
+
+    # Changes `id` and `$ref`.
+    assert result['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-package-schema.json'  # noqa
+    assert result['properties']['releases']['items']['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa
+    assert '$ref' not in result['properties']['releases']['items']
+
+
 def test_record_package_schema_with_schema_base_url():
     schema_base_url = 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/'
     builder = ProfileBuilder('1__1__3', {}, schema_base_url=schema_base_url)
@@ -166,6 +177,19 @@ def test_record_package_schema_with_schema_base_url():
     assert result['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/record-package-schema.json'  # noqa
     assert result['definitions']['record']['properties']['compiledRelease']['$ref'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa
     assert result['definitions']['record']['properties']['releases']['oneOf'][1]['items']['$ref'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa
+
+
+def test_dereferenced_record_package_schema_with_schema_base_url():
+    schema_base_url = 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/'
+    builder = ProfileBuilder('1__1__3', {}, schema_base_url=schema_base_url)
+    result = builder.record_package_schema(dereferenced=True)
+
+    # Changes `id` and `$ref`.
+    assert result['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/record-package-schema.json'  # noqa
+    assert result['definitions']['record']['properties']['compiledRelease']['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa
+    assert result['definitions']['record']['properties']['releases']['oneOf'][1]['items']['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa
+    assert '$ref' not in result['definitions']['record']['properties']['compiledRelease']
+    assert '$ref' not in result['definitions']['record']['properties']['releases']['oneOf'][1]['items']
 
 
 def test_standard_codelists():
