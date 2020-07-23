@@ -1,6 +1,7 @@
 import os
 import sys
 from io import StringIO
+from pathlib import Path
 from unittest.mock import patch
 
 from ocdsextensionregistry.cli.__main__ import main
@@ -83,7 +84,7 @@ def test_command_missing_download_url(stdout, monkeypatch, tmpdir, caplog):
 
     file.write('Id,Date,Version,Base URL,Download URL\nlocation,,v1.1.3,http://example.com/,')
 
-    monkeypatch.setattr(sys, 'argv', args + ['--extension-versions-url', 'file://{}'.format(file), str(output_dir),
+    monkeypatch.setattr(sys, 'argv', args + ['--extension-versions-url', Path(file).as_uri(), str(output_dir),
                                              'location==v1.1.3'])
     main()
 

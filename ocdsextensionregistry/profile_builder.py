@@ -9,7 +9,7 @@
     })
 
 This initializes a profile of OCDS 1.1.3 with two extensions. Alternately, you can pass a list of extensions' metadata
-URLs, base URLs, download URLs, and/or local directories, for example:
+URLs, base URLs, download URLs, and/or absolute paths to local directories, for example:
 
 .. code:: python
 
@@ -18,7 +18,6 @@ URLs, base URLs, download URLs, and/or local directories, for example:
       'https://raw.githubusercontent.com/open-contracting-extensions/ocds_options_extension/master/',
       'https://github.com/open-contracting-extensions/ocds_techniques_extension/archive/master.zip',
       'file:///absolute/path/to/ocds_lots_extension',
-      'file://relative/path/to/ocds_location_extension',
     ])
 
 After initializing the profile, you can then:

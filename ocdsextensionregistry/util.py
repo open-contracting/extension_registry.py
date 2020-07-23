@@ -11,8 +11,10 @@ from .exceptions import UnknownLatestVersion
 
 if os.name == 'nt':
     encoding = 'cp1252'
+    file_uri_offset = 8
 else:
     encoding = 'utf-8'
+    file_uri_offset = 7
 
 requests_cache.install_cache(backend='memory')
 
@@ -49,7 +51,7 @@ def _resolve(data_or_url):
 
     if parsed.scheme:
         if parsed.scheme == 'file':
-            with open(data_or_url[7:]) as f:
+            with open(data_or_url[file_uri_offset:]) as f:
                 return f.read()
 
         response = requests.get(data_or_url)
@@ -65,13 +67,13 @@ def _resolve_zip(url, root=''):
     if parsed.scheme == 'file':
         io = BytesIO()
         with ZipFile(io, 'w') as zipfile:
-            zipfile.write(url[7:])
-            for root, dirs, files in os.walk(os.path.join(url[7:], root)):
+            zipfile.write(url[file_uri_offset:], arcname='zip/')
+            for root, dirs, files in os.walk(os.path.join(url[file_uri_offset:], root)):
                 for directory in dirs:
                     if directory == '__pycache__':
                         dirs.remove(directory)
                 for file in sorted(files):
-                    zipfile.write(os.path.join(root, file))
+                    zipfile.write(os.path.join(root, file), arcname='zip/{}'.format(file))
     else:
         response = requests.get(url, allow_redirects=True)
         response.raise_for_status()

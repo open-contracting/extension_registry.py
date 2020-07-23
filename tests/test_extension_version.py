@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 import pytest
 import requests
@@ -105,7 +106,7 @@ def test_remote_directory(tmpdir):
     file.write('{"key": "value"}')
 
     obj = ExtensionVersion(arguments(**{'Download URL': None}))
-    obj.download_url = 'file://{}'.format(tmpdir)
+    obj.download_url = Path(tmpdir).as_uri()
 
     data = obj.remote('extension.json')
     # Repeat requests should return the same result.

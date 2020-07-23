@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 
 from ocdsextensionregistry import ExtensionRegistry
@@ -69,7 +71,7 @@ def test_init_with_file(tmpdir):
     extensions_file = tmpdir.join('extensions.csv')
     extensions_file.write(extensions_data)
 
-    obj = ExtensionRegistry('file://{}'.format(extension_versions_file), 'file://{}'.format(extensions_file))
+    obj = ExtensionRegistry(Path(extension_versions_file).as_uri(), Path(extensions_file).as_uri())
 
     assert len(obj.versions) == 14
     assert obj.versions[0].as_dict() == {
