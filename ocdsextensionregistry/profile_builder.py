@@ -68,7 +68,7 @@ class ProfileBuilder:
         # Allows setting the registry URL to e.g. a pull request, when working on a profile.
         if not registry_base_url:
             registry_base_url = 'https://raw.githubusercontent.com/open-contracting/extension_registry/master/'
-        if not standard_base_url:
+        if not standard_base_url and standard_tag:
             standard_base_url = 'https://codeload.github.com/open-contracting/standard/zip/' + standard_tag
 
         self.standard_tag = standard_tag
@@ -325,7 +325,7 @@ def _add_extension_field(schema, extension_name, field_name, pointer=None):
         for item in schema:
             _add_extension_field(item, extension_name, field_name=field_name, pointer=pointer)
     elif isinstance(schema, dict):
-        if len(pointer) > 1 and pointer[-2] in ('definitions', 'properties'):
+        if len(pointer) > 1 and pointer[-2] in ('definitions', 'properties') and 'title' in schema:
             schema[field_name] = extension_name
         for key, value in schema.items():
             _add_extension_field(value, extension_name, field_name=field_name, pointer=pointer + (key,))

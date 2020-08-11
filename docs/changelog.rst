@@ -1,12 +1,20 @@
 Changelog
 =========
 
+0.0.22 (2020-08-11)
+~~~~~~~~~~~~~~~~~~~
+
+-  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`:
+
+   -  :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.__init__`: No longer errors if ``standard_tag`` argument is ``None``.
+   -  :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_schema_patch`: Only annotates definitions and fields with ``title`` properties.
+
 0.0.21 (2020-07-22)
 ~~~~~~~~~~~~~~~~~~~
 
 -  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`:
 
-   -  The ``extension_versions`` argument to :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.__init__` can be a list of extensions' local directories.
+   -  :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.__init__`: The ``extension_versions`` argument can be a list of extensions' local directories.
    -  :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.__init__`: Add a ``standard_base_url`` argument, which can be a ``file://`` URL to the standard's directory.
    -  :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_package_schema`: Add a ``embed`` argument to indicate whether to embed the patched release schema in the release package schema, which a JSON Schema validator can then use.
    -  Add :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.record_package_schema` method, to match :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_package_schema`.
@@ -70,7 +78,7 @@ Changelog
 ~~~~~~~~~~~~~~~~~~~
 
 -  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`: Unregistered extensions are now supported by the profile builder. The ``extension_versions`` argument to :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.__init__` can be a list of extensions' metadata URLs, base URLs and/or download URLs.
--  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`: Add an ``extension_field`` argument to :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_schema_patch` and :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.patched_release_schema` methods to annotate all definitions and properties with extension names.
+-  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`: Add an ``extension_field`` argument to :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_schema_patch` and :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.patched_release_schema` methods to annotate all definitions and fields with extension names.
 -  Add :meth:`ocdsextensionregistry.utils.get_latest_version`, to return the identifier of the latest version from a list of versions of the same extension.
 
 0.0.11 (2019-06-26)
