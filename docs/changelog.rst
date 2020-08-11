@@ -16,7 +16,7 @@ Changelog
 
    -  :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.__init__`: The ``extension_versions`` argument can be a list of extensions' local directories.
    -  :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.__init__`: Add a ``standard_base_url`` argument, which can be a ``file://`` URL to the standard's directory.
-   -  :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_package_schema`: Add a ``embed`` argument to indicate whether to embed the patched release schema in the release package schema, which a JSON Schema validator can then use.
+   -  :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_package_schema`: Add a ``embed`` argument to indicate whether to embed the patched release schema in the release package schema.
    -  Add :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.record_package_schema` method, to match :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_package_schema`.
 
 -  :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`:
