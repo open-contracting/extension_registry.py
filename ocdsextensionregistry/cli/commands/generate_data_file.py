@@ -74,16 +74,15 @@ class Command(BaseCommand):
                 version.download_url = (versions_directory / version.id / version.version).as_uri()
 
             # Add the extension's data.
-            if version.id not in data:
-                data[version.id] = {
-                    'id': version.id,
-                    'category': version.category,
-                    'core': version.core,
-                    'name': {},
-                    'description': {},
-                    'latest_version': None,
-                    'versions': {},
-                }
+            data.setdefault(version.id, {
+                'id': version.id,
+                'category': version.category,
+                'core': version.core,
+                'name': {},
+                'description': {},
+                'latest_version': None,
+                'versions': {},
+            })
 
             # Add the version's metadata.
             version_data = {
@@ -117,8 +116,7 @@ class Command(BaseCommand):
                     version_data['metadata'][key][language] = translation[key][language]
 
                 for name in ('record-package-schema.json', 'release-package-schema.json', 'release-schema.json'):
-                    if name not in version_data['schemas']:
-                        version_data['schemas'][name] = {}
+                    version_data['schemas'].setdefault(name, {})
 
                     if name in version.schemas:
                         translation = translate_schema_data(version.schemas[name], translator)
@@ -128,8 +126,7 @@ class Command(BaseCommand):
                 if version.codelists:
                     translator = _translator(version, 'codelists', localedir, language)
                     for name in sorted(version.codelists):
-                        if name not in version_data['codelists']:
-                            version_data['codelists'][name] = {}
+                        version_data['codelists'].setdefault(name, {})
 
                         codelist = version.codelists[name]
                         version_data['codelists'][name][language] = {}

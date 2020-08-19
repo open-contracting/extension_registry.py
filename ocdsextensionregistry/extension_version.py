@@ -123,8 +123,7 @@ class ExtensionVersion:
 
             for field in ('name', 'description', 'documentationUrl'):
                 # Add required fields.
-                if field not in self._metadata:
-                    self._metadata[field] = {}
+                self._metadata.setdefault(field, {})
                 # Add language maps.
                 if not isinstance(self._metadata[field], dict):
                     self._metadata[field] = {'en': self._metadata[field]}
