@@ -305,11 +305,12 @@ class ProfileBuilder:
             zipfile = _resolve_zip(self.standard_base_url, 'schema')
             names = zipfile.namelist()
 
+            path = names[0]
             if self.standard_tag < '1__1__5':
-                path = 'standard/schema/'
+                path += 'standard/schema/'
             else:
-                path = 'schema/'
-            start = len(names[0] + path)
+                path += 'schema/'
+            start = len(path)
 
             for name in names[1:]:
                 if path in name:

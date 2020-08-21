@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.0.23 (Unreleased)
+~~~~~~~~~~~~~~~~~~~
+
+-  :meth:`ocdsextensionregistry.profile_builder.ProfileBuilder.get_standard_file_contents`: Fix for OCDS 1.1.5.
+
 0.0.22 (2020-08-11)
 ~~~~~~~~~~~~~~~~~~~
 
