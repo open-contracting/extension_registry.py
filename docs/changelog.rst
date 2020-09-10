@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.0.24 (Unreleased)
+~~~~~~~~~~~~~~~~~~~
+
+-  :meth:`ocdsextensionregistry.api.build_profile` aggregates ``dependencies`` and ``testDependencies`` from extensions.
+
 0.0.23 (2020-08-20)
 ~~~~~~~~~~~~~~~~~~~
 

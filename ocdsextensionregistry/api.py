@@ -105,6 +105,17 @@ def build_profile(basedir, standard_tag, extension_versions, registry_base_url=N
     else:
         metadata.pop('codelists', None)
 
+    for field in ('dependencies', 'testDependencies'):
+        metadata[field] = set()
+        for extension in builder.extensions():
+            metadata[field].update(extension.metadata.get(field, []))
+        if field == 'testDependencies':
+            metadata[field].difference_update(metadata['dependencies'])
+        if metadata[field]:
+            metadata[field] = sorted(metadata[field])
+        else:
+            del metadata[field]
+
     write_json_file(metadata, 'profile', 'extension.json')
 
     if update_codelist_urls:
