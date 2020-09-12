@@ -5,6 +5,8 @@ Changelog
 ~~~~~~~~~~~~~~~~~~~
 
 -  :meth:`ocdsextensionregistry.api.build_profile` aggregates ``dependencies`` and ``testDependencies`` from extensions.
+-  :class:`~ocdsextensionregistry.extension_registry.ExtensionRegistry`: Add :meth:`~ocdsextensionregistry.extension_registry.ExtensionRegistry.get_from_url`.
+-  :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`: Add :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.get_url`.
 
 0.0.23 (2020-08-20)
 ~~~~~~~~~~~~~~~~~~~

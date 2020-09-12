@@ -54,6 +54,12 @@ class ExtensionVersion:
         """
         return {key: value for key, value in self.__dict__.items() if not key.startswith('_')}
 
+    def get_url(self, basename):
+        """
+        Returns the URL of the file within the extension.
+        """
+        return ''.join([self.base_url, basename])
+
     def remote(self, basename):
         """
         Returns the contents of the file within the extension.
@@ -65,7 +71,7 @@ class ExtensionVersion:
         """
         if basename not in self.files:
             if not self.download_url:
-                response = requests.get(self.base_url + basename)
+                response = requests.get(self.get_url(basename))
                 response.raise_for_status()
                 self._files[basename] = response.text
 

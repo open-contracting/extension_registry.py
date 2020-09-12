@@ -32,6 +32,7 @@ See additional details in :doc:`extension_version`.
 
 import csv
 from io import StringIO
+from urllib.parse import urlparse
 
 from .exceptions import DoesNotExist, MissingExtensionMetadata
 from .extension import Extension
@@ -79,7 +80,7 @@ class ExtensionRegistry:
         """
         Returns the first extension version in the registry that matches the keyword arguments.
 
-        :raises DoesNotExist: if no extension version matches the keyword arguments
+        :raises DoesNotExist: if no extension version matches
         :raises MissingExtensionMetadata: if the keyword arguments refer to extensions data, but the extension registry
                                           was not initialized with extensions data
         """
@@ -89,6 +90,16 @@ class ExtensionRegistry:
             raise DoesNotExist('Extension version matching {!r} does not exist.'.format(kwargs))
         except AttributeError as e:
             self._handle_attribute_error(e)
+
+    def get_from_url(self, url):
+        """
+        Returns the first extension version in the registry whose base URL matches the given URL.
+
+        :raises DoesNotExist: if no extension version matches
+        """
+        parsed = urlparse(url)
+        path = parsed.path.rsplit('/', 1)[0] + '/'
+        return self.get(base_url=parsed._replace(path=path).geturl())
 
     def __iter__(self):
         """

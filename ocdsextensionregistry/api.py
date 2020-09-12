@@ -7,6 +7,7 @@ import json
 import os
 from contextlib import contextmanager
 
+from .exceptions import DoesNotExist
 from .profile_builder import ProfileBuilder
 from .util import json_dump
 
@@ -105,12 +106,25 @@ def build_profile(basedir, standard_tag, extension_versions, registry_base_url=N
     else:
         metadata.pop('codelists', None)
 
+    # Update the "dependencies" and "testDependencies" fields in extension.json, without duplication.
+    extensions = {}
+    for extension in builder.extensions():
+        extensions[extension.id] = extension.get_url('extension.json')
+
     for field in ('dependencies', 'testDependencies'):
         metadata[field] = set()
+
         for extension in builder.extensions():
-            metadata[field].update(extension.metadata.get(field, []))
-        if field == 'testDependencies':
-            metadata[field].difference_update(metadata['dependencies'])
+            for url in extension.metadata.get(field, []):
+                try:
+                    extension = builder.registry.get_from_url(url)
+                    if extension.id in extensions:
+                        continue
+                    extensions[extension.id] = url
+                except DoesNotExist:
+                    pass
+                metadata[field].add(url)
+
         if metadata[field]:
             metadata[field] = sorted(metadata[field])
         else:
