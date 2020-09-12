@@ -170,12 +170,34 @@ def test_get():
     }
 
 
+def test_get_from_url():
+    obj = ExtensionRegistry(extension_versions_data)
+    url = 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/v1.1.3/extension.json'
+    result = obj.get_from_url(url)
+
+    assert result.as_dict() == {
+        'id': 'lots',
+        'date': '2018-01-30',
+        'version': 'v1.1.3',
+        'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/v1.1.3/',
+        'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_lots_extension/zipball/v1.1.3',
+    }
+
+
 def test_get_no_match():
     obj = ExtensionRegistry(extension_versions_data)
     with pytest.raises(DoesNotExist) as excinfo:
         obj.get(id='nonexistent')
 
     assert str(excinfo.value) == "Extension version matching {'id': 'nonexistent'} does not exist."
+
+
+def test_get_from_url_no_match():
+    obj = ExtensionRegistry(extension_versions_data)
+    with pytest.raises(DoesNotExist) as excinfo:
+        obj.get_from_url('http://example.com')
+
+    assert str(excinfo.value) == "Extension version matching {'base_url': 'http://example.com/'} does not exist."
 
 
 def test_get_without_extensions():

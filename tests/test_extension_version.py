@@ -81,6 +81,14 @@ def test_as_dict():
     }
 
 
+def test_get_url():
+    obj = ExtensionVersion(arguments())
+
+    url = 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/extension.json'
+
+    assert obj.get_url('extension.json') == url
+
+
 def test_remote():
     obj = ExtensionVersion(arguments(**{'Download URL': None}))
 
