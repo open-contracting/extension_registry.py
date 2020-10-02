@@ -23,7 +23,7 @@ def json_dump(data, io):
     """
     Dumps JSON to a file-like object.
     """
-    json.dump(data, io, ensure_ascii=False, indent=2, separators=(',', ': '))
+    json.dump(data, io, ensure_ascii=False, indent=2)
 
 
 def get_latest_version(versions):
