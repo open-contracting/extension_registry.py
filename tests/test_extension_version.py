@@ -36,7 +36,7 @@ def test_init():
     (arguments(), 'location==v1.1.3'),
     (arguments(**{
         'Id': None,
-        'Base URL': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/',  # noqa: E501
+        'Base URL': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/',
     }), 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/'),
     (arguments(**{
         'Id': None,
