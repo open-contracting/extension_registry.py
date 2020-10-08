@@ -94,7 +94,7 @@ def test_patched_release_schema_with_extension_field():
 
 
 def test_patched_release_schema_with_metadata_url():
-    url = 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_coveredBy_extension/master/extension.json'  # noqa
+    url = 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_coveredBy_extension/master/extension.json'  # noqa: E501
     builder = ProfileBuilder('1__1__3', [url])
     result = builder.patched_release_schema()
 
@@ -135,7 +135,7 @@ def test_patched_release_schema_with_schema_base_url():
     result = builder.patched_release_schema()
 
     # Changes `id`.
-    assert result['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa
+    assert result['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa: E501
 
 
 def test_release_package_schema_with_schema_base_url():
