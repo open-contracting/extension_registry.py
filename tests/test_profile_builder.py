@@ -53,7 +53,7 @@ def test_extensions():
         'date': '2018-02-01',
         'version': 'v1.1.3',
         'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/',
-        'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.3',  # noqa
+        'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.3',  # noqa: E501
     }
 
 
@@ -144,8 +144,8 @@ def test_release_package_schema_with_schema_base_url():
     result = builder.release_package_schema()
 
     # Changes `id` and `$ref`.
-    assert result['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-package-schema.json'  # noqa
-    assert result['properties']['releases']['items']['$ref'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa
+    assert result['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-package-schema.json'  # noqa: E501
+    assert result['properties']['releases']['items']['$ref'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa: E501
 
 
 def test_release_package_schema_with_schema_base_url_and_embed():
@@ -154,8 +154,8 @@ def test_release_package_schema_with_schema_base_url_and_embed():
     result = builder.release_package_schema(embed=True)
 
     # Changes `id` and `$ref`.
-    assert result['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-package-schema.json'  # noqa
-    assert result['properties']['releases']['items']['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa
+    assert result['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-package-schema.json'  # noqa: E501
+    assert result['properties']['releases']['items']['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa: E501
     assert '$ref' not in result['properties']['releases']['items']
 
 
@@ -165,9 +165,9 @@ def test_record_package_schema_with_schema_base_url():
     result = builder.record_package_schema()
 
     # Changes `id` and `$ref`.
-    assert result['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/record-package-schema.json'  # noqa
-    assert result['definitions']['record']['properties']['compiledRelease']['$ref'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa
-    assert result['definitions']['record']['properties']['releases']['oneOf'][1]['items']['$ref'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa
+    assert result['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/record-package-schema.json'  # noqa: E501
+    assert result['definitions']['record']['properties']['compiledRelease']['$ref'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa: E501
+    assert result['definitions']['record']['properties']['releases']['oneOf'][1]['items']['$ref'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa: E501
 
 
 def test_record_package_schema_with_schema_base_url_and_embed():
@@ -176,9 +176,9 @@ def test_record_package_schema_with_schema_base_url_and_embed():
     result = builder.record_package_schema(embed=True)
 
     # Changes `id` and `$ref`.
-    assert result['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/record-package-schema.json'  # noqa
-    assert result['definitions']['record']['properties']['compiledRelease']['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa
-    assert result['definitions']['record']['properties']['releases']['oneOf'][1]['items']['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa
+    assert result['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/record-package-schema.json'  # noqa: E501
+    assert result['definitions']['record']['properties']['compiledRelease']['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa: E501
+    assert result['definitions']['record']['properties']['releases']['oneOf'][1]['items']['id'] == 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/release-schema.json'  # noqa: E501
     assert '$ref' not in result['definitions']['record']['properties']['compiledRelease']
     assert '$ref' not in result['definitions']['record']['properties']['releases']['oneOf'][1]['items']
 
@@ -247,7 +247,7 @@ def test_extension_codelists(caplog):
         # Logs ignored codelists.
         assert len(caplog.records) == 1
         assert caplog.records[-1].levelname == 'INFO'
-        assert caplog.records[-1].message == 'documentType.csv has the codes added by +documentType.csv - ignoring +documentType.csv'  # noqa
+        assert caplog.records[-1].message == 'documentType.csv has the codes added by +documentType.csv - ignoring +documentType.csv'  # noqa: E501
 
 
 def test_patched_codelists(caplog):
@@ -286,7 +286,7 @@ def test_patched_codelists(caplog):
         # Logs ignored codelists.
         assert len(caplog.records) == 1
         assert caplog.records[-1].levelname == 'INFO'
-        assert caplog.records[-1].message == 'documentType.csv has the codes added by +documentType.csv - ignoring +documentType.csv'  # noqa
+        assert caplog.records[-1].message == 'documentType.csv has the codes added by +documentType.csv - ignoring +documentType.csv'  # noqa: E501
 
 
 def test_get_standard_file_contents():

@@ -79,7 +79,7 @@ def test_repr():
 def test_repr_extension_name():
     obj = CodelistCode(*arguments('OCDS Core'))
 
-    assert repr(obj) == "CodelistCode(data={'Code': 'tender', 'Title': 'Tender', 'Description': '…'}, extension_name='OCDS Core')"  # noqa
+    assert repr(obj) == "CodelistCode(data={'Code': 'tender', 'Title': 'Tender', 'Description': '…'}, extension_name='OCDS Core')"  # noqa: E501
 
 
 def test_pop():

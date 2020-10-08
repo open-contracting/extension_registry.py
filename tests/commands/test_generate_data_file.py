@@ -81,8 +81,8 @@ def test_command_directory(stdout, monkeypatch, tmpdir):
                     'id': 'location',
                     'date': '2018-02-01',
                     'version': 'v1.1.3',
-                    'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/',  # noqa
-                    'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.3',  # noqa
+                    'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/',  # noqa: E501
+                    'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.3',  # noqa: E501
                     'publisher': {
                         'name': 'open-contracting-extensions',
                         'url': 'https://github.com/open-contracting-extensions',

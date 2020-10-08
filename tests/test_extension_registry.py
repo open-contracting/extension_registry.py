@@ -6,7 +6,7 @@ from ocdsextensionregistry import ExtensionRegistry
 from ocdsextensionregistry.exceptions import DoesNotExist, MissingExtensionMetadata
 
 extensions_url = 'https://raw.githubusercontent.com/open-contracting/extension_registry/master/extensions.csv'
-extension_versions_url = 'https://raw.githubusercontent.com/open-contracting/extension_registry/master/extension_versions.csv'  # noqa
+extension_versions_url = 'https://raw.githubusercontent.com/open-contracting/extension_registry/master/extension_versions.csv'  # noqa: E501
 
 extensions_data = """Id,Category,Core
 charges,ppp,
@@ -126,7 +126,7 @@ def test_filter():
         'date': '2018-02-01',
         'version': 'v1.1.3',
         'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_enquiry_extension/v1.1.3/',
-        'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_enquiry_extension/zipball/v1.1.3',  # noqa
+        'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_enquiry_extension/zipball/v1.1.3',  # noqa: E501
         'category': 'tender',
         'core': True,
     }
