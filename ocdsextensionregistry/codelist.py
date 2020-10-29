@@ -45,6 +45,8 @@ Get the name of the codelist it modifies:
 
     codelist.basename  # 'partyRole.csv'
 """
+import csv
+from io import StringIO
 
 from .codelist_code import CodelistCode
 
@@ -86,6 +88,18 @@ class Codelist:
         Removes deprecated codes and the Deprecated column.
         """
         self.rows = [row for row in self.rows if not row.pop('Deprecated', None)]
+
+    def to_csv(self):
+        """
+        Returns the codelist as CSV content.
+        """
+        io = StringIO()
+
+        writer = csv.DictWriter(io, fieldnames=self.fieldnames, lineterminator='\n', extrasaction='ignore')
+        writer.writeheader()
+        writer.writerows(self)
+
+        return io.getvalue()
 
     @property
     def codes(self):

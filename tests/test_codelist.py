@@ -1,6 +1,7 @@
 import csv
 import sys
 from io import StringIO
+from textwrap import dedent
 
 from ocdsextensionregistry import Codelist, CodelistCode
 
@@ -112,6 +113,19 @@ def test_remove_deprecated_codes():
 
     assert 'open' in obj.codes
     assert 'other' not in obj.codes
+
+
+def test_to_csv():
+    obj = fixture()
+    content = obj.to_csv()
+
+    assert content == dedent("""
+    Code,Title,Description
+    open,Open,All interested suppliers may submit a tender.
+    selective,Selective,Only qualified suppliers are invited to submit a tender.
+    limited,Limited,The procuring entity contacts a number of suppliers of its choice.
+    direct,Direct,The contract is awarded to a single supplier without competition.
+    """)[1:]
 
 
 def test_codes():
