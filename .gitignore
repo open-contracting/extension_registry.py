@@ -1,10 +1,9 @@
-/.cache
+/*.egg-info
 /.coverage
 /.tox
-/build
 /dist
-/*.egg-info
 /docs/_build
+/htmlcov
 
 # Common output from CLI testing in development
 /.tx
