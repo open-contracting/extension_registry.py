@@ -9,11 +9,15 @@ To install this package with command-line tools, run:
 
 Then, `install the ocds-babel requirements for Markdown translation <https://ocds-babel.readthedocs.io/en/latest/api/translate.html#install-requirements-for-markdown-translation>`__.
 
-To see all commands available, run::
+To see all commands available, run:
+
+.. code-block:: bash
 
     ocdsextensionregistry --help
 
-If you see a message at the start of the output like::
+If you see a message at the start of the output like:
+
+.. code-block:: none
 
     exception "No module named 'babel'" prevented loading of ocdsextensionregistry.cli.commands.generate_pot_files module
 
@@ -24,19 +28,27 @@ download
 
 Downloads versions of extensions to a local directory.
 
-To download all versions of all extensions into an ``outputdir`` directory::
+To download all versions of all extensions into an ``outputdir`` directory:
+
+.. code-block:: bash
 
     ocdsextensionregistry download outputdir
 
-To download all versions of specific extensions::
+To download all versions of specific extensions:
+
+.. code-block:: bash
 
     ocdsextensionregistry download outputdir lots bids
 
-To download specific versions::
+To download specific versions:
+
+.. code-block:: bash
 
     ocdsextensionregistry download outputdir bids==v1.1.3
 
-You can mix and match specifying extensions and versions::
+You can mix and match specifying extensions and versions:
+
+.. code-block:: bash
 
     ocdsextensionregistry download outputdir lots bids==v1.1.3
 
@@ -51,7 +63,9 @@ Within the output directory, the extension files are organized like `{extension}
 generate-pot-files
 ------------------
 
-Creates POT files (message catalogs) for versions of extensions in a local directory, for example::
+Creates POT files (message catalogs) for versions of extensions in a local directory, for example:
+
+.. code-block:: bash
 
     ocdsextensionregistry generate-pot-files build/locale
 
@@ -61,24 +75,32 @@ You can specify versions and extensions like with the ``download`` command.
 
 Within the output directory, the POT files are organized like `{extension}/{version}/{files}`, for example: ``lots/v1.1.3/docs.pot``.
 
-This command can be run offline if ``--versions-dir`` is set to a local directory organized like the output directory of the ``download`` command, and if ``--extension-versions-url`` and ``--extensions-url`` are set to local files, for example::
+This command can be run offline if ``--versions-dir`` is set to a local directory organized like the output directory of the ``download`` command, and if ``--extension-versions-url`` and ``--extensions-url`` are set to local files, for example:
+
+.. code-block:: bash
 
     ocdsextensionregistry generate-pot-files --versions-dir outputdir --extension-versions-url file://path/to/extension_versions.csv --extensions-url file://path/to/extensions.csv build/locale
 
 generate-data-file
 ------------------
 
-Generates a data file in JSON format with all the information about versions of extensions, for example::
+Generates a data file in JSON format with all the information about versions of extensions, for example:
+
+.. code-block:: bash
 
     ocdsextensionregistry generate-data-file > data.json
 
 You can specify versions and extensions like with the ``download`` command.
 
-To add translations to the data file, set the ``--locale-dir`` option to a directory containing MO files, for example::
+To add translations to the data file, set the ``--locale-dir`` option to a directory containing MO files, for example:
+
+.. code-block:: bash
 
     ocdsextensionregistry generate-data-file --locale-dir locale > data.json
 
-The default behavior is to add all available translations, To select translations, use the ``--languages`` option, for example::
+The default behavior is to add all available translations, To select translations, use the ``--languages`` option, for example:
+
+.. code-block:: bash
 
     ocdsextensionregistry generate-data-file --locale-dir locale --languages es,fr > data.json
 
@@ -86,13 +108,15 @@ To create MO files from existing translations, see :doc:`translation`.
 
 By default, the publisher name of an extension version is like "open-contracting-extensions". If the version is on GitHub, you can have the publisher name be like "Open Contracting Data Standard Extensions" by `generating a personal access token <https://github.com/settings/tokens/new>`__ (do not select any scopes), copying it, and setting a ``OCDS_GITHUB_ACCESS_TOKEN`` environment variable to it.
 
-This command can be run offline if ``--versions-dir`` is set to a local directory organized like the output directory of the ``download`` command, and if ``--extension-versions-url`` and ``--extensions-url`` are set to local files, for example::
+This command can be run offline if ``--versions-dir`` is set to a local directory organized like the output directory of the ``download`` command, and if ``--extension-versions-url`` and ``--extensions-url`` are set to local files, for example:
+
+.. code-block:: bash
 
     ocdsextensionregistry generate-data-file --versions-dir outputdir --extension-versions-url file://path/to/extension_versions.csv --extensions-url file://path/to/extensions.csv > data.json
 
 The data file is organized as below. To keep it short, the sample shows only one version of one extension, and only one row of one codelist, and it truncates the Markdown content of documentation files and the parsed content of schema files.
 
-.. code:: json
+.. code-block:: json
 
     {
       "risk_allocation": {
