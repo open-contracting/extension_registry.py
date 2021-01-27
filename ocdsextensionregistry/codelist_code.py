@@ -23,6 +23,9 @@ class CodelistCode(Mapping):
     def __len__(self):
         return len(self.data)
 
+    def __lt__(self, other):
+        return self.data['Code'] < other.data['Code']
+
     def __repr__(self):
         if self.extension_name:
             return 'CodelistCode(data={!r}, extension_name={!r})'.format(self.data, self.extension_name)
