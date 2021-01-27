@@ -66,6 +66,9 @@ class Codelist:
     def __len__(self):
         return len(self.rows)
 
+    def __lt__(self, other):
+        return self.name < other.name
+
     def __repr__(self):
         return 'Codelist(name={!r}, rows={!r})'.format(self.name, self.rows)
 

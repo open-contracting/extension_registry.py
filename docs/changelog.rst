@@ -4,7 +4,8 @@ Changelog
 0.0.25 (Unreleased)
 ~~~~~~~~~~~~~~~~~~~
 
--  :class:`~ocdsextensionregistry.codelist.Codelist`: Add :meth:`~ocdsextensionregistry.codelist.Codelist.to_csv`.
+-  :class:`~ocdsextensionregistry.codelist.Codelist`: Add :meth:`~ocdsextensionregistry.codelist.Codelist.to_csv` and :meth:`~ocdsextensionregistry.codelist.Codelist.__lt__`.
+
 0.0.24 (2020-09-12)
 ~~~~~~~~~~~~~~~~~~~
 

@@ -59,7 +59,10 @@ def test_extensions():
 
 def test_release_schema_patch():
     # Use the ppp extension to test null values.
-    builder = ProfileBuilder('1__1__3', {'ppp': 'master', 'location': 'v1.1.3'})
+    builder = ProfileBuilder('1__1__3', {
+        'https://raw.githubusercontent.com/open-contracting-extensions/ocds_ppp_extension/70c5cb759d4739d1eca5db832e723afb69bbdae0/',  # noqa: E501
+        'https://github.com/open-contracting-extensions/ocds_location_extension/archive/v1.1.3.zip',
+    })
     result = builder.release_schema_patch()
 
     # Merges patches.
@@ -72,7 +75,10 @@ def test_release_schema_patch():
 
 def test_patched_release_schema():
     # Use the ppp extension to test null values.
-    builder = ProfileBuilder('1__1__3', {'ppp': 'master', 'location': 'v1.1.3'})
+    builder = ProfileBuilder('1__1__3', {
+        'https://raw.githubusercontent.com/open-contracting-extensions/ocds_ppp_extension/70c5cb759d4739d1eca5db832e723afb69bbdae0/',  # noqa: E501
+        'https://github.com/open-contracting-extensions/ocds_location_extension/archive/v1.1.3.zip',
+    })
     result = builder.patched_release_schema()
 
     # Patches core.
@@ -212,24 +218,24 @@ def test_extension_codelists(caplog):
         # documentType.csv and tariffs has +documentType.csv, but documentType.csv contains the codes added by
         # +documentType.csv, so should not error. ppp and enquiries both have +partyRole.csv.
         builder = ProfileBuilder('1__1__3', {
-            'ppp': 'master',
-            'enquiries': 'v1.1.3',
-            'charges': 'master',
-            'tariffs': 'master',
+            'https://raw.githubusercontent.com/open-contracting-extensions/ocds_ppp_extension/70c5cb759d4739d1eca5db832e723afb69bbdae0/',  # noqa: E501
+            'https://github.com/open-contracting-extensions/ocds_enquiry_extension/archive/v1.1.3.zip',
+            'https://github.com/open-contracting-extensions/ocds_charges_extension/archive/master.zip',
+            'https://github.com/open-contracting-extensions/ocds_tariffs_extension/archive/master.zip',
         })
-        result = builder.extension_codelists()
+        result = sorted(builder.extension_codelists())
         plus_party_role = next(codelist for codelist in result if codelist.name == '+partyRole.csv')
 
         # Collects codelists.
         assert len(result) == 9
-        assert [codelist.name for codelist in result] == [
+        assert [codelist.name for codelist in result] == sorted([
             '+milestoneType.csv',
             '+partyRole.csv',
             '+releaseTag.csv',
             '-partyRole.csv',
             'documentType.csv',
             'initiationType.csv',
-        ] + new_extension_codelists
+        ] + new_extension_codelists)
 
         # Preserves content.
         assert result[0].name == '+milestoneType.csv'
@@ -252,11 +258,11 @@ def test_extension_codelists(caplog):
 
 def test_patched_codelists(caplog):
     with caplog.at_level(logging.INFO):
-        builder = ProfileBuilder('1__1__3', {
-            'ppp': 'master',
-            'charges': 'master',
-            'tariffs': 'master',
-        })
+        builder = ProfileBuilder('1__1__3', [
+            'https://raw.githubusercontent.com/open-contracting-extensions/ocds_ppp_extension/70c5cb759d4739d1eca5db832e723afb69bbdae0/',  # noqa: E501
+            'https://github.com/open-contracting-extensions/ocds_charges_extension/archive/master.zip',
+            'https://github.com/open-contracting-extensions/ocds_tariffs_extension/archive/master.zip',
+        ])
         result = builder.patched_codelists()
         party_role = next(codelist for codelist in result if codelist.name == 'partyRole.csv')
         initiation_type = next(codelist for codelist in result if codelist.name == 'initiationType.csv')
