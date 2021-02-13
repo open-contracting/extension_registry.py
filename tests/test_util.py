@@ -48,10 +48,10 @@ def test_get_latest_version_dateless():
 def arguments(**kwargs):
     data = {
         'Id': 'location',
-        'Date': '2018-02-01',
-        'Version': 'v1.1.3',
-        'Base URL': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/',
-        'Download URL': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.3',  # noqa: E501
+        'Date': '2019-02-25',
+        'Version': 'v1.1.4',
+        'Base URL': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.4/',
+        'Download URL': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.4',  # noqa: E501
     }
 
     data.update(kwargs)

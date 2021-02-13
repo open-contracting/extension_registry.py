@@ -14,7 +14,7 @@ args = ['ocdsextensionregistry', 'download']
 
 @patch('sys.stdout', new_callable=StringIO)
 def test_command(stdout, monkeypatch, tmpdir):
-    monkeypatch.setattr(sys, 'argv', args + [str(tmpdir), 'location==v1.1.3'])
+    monkeypatch.setattr(sys, 'argv', args + [str(tmpdir), 'location==v1.1.4'])
     main()
 
     assert stdout.getvalue() == ''
@@ -26,7 +26,7 @@ def test_command(stdout, monkeypatch, tmpdir):
     assert tree[0][1] == ['location']
     assert tree[0][2] == []
     # versions
-    assert tree[1][1] == ['v1.1.3']
+    assert tree[1][1] == ['v1.1.4']
     assert tree[1][2] == []
     # files
     assert tree[2][1] == ['codelists']
@@ -51,7 +51,7 @@ def test_command_versions(stdout, monkeypatch, tmpdir):
 # Take the strictest of restrictions.
 @patch('sys.stdout', new_callable=StringIO)
 def test_command_versions_collision(stdout, monkeypatch, tmpdir):
-    monkeypatch.setattr(sys, 'argv', args + [str(tmpdir), 'location==v1.1.3', 'location'])
+    monkeypatch.setattr(sys, 'argv', args + [str(tmpdir), 'location==v1.1.4', 'location'])
     main()
 
     assert stdout.getvalue() == ''
@@ -66,14 +66,14 @@ def test_command_versions_invalid(stdout, monkeypatch, tmpdir, caplog):
     caplog.set_level(logging.INFO)  # silence connectionpool.py DEBUG messages
 
     with pytest.raises(SystemExit) as excinfo:
-        monkeypatch.setattr(sys, 'argv', args + [str(tmpdir), 'location=v1.1.3'])
+        monkeypatch.setattr(sys, 'argv', args + [str(tmpdir), 'location=v1.1.4'])
         main()
 
     assert stdout.getvalue() == ''
 
     assert len(caplog.records) == 1
     assert caplog.records[0].levelname == 'CRITICAL'
-    assert caplog.records[0].message == "Couldn't parse 'location=v1.1.3'. Use '==' not '='."
+    assert caplog.records[0].message == "Couldn't parse 'location=v1.1.4'. Use '==' not '='."
     assert excinfo.value.code == 1
 
 
@@ -81,7 +81,7 @@ def test_command_versions_invalid(stdout, monkeypatch, tmpdir, caplog):
 @patch('sys.stdout', new_callable=StringIO)
 def test_command_repeated(stdout, monkeypatch, tmpdir, caplog):
     caplog.set_level(logging.INFO)  # silence connectionpool.py DEBUG messages
-    argv = args + [str(tmpdir), 'location==v1.1.3']
+    argv = args + [str(tmpdir), 'location==v1.1.4']
 
     monkeypatch.setattr(sys, 'argv', argv)
     main()
@@ -100,7 +100,7 @@ def test_command_repeated(stdout, monkeypatch, tmpdir, caplog):
 
 @patch('sys.stdout', new_callable=StringIO)
 def test_command_repeated_overwrite_any(stdout, monkeypatch, tmpdir):
-    argv = args + [str(tmpdir), 'location==v1.1.3']
+    argv = args + [str(tmpdir), 'location==v1.1.4']
     pattern = str(tmpdir / '*' / '*' / 'extension.json')
 
     monkeypatch.setattr(sys, 'argv', argv)
@@ -119,7 +119,7 @@ def test_command_repeated_overwrite_any(stdout, monkeypatch, tmpdir):
 
 @patch('sys.stdout', new_callable=StringIO)
 def test_command_repeated_overwrite_none(stdout, monkeypatch, tmpdir):
-    argv = args + [str(tmpdir), 'location==v1.1.3']
+    argv = args + [str(tmpdir), 'location==v1.1.4']
     pattern = str(tmpdir / '*' / '*' / 'extension.json')
 
     monkeypatch.setattr(sys, 'argv', argv)
@@ -138,7 +138,7 @@ def test_command_repeated_overwrite_none(stdout, monkeypatch, tmpdir):
 
 @patch('sys.stdout', new_callable=StringIO)
 def test_command_repeated_overwrite_live(stdout, monkeypatch, tmpdir):
-    argv = args + [str(tmpdir), 'location==v1.1.3', 'location==master']
+    argv = args + [str(tmpdir), 'location==v1.1.4', 'location==master']
     pattern = str(tmpdir / '*' / '*' / 'extension.json')
 
     monkeypatch.setattr(sys, 'argv', argv)

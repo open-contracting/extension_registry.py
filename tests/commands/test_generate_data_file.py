@@ -13,15 +13,15 @@ args = ['ocdsextensionregistry', 'generate-data-file']
 
 @patch('sys.stdout', new_callable=StringIO)
 def test_command(stdout, monkeypatch):
-    monkeypatch.setattr(sys, 'argv', args + ['location==v1.1.3'])
+    monkeypatch.setattr(sys, 'argv', args + ['location==v1.1.4'])
     main()
 
-    assert stdout.getvalue() == read('location-v1.1.3.json')
+    assert stdout.getvalue() == read('location-v1.1.4.json')
 
 
 @patch('sys.stdout', new_callable=StringIO)
 def test_command_latest_version_master(stdout, monkeypatch):
-    monkeypatch.setattr(sys, 'argv', args + ['location==v1.1.3', 'location==master'])
+    monkeypatch.setattr(sys, 'argv', args + ['location==v1.1.4', 'location==master'])
     main()
 
     assert json.loads(stdout.getvalue())['location']['latest_version'] == 'master'
@@ -29,17 +29,17 @@ def test_command_latest_version_master(stdout, monkeypatch):
 
 @patch('sys.stdout', new_callable=StringIO)
 def test_command_latest_version_dated(stdout, monkeypatch):
-    monkeypatch.setattr(sys, 'argv', args + ['location==v1.1.3', 'location==v1.1.1'])
+    monkeypatch.setattr(sys, 'argv', args + ['location==v1.1.5', 'location==v1.1.4'])
     main()
 
-    assert json.loads(stdout.getvalue())['location']['latest_version'] == 'v1.1.3'
+    assert json.loads(stdout.getvalue())['location']['latest_version'] == 'v1.1.5'
 
 
 @patch('sys.stderr', new_callable=StringIO)
 @patch('sys.stdout', new_callable=StringIO)
 def test_command_missing_locale_dir(stdout, stderr, monkeypatch):
     with pytest.raises(SystemExit) as excinfo:
-        monkeypatch.setattr(sys, 'argv', args + ['--languages', 'es', 'location==v1.1.3'])
+        monkeypatch.setattr(sys, 'argv', args + ['--languages', 'es', 'location==v1.1.4'])
         main()
 
     assert stdout.getvalue() == ''
@@ -50,7 +50,7 @@ def test_command_missing_locale_dir(stdout, stderr, monkeypatch):
 @patch('sys.stdout', new_callable=StringIO)
 def test_command_directory(stdout, monkeypatch, tmpdir):
     versions_dir = tmpdir.mkdir('outputdir')
-    version_dir = versions_dir.mkdir('location').mkdir('v1.1.3')
+    version_dir = versions_dir.mkdir('location').mkdir('v1.1.4')
     locale_dir = tmpdir.mkdir('localedir')
     for locale in ('en', 'es'):
         locale_dir.mkdir(locale)
@@ -59,7 +59,7 @@ def test_command_directory(stdout, monkeypatch, tmpdir):
     version_dir.join('README.md').write('# Location')
 
     monkeypatch.setattr(sys, 'argv', args + ['--versions-dir', str(versions_dir), '--locale-dir', str(locale_dir),
-                                             'location==v1.1.3'])
+                                             'location==v1.1.4'])
     main()
 
     assert json.loads(stdout.getvalue()) == {
@@ -75,14 +75,14 @@ def test_command_directory(stdout, monkeypatch, tmpdir):
                 'en': '…',
                 'es': '…',
             },
-            'latest_version': 'v1.1.3',
+            'latest_version': 'v1.1.4',
             'versions': {
-                'v1.1.3': {
+                'v1.1.4': {
                     'id': 'location',
-                    'date': '2018-02-01',
-                    'version': 'v1.1.3',
-                    'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/',  # noqa: E501
-                    'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.3',  # noqa: E501
+                    'date': '2019-02-25',
+                    'version': 'v1.1.4',
+                    'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.4/',  # noqa: E501
+                    'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.4',  # noqa: E501
                     'publisher': {
                         'name': 'open-contracting-extensions',
                         'url': 'https://github.com/open-contracting-extensions',

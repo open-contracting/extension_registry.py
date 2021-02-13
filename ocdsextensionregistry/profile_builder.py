@@ -3,17 +3,17 @@
 
     from ocdsextensionregistry import ProfileBuilder
 
-    builder = ProfileBuilder('1__1__3', {
-        'lots': 'v1.1.3',
-        'bids': 'v1.1.3',
+    builder = ProfileBuilder('1__1__4', {
+        'lots': 'v1.1.4',
+        'bids': 'v1.1.4',
     })
 
-This initializes a profile of OCDS 1.1.3 with two extensions. Alternately, you can pass a list of extensions' metadata
+This initializes a profile of OCDS 1.1.4 with two extensions. Alternately, you can pass a list of extensions' metadata
 URLs, base URLs, download URLs, and/or absolute paths to local directories, for example:
 
 .. code:: python
 
-    builder = ProfileBuilder('1__1__3', [
+    builder = ProfileBuilder('1__1__4', [
       'https://raw.githubusercontent.com/open-contracting-extensions/ocds_coveredBy_extension/master/extension.json',
       'https://raw.githubusercontent.com/open-contracting-extensions/ocds_options_extension/master/',
       'https://github.com/open-contracting-extensions/ocds_techniques_extension/archive/master.zip',
@@ -55,7 +55,7 @@ class ProfileBuilder:
         Accepts an OCDS version and either a dictionary of extension identifiers and versions, or a list of extensions'
         metadata URLs, base URLs and/or download URLs, and initializes a reader of the extension registry.
 
-        :param str standard_tag: the OCDS version tag, e.g. ``'1__1__3'``
+        :param str standard_tag: the OCDS version tag, e.g. ``'1__1__4'``
         :param extension_versions: the extension versions
         :param str registry_base_url: the registry's base URL, defaults to
                                       ``'https://raw.githubusercontent.com/open-contracting/extension_registry/master/'``
