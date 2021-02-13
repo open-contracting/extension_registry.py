@@ -16,6 +16,8 @@ else:
     encoding = 'utf-8'
     file_uri_offset = 7
 
+default_minor_version = '1.1'
+
 requests_cache.install_cache(backend='memory')
 
 
@@ -35,9 +37,11 @@ def get_latest_version(versions):
     if len(versions) == 1:
         return versions[0]
 
-    for version in versions:
-        if version.version == 'master':
-            return version
+    version_numbers = {version.version: version for version in versions}
+    if 'master' in version_numbers:
+        return version_numbers['master']
+    if default_minor_version in version_numbers:
+        return version_numbers[default_minor_version]
 
     dated = list(filter(lambda version: version.date, versions))
     if dated:

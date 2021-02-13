@@ -23,6 +23,16 @@ def test_get_latest_version_master():
     assert get_latest_version(versions).version == 'master'
 
 
+def test_get_latest_version_default():
+    versions = [
+        ExtensionVersion(arguments(**{'Version': '1'})),
+        ExtensionVersion(arguments(**{'Date': None})),
+        ExtensionVersion(arguments(**{'Date': '1000-01-01', 'Version': '1.1'})),
+    ]
+
+    assert get_latest_version(versions).version == '1.1'
+
+
 def test_get_latest_version_dated():
     versions = [
         ExtensionVersion(arguments(**{'Version': '1'})),

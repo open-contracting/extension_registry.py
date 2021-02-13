@@ -28,6 +28,14 @@ def test_command_latest_version_master(stdout, monkeypatch):
 
 
 @patch('sys.stdout', new_callable=StringIO)
+def test_command_latest_version_default(stdout, monkeypatch):
+    monkeypatch.setattr(sys, 'argv', args + ['legalBasis==1.1', 'legalBasis==1.2'])
+    main()
+
+    assert json.loads(stdout.getvalue())['legalBasis']['latest_version'] == '1.1'
+
+
+@patch('sys.stdout', new_callable=StringIO)
 def test_command_latest_version_dated(stdout, monkeypatch):
     monkeypatch.setattr(sys, 'argv', args + ['location==v1.1.5', 'location==v1.1.4'])
     main()
