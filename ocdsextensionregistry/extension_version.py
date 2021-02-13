@@ -138,12 +138,6 @@ class ExtensionVersion:
             if 'compatibility' not in self._metadata or isinstance(self._metadata['compatibility'], str):
                 self._metadata['compatibility'] = ['1.1']
 
-            # Remove non-URL dependencies.
-            # noqa: See https://raw.githubusercontent.com/open-contracting-extensions/ocds_enquiry_extension/v1.1.1/extension.json
-            # noqa: See https://raw.githubusercontent.com/open-contracting-extensions/ocds_finance_extension/v1.1/extension.json
-            if 'dependencies' in self._metadata:
-                self._metadata['dependencies'] = [d for d in self._metadata['dependencies'] if urlparse(d).scheme]
-
         return self._metadata
 
     @property
@@ -294,7 +288,7 @@ class ExtensionVersion:
         # configuration as a dictionary. Since that's not the case, the lookup is implemented as a method.
         netloc = parsed.netloc
         if netloc == 'raw.githubusercontent.com':
-            # Sample base URL: https://raw.githubusercontent.com/open-contracting-extensions/ocds_bid_extension/v1.1.3/
+            # Sample base URL: https://raw.githubusercontent.com/open-contracting-extensions/ocds_bid_extension/v1.1.4/
             return {
                 'full_name:pattern': r'\A/([^/]+/[^/]+)',
                 'name:pattern': r'\A/[^/]+/([^/]+)',
