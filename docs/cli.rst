@@ -7,8 +7,6 @@ To install this package with command-line tools, run:
 
     pip install ocdsextensionregistry[cli]
 
-Then, `install the ocds-babel requirements for Markdown translation <https://ocds-babel.readthedocs.io/en/latest/api/translate.html#install-requirements-for-markdown-translation>`__.
-
 To see all commands available, run:
 
 .. code-block:: bash

@@ -1,12 +1,16 @@
 Changelog
 =========
 
+0.1.0 (Unreleased)
+~~~~~~~~~~~~~~~~~~
+
+-  Switch to MyST-Parser from recommonmark.
+
 0.0.25 (Unreleased)
 ~~~~~~~~~~~~~~~~~~~
 
 -  :class:`~ocdsextensionregistry.codelist.Codelist`: Add :meth:`~ocdsextensionregistry.codelist.Codelist.to_csv` and :meth:`~ocdsextensionregistry.codelist.Codelist.__lt__`.
 -  :class:`~ocdsextensionregistry.codelist_code.CodelistCode`: Add :meth:`~ocdsextensionregistry.codelist_code.CodelistCode.__lt__`.
--  Switch to MyST-Parser from recommonmark.
 
 0.0.24 (2020-09-12)
 ~~~~~~~~~~~~~~~~~~~
