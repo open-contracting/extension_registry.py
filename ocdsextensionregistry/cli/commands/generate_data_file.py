@@ -13,7 +13,7 @@ from ocds_babel.translate import (translate_codelist_data, translate_extension_m
 from ocdsextensionregistry import EXTENSION_VERSIONS_DATA, EXTENSIONS_DATA
 from ocdsextensionregistry.cli.commands.base import BaseCommand
 from ocdsextensionregistry.exceptions import CommandError
-from ocdsextensionregistry.util import json_dump
+from ocdsextensionregistry.util import default_minor_version, json_dump
 
 logger = logging.getLogger('ocdsextensionregistry')
 
@@ -152,6 +152,8 @@ class Command(BaseCommand):
                 latest_version = list(versions)[0]
             elif 'master' in versions:
                 latest_version = 'master'
+            elif default_minor_version in versions:
+                latest_version = default_minor_version
             else:
                 dated = list(filter(lambda kv: kv[1]['date'], versions.items()))
                 if dated:

@@ -31,7 +31,7 @@ Or, generate POT files for the versions of extensions you want to translate, for
 
 .. code-block:: bash
 
-    ocdsextensionregistry generate-pot-files build/locale lots bids==v1.1.3
+    ocdsextensionregistry generate-pot-files build/locale lots bids==v1.1.4
 
 Remove any existing ``.tx/config`` file:
 

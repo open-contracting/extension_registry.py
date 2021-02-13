@@ -6,7 +6,12 @@ Changelog
 
 -  Switch to MyST-Parser from recommonmark.
 
-0.0.25 (Unreleased)
+0.0.26 (2021-02-13)
+~~~~~~~~~~~~~~~~~~~
+
+-  :meth:`~ocdsextensionregistry.util.get_latest_version`: If an extension has no "master" version, check for a "1.1" version.
+
+0.0.25 (2021-02-12)
 ~~~~~~~~~~~~~~~~~~~
 
 -  :class:`~ocdsextensionregistry.codelist.Codelist`: Add :meth:`~ocdsextensionregistry.codelist.Codelist.to_csv` and :meth:`~ocdsextensionregistry.codelist.Codelist.__lt__`.

@@ -37,7 +37,7 @@ new_extension_codelists = [
 
 
 def test_extensions():
-    builder = ProfileBuilder('1__1__3', {'charges': 'master', 'location': 'v1.1.3'})
+    builder = ProfileBuilder('1__1__4', {'charges': 'master', 'location': 'v1.1.4'})
     result = list(builder.extensions())
 
     assert len(result) == 2
@@ -50,18 +50,18 @@ def test_extensions():
     }
     assert result[1].as_dict() == {
         'id': 'location',
-        'date': '2018-02-01',
-        'version': 'v1.1.3',
-        'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/',
-        'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.3',  # noqa: E501
+        'date': '2019-02-25',
+        'version': 'v1.1.4',
+        'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.4/',
+        'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.4',  # noqa: E501
     }
 
 
 def test_release_schema_patch():
     # Use the ppp extension to test null values.
-    builder = ProfileBuilder('1__1__3', {
+    builder = ProfileBuilder('1__1__4', {
         'https://raw.githubusercontent.com/open-contracting-extensions/ocds_ppp_extension/70c5cb759d4739d1eca5db832e723afb69bbdae0/',  # noqa: E501
-        'https://github.com/open-contracting-extensions/ocds_location_extension/archive/v1.1.3.zip',
+        'https://github.com/open-contracting-extensions/ocds_location_extension/archive/v1.1.4.zip',
     })
     result = builder.release_schema_patch()
 
@@ -75,9 +75,9 @@ def test_release_schema_patch():
 
 def test_patched_release_schema():
     # Use the ppp extension to test null values.
-    builder = ProfileBuilder('1__1__3', {
+    builder = ProfileBuilder('1__1__4', {
         'https://raw.githubusercontent.com/open-contracting-extensions/ocds_ppp_extension/70c5cb759d4739d1eca5db832e723afb69bbdae0/',  # noqa: E501
-        'https://github.com/open-contracting-extensions/ocds_location_extension/archive/v1.1.3.zip',
+        'https://github.com/open-contracting-extensions/ocds_location_extension/archive/v1.1.4.zip',
     })
     result = builder.patched_release_schema()
 
@@ -90,7 +90,7 @@ def test_patched_release_schema():
 
 
 def test_patched_release_schema_with_extension_field():
-    builder = ProfileBuilder('1__1__3', {'location': 'v1.1.3'})
+    builder = ProfileBuilder('1__1__4', {'location': 'v1.1.4'})
     result = builder.patched_release_schema(extension_field='extension')
 
     definition = result['definitions']['Location']
@@ -101,7 +101,7 @@ def test_patched_release_schema_with_extension_field():
 
 def test_patched_release_schema_with_metadata_url():
     url = 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_coveredBy_extension/master/extension.json'  # noqa: E501
-    builder = ProfileBuilder('1__1__3', [url])
+    builder = ProfileBuilder('1__1__4', [url])
     result = builder.patched_release_schema()
 
     assert '$schema' in result
@@ -110,7 +110,7 @@ def test_patched_release_schema_with_metadata_url():
 
 def test_patched_release_schema_with_base_url():
     url = 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_coveredBy_extension/master/'
-    builder = ProfileBuilder('1__1__3', [url])
+    builder = ProfileBuilder('1__1__4', [url])
     result = builder.patched_release_schema()
 
     assert '$schema' in result
@@ -119,7 +119,7 @@ def test_patched_release_schema_with_base_url():
 
 def test_patched_release_schema_with_download_url():
     url = 'https://github.com/open-contracting-extensions/ocds_coveredBy_extension/archive/master.zip'
-    builder = ProfileBuilder('1__1__3', [url])
+    builder = ProfileBuilder('1__1__4', [url])
     result = builder.patched_release_schema()
 
     assert '$schema' in result
@@ -128,7 +128,7 @@ def test_patched_release_schema_with_download_url():
 
 def test_patched_release_schema_with_absolute_path():
     url = Path(path('ocds_coveredBy_extension')).resolve().as_uri()
-    builder = ProfileBuilder('1__1__3', [url])
+    builder = ProfileBuilder('1__1__4', [url])
     result = builder.patched_release_schema()
 
     assert '$schema' in result
@@ -137,7 +137,7 @@ def test_patched_release_schema_with_absolute_path():
 
 def test_patched_release_schema_with_schema_base_url():
     schema_base_url = 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/'
-    builder = ProfileBuilder('1__1__3', {}, schema_base_url=schema_base_url)
+    builder = ProfileBuilder('1__1__4', {}, schema_base_url=schema_base_url)
     result = builder.patched_release_schema()
 
     # Changes `id`.
@@ -146,7 +146,7 @@ def test_patched_release_schema_with_schema_base_url():
 
 def test_release_package_schema_with_schema_base_url():
     schema_base_url = 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/'
-    builder = ProfileBuilder('1__1__3', {}, schema_base_url=schema_base_url)
+    builder = ProfileBuilder('1__1__4', {}, schema_base_url=schema_base_url)
     result = builder.release_package_schema()
 
     # Changes `id` and `$ref`.
@@ -156,7 +156,7 @@ def test_release_package_schema_with_schema_base_url():
 
 def test_release_package_schema_with_schema_base_url_and_embed():
     schema_base_url = 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/'
-    builder = ProfileBuilder('1__1__3', {}, schema_base_url=schema_base_url)
+    builder = ProfileBuilder('1__1__4', {}, schema_base_url=schema_base_url)
     result = builder.release_package_schema(embed=True)
 
     # Changes `id` and `$ref`.
@@ -167,7 +167,7 @@ def test_release_package_schema_with_schema_base_url_and_embed():
 
 def test_record_package_schema_with_schema_base_url():
     schema_base_url = 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/'
-    builder = ProfileBuilder('1__1__3', {}, schema_base_url=schema_base_url)
+    builder = ProfileBuilder('1__1__4', {}, schema_base_url=schema_base_url)
     result = builder.record_package_schema()
 
     # Changes `id` and `$ref`.
@@ -178,7 +178,7 @@ def test_record_package_schema_with_schema_base_url():
 
 def test_record_package_schema_with_schema_base_url_and_embed():
     schema_base_url = 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/'
-    builder = ProfileBuilder('1__1__3', {}, schema_base_url=schema_base_url)
+    builder = ProfileBuilder('1__1__4', {}, schema_base_url=schema_base_url)
     result = builder.record_package_schema(embed=True)
 
     # Changes `id` and `$ref`.
@@ -190,7 +190,7 @@ def test_record_package_schema_with_schema_base_url_and_embed():
 
 
 def test_standard_codelists():
-    builder = ProfileBuilder('1__1__3', {})
+    builder = ProfileBuilder('1__1__4', {})
     result = builder.standard_codelists()
 
     # Collects codelists.
@@ -202,7 +202,7 @@ def test_standard_codelists():
     assert len(result[0]) == 8
     assert len(result[0][0]) == 4
     assert result[0][0]['Code'] == 'priceOnly'
-    assert result[0][0]['Title'] == 'Price Only'
+    assert result[0][0]['Title'] == 'Price only'
     assert result[0][0]['Description'].startswith('The award will be made to the qualified bid with the lowest ')
     assert result[0][0]['Deprecated'] == ''
 
@@ -217,9 +217,9 @@ def test_extension_codelists(caplog):
         # charges and tariffs both have chargePaidBy.csv, but the content is identical, so should not error. ppp has
         # documentType.csv and tariffs has +documentType.csv, but documentType.csv contains the codes added by
         # +documentType.csv, so should not error. ppp and enquiries both have +partyRole.csv.
-        builder = ProfileBuilder('1__1__3', {
+        builder = ProfileBuilder('1__1__4', {
             'https://raw.githubusercontent.com/open-contracting-extensions/ocds_ppp_extension/70c5cb759d4739d1eca5db832e723afb69bbdae0/',  # noqa: E501
-            'https://github.com/open-contracting-extensions/ocds_enquiry_extension/archive/v1.1.3.zip',
+            'https://github.com/open-contracting-extensions/ocds_enquiry_extension/archive/v1.1.4.zip',
             'https://github.com/open-contracting-extensions/ocds_charges_extension/archive/master.zip',
             'https://github.com/open-contracting-extensions/ocds_tariffs_extension/archive/master.zip',
         })
@@ -258,7 +258,7 @@ def test_extension_codelists(caplog):
 
 def test_patched_codelists(caplog):
     with caplog.at_level(logging.INFO):
-        builder = ProfileBuilder('1__1__3', [
+        builder = ProfileBuilder('1__1__4', [
             'https://raw.githubusercontent.com/open-contracting-extensions/ocds_ppp_extension/70c5cb759d4739d1eca5db832e723afb69bbdae0/',  # noqa: E501
             'https://github.com/open-contracting-extensions/ocds_charges_extension/archive/master.zip',
             'https://github.com/open-contracting-extensions/ocds_tariffs_extension/archive/master.zip',
@@ -276,7 +276,7 @@ def test_patched_codelists(caplog):
         assert len(result[0]) == 8
         assert len(result[0][0]) == 4
         assert result[0][0]['Code'] == 'priceOnly'
-        assert result[0][0]['Title'] == 'Price Only'
+        assert result[0][0]['Title'] == 'Price only'
         assert result[0][0]['Description'].startswith('The award will be made to the qualified bid with the lowest ')
         assert result[0][0]['Deprecated'] == ''
 
@@ -296,7 +296,7 @@ def test_patched_codelists(caplog):
 
 
 def test_get_standard_file_contents():
-    builder = ProfileBuilder('1__1__3', {})
+    builder = ProfileBuilder('1__1__4', {})
     data = builder.get_standard_file_contents('release-schema.json')
     # Repeat requests should return the same result.
     data = builder.get_standard_file_contents('release-schema.json')

@@ -32,7 +32,7 @@ def build_profile(basedir, standard_tag, extension_versions, registry_base_url=N
     The profile's codelists exclude deprecated codes and add an Extension column.
 
     :param str basedir: the profile's ``schema/`` directory
-    :param str standard_tag: the OCDS version tag, e.g. ``'1__1__3'``
+    :param str standard_tag: the OCDS version tag, e.g. ``'1__1__4'``
     :param extension_versions: the extension versions
     :param str registry_base_url: the registry's base URL, defaults to
                                   ``'https://raw.githubusercontent.com/open-contracting/extension_registry/master/'``

@@ -42,13 +42,13 @@ To download specific versions:
 
 .. code-block:: bash
 
-    ocdsextensionregistry download outputdir bids==v1.1.3
+    ocdsextensionregistry download outputdir bids==v1.1.4
 
 You can mix and match specifying extensions and versions:
 
 .. code-block:: bash
 
-    ocdsextensionregistry download outputdir lots bids==v1.1.3
+    ocdsextensionregistry download outputdir lots bids==v1.1.4
 
 If you've already downloaded versions of extensions, you will need to specify how to handle repeated downloads using the ``--overwrite`` option:
 
@@ -56,7 +56,7 @@ If you've already downloaded versions of extensions, you will need to specify ho
 * ``--overwrite none`` overwrite no downloaded versions
 * ``--overwrite live`` overwrite only live versions (like the master branch of an extension)
 
-Within the output directory, the extension files are organized like `{extension}/{version}/{files}`, for example: ``lots/v1.1.3/README.md``.
+Within the output directory, the extension files are organized like `{extension}/{version}/{files}`, for example: ``lots/v1.1.4/README.md``.
 
 generate-pot-files
 ------------------
@@ -71,7 +71,7 @@ You can specify versions and extensions like with the ``download`` command.
 
 `Sphinx <http://www.sphinx-doc.org/>`__ is used to extract messages from Markdown files. To see Sphinx's standard output, use the ``--verbose`` option.
 
-Within the output directory, the POT files are organized like `{extension}/{version}/{files}`, for example: ``lots/v1.1.3/docs.pot``.
+Within the output directory, the POT files are organized like `{extension}/{version}/{files}`, for example: ``lots/v1.1.4/docs.pot``.
 
 This command can be run offline if ``--versions-dir`` is set to a local directory organized like the output directory of the ``download`` command, and if ``--extension-versions-url`` and ``--extensions-url`` are set to local files, for example:
 
