@@ -12,7 +12,6 @@ from babel.messages.pofile import write_po
 from docutils.parsers.rst import directives
 from ocds_babel.directives import NullDirective
 from ocds_babel.extract import extract_codelist, extract_extension_metadata, extract_schema
-from recommonmark.transform import AutoStructify
 from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
 from sphinx.util.osutil import cd
@@ -173,7 +172,7 @@ class Command(BaseCommand):
                 # This section is equivalent to running:
                 #
                 # echo -e '.. toctree::\n   :hidden:\n\n   README' > index.rst
-                # sphinx-build -v -b gettext -a -E -C -D extensions=recommonmark . outdir
+                # sphinx-build -v -b gettext -a -E -C -D extensions=myst_parser . outdir
                 # msgcat outdir/*.pot
                 with TemporaryDirectory() as srcdir:
                     infos = zipfile.infolist()
@@ -194,15 +193,11 @@ class Command(BaseCommand):
 
                         # Sphinx's config.py pop()'s extensions.
                         # https://github.com/sphinx-doc/sphinx/issues/6848
-                        kwargs['confoverrides']['extensions'] = ['recommonmark']
+                        kwargs['confoverrides']['extensions'] = ['myst_parser']
 
                         with patch_docutils(), docutils_namespace():
                             # sphinx-build -b gettext $(DOCS_DIR) $(POT_DIR)
                             app = Sphinx('.', None, 'outdir', '.', 'gettext', **kwargs)
-                            # Avoid "recommonmark_config not setted, proceed default setting".
-                            app.add_config_value('recommonmark_config', {}, True)
-                            # To extract messages from `.. list-table`.
-                            app.add_transform(AutoStructify)
                             # sphinx-build -a …
                             app.build(True)
 
