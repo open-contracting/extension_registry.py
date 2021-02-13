@@ -19,7 +19,7 @@ from sphinx.util.osutil import cd
 from ocdsextensionregistry import EXTENSION_VERSIONS_DATA, EXTENSIONS_DATA
 from ocdsextensionregistry.cli.commands.base import BaseCommand
 
-# patch_docutils is added in Sphinx 1.6. Copied from ocds-babel's translate_markdown.py.
+# patch_docutils is added in Sphinx 1.6.
 if sphinx.version_info >= (1, 6):
     from sphinx.util.docutils import patch_docutils
 else:
