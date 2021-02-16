@@ -30,10 +30,8 @@ setup(
         ],
         'cli': [
             'Babel',
-            'docutils',
-            'ocds-babel[markdown]>=0.2.0',
-            # See https://ocds-babel.readthedocs.io/en/latest/api/translate.html
-            # 'recommonmark',
+            'MyST-Parser',
+            'ocds-babel[markdown]>=0.3.0',
             'Sphinx',
         ]
     },

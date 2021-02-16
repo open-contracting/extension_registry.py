@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.1.0 (Unreleased)
+~~~~~~~~~~~~~~~~~~
+
+-  Switch to MyST-Parser from recommonmark.
+-  Drop support for Sphinx directives.
+
 0.0.26 (2021-02-13)
 ~~~~~~~~~~~~~~~~~~~
 
