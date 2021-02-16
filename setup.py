@@ -30,7 +30,6 @@ setup(
         ],
         'cli': [
             'Babel',
-            'docutils',
             'MyST-Parser',
             'ocds-babel[markdown]>=0.3.0',
             'Sphinx',

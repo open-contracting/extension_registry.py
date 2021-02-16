@@ -1,30 +1,20 @@
 import logging
 import subprocess
-from contextlib import closing, contextmanager
+from contextlib import closing
 from glob import glob
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-import sphinx
 from babel.messages.catalog import Catalog
 from babel.messages.extract import extract, pathmatch
 from babel.messages.pofile import write_po
-from docutils.parsers.rst import directives
 from ocds_babel.extract import extract_codelist, extract_extension_metadata, extract_schema
 from sphinx.application import Sphinx
-from sphinx.util.docutils import docutils_namespace
+from sphinx.util.docutils import docutils_namespace, patch_docutils
 from sphinx.util.osutil import cd
 
 from ocdsextensionregistry import EXTENSION_VERSIONS_DATA, EXTENSIONS_DATA
 from ocdsextensionregistry.cli.commands.base import BaseCommand
-
-# patch_docutils is added in Sphinx 1.6.
-if sphinx.version_info >= (1, 6):
-    from sphinx.util.docutils import patch_docutils
-else:
-    @contextmanager
-    def patch_docutils(confdir=None):
-        yield
 
 logger = logging.getLogger('ocdsextensionregistry')
 
@@ -59,12 +49,8 @@ class Command(BaseCommand):
         #
         # * bin/sphinx-build calls main() in sphinx.cmd.build, which calls build_main(), which calls Sphinx(…).build(…)
 
-        if sphinx.version_info >= (1, 6):
-            # https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-suppress_warnings
-            warning_type = 'image.not_readable'
-        else:
-            # https://sphinx.readthedocs.io/en/1.5/config.html
-            warning_type = 'image.nonlocal_uri'
+        # https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-suppress_warnings
+        warning_type = 'image.not_readable'
 
         kwargs = {
             # sphinx-build -E …
