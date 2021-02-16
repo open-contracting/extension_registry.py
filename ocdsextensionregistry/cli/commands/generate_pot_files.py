@@ -10,7 +10,6 @@ from babel.messages.catalog import Catalog
 from babel.messages.extract import extract, pathmatch
 from babel.messages.pofile import write_po
 from docutils.parsers.rst import directives
-from ocds_babel.directives import NullDirective
 from ocds_babel.extract import extract_codelist, extract_extension_metadata, extract_schema
 from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
@@ -81,10 +80,6 @@ class Command(BaseCommand):
         if not self.args.verbose:
             # sphinx-build -q …
             kwargs['status'] = None
-
-        # Silence warnings about unregistered directives.
-        for name in ('csv-table-no-translate', 'extensiontable'):
-            directives.register_directive(name, NullDirective)
 
         # For pybabel, the code path is:
         #
