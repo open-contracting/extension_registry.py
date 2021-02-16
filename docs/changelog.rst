@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.0.26 (2021-02-13)
+0.0.26 (2021-02-16)
 ~~~~~~~~~~~~~~~~~~~
 
 -  :meth:`~ocdsextensionregistry.util.get_latest_version`: If an extension has no "master" version, check for a "1.1" version.
