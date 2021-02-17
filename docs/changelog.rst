@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.1.1 (2021-02-17)
+~~~~~~~~~~~~~~~~~~
+
+-  ``generate-data-file``: Use Authorization header instead of ``access_token`` query string parameter to authenticate with GitHub.
+
 0.1.0 (2021-02-16)
 ~~~~~~~~~~~~~~~~~~
 
@@ -67,14 +72,14 @@ Changelog
 0.0.19 (2020-04-07)
 ~~~~~~~~~~~~~~~~~~~
 
--  The ``generate-data-files`` command warns if an MO file is missing.
+-  The ``generate-data-file`` command warns if an MO file is missing.
 -  Rename environment variable from ``GITHUB_ACCESS_TOKEN`` to ``OCDS_GITHUB_ACCESS_TOKEN``.
 
 0.0.18 (2020-04-06)
 ~~~~~~~~~~~~~~~~~~~
 
 -  :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`: :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.__repr__` falls back to Base URL and Download URL if Id or Version is blank.
--  The ``generate-data-files`` command uses a null translator if an MO file is missing.
+-  The ``generate-data-file`` command uses a null translator if an MO file is missing.
 
 0.0.17 (2020-04-03)
 ~~~~~~~~~~~~~~~~~~~
@@ -113,10 +118,10 @@ Changelog
 0.0.11 (2019-06-26)
 ~~~~~~~~~~~~~~~~~~~
 
-The ``generate-pot-files`` and ``generate-data-files`` commands can now be run offline (see `documentation <https://ocdsextensionregistry.readthedocs.io/en/latest/cli.html>`__ for details).
+The ``generate-pot-files`` and ``generate-data-file`` commands can now be run offline (see `documentation <https://ocdsextensionregistry.readthedocs.io/en/latest/cli.html>`__ for details).
 
 -  :class:`~ocdsextensionregistry.extension_registry.ExtensionRegistry`: Support the ``file://`` scheme for the ``extension_versions_data`` and ``extensions_data`` arguments to :meth:`~ocdsextensionregistry.extension_registry.ExtensionRegistry.__init__`. This means the ``--extension-versions-url`` and ``--extensions-url`` CLI options can now refer to local files.
--  Add a ``--versions-dir`` option to the ``generate-pot-files`` and ``generate-data-files`` commands to specify a local directory of extension versions.
+-  Add a ``--versions-dir`` option to the ``generate-pot-files`` and ``generate-data-file`` commands to specify a local directory of extension versions.
 -  :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`: Add :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.available_in_bulk`, to return whether the extension’s files are available in bulk.
 -  :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`: Add :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.zipfile`, to return a ZIP archive of the extension’s files.
 -  Upgrade to ocds-babel 0.1.0.
