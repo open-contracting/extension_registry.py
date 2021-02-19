@@ -57,8 +57,6 @@ class Command(BaseCommand):
             'freshenv': True,
             # sphinx-build -D suppress_warnings=image.not_readable …
             'confoverrides': {
-                # 'contents' is the default in Sphinx<2. 'index' is the default in Sphinx>=2.
-                'master_doc': 'index',
                 'suppress_warnings': [warning_type],
             },
         }
