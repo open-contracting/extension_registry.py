@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.1.2 (2021-02-19)
+~~~~~~~~~~~~~~~~~~
+
+-  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`: :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_schema_patch` and :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.patched_release_schema`: Add a ``language`` argument to set the language to use for the name of the extension.
+
 0.1.1 (2021-02-17)
 ~~~~~~~~~~~~~~~~~~
 

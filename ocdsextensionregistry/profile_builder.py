@@ -107,12 +107,13 @@ class ProfileBuilder:
                     data['Download URL'] = url
                 yield ExtensionVersion(data)
 
-    def release_schema_patch(self, extension_field=None):
+    def release_schema_patch(self, extension_field=None, language='en'):
         """
         Returns the consolidated release schema patch.
 
         :param str extension_field: the property with which to annotate each definition and field with the name of the
                                     extension in which the definition or field is defined
+        :param str language: the language to use for the name of the extension
         """
         output = {}
 
@@ -120,23 +121,24 @@ class ProfileBuilder:
         for extension in self.extensions():
             patch = json.loads(re.sub(r':\s*null\b', ': "REPLACE_WITH_NULL"', extension.remote('release-schema.json')))
             if extension_field:
-                _add_extension_field(patch, extension.metadata['name']['en'], extension_field)
+                _add_extension_field(patch, extension.metadata['name'][language], extension_field)
             json_merge_patch.merge(output, patch)
 
         return json.loads(json.dumps(output).replace('"REPLACE_WITH_NULL"', 'null'))
 
-    def patched_release_schema(self, schema=None, extension_field=None):
+    def patched_release_schema(self, schema=None, extension_field=None, language='en'):
         """
         Returns the patched release schema.
 
         :param dict schema: the release schema
         :param str extension_field: the property with which to annotate each definition and field with the name of the
                                     extension in which the definition or field is defined
+        :param str language: the language to use for the name of the extension
         """
         if not schema:
             schema = json.loads(self.get_standard_file_contents('release-schema.json'))
 
-        json_merge_patch.merge(schema, self.release_schema_patch(extension_field=extension_field))
+        json_merge_patch.merge(schema, self.release_schema_patch(extension_field=extension_field, language=language))
 
         if self.schema_base_url:
             schema['id'] = urljoin(self.schema_base_url, 'release-schema.json')

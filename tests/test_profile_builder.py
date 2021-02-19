@@ -99,6 +99,16 @@ def test_patched_release_schema_with_extension_field():
     assert definition['properties']['geometry']['properties']['type']['extension'] == 'Location'
 
 
+def test_patched_release_schema_with_extension_field_and_language():
+    builder = ProfileBuilder('1__1__4', ['https://extensions.open-contracting.org/en/extensions/location/master/'])
+    result = builder.patched_release_schema(extension_field='extension', language='es')
+
+    definition = result['definitions']['Location']
+    assert definition['extension'] == 'Ubicación'
+    assert definition['properties']['geometry']['extension'] == 'Ubicación'
+    assert definition['properties']['geometry']['properties']['type']['extension'] == 'Ubicación'
+
+
 def test_patched_release_schema_with_metadata_url():
     url = 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_coveredBy_extension/master/extension.json'  # noqa: E501
     builder = ProfileBuilder('1__1__4', [url])
