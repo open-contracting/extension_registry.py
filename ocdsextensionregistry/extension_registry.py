@@ -5,8 +5,8 @@ Filter the versions of extensions in the registry, and access information about 
 
     from ocdsextensionregistry import ExtensionRegistry
 
-    extensions_url = 'https://raw.githubusercontent.com/open-contracting/extension_registry/master/extensions.csv'
-    extension_versions_url = 'https://raw.githubusercontent.com/open-contracting/extension_registry/master/extension_versions.csv'
+    extensions_url = 'https://raw.githubusercontent.com/open-contracting/extension_registry/main/extensions.csv'
+    extension_versions_url = 'https://raw.githubusercontent.com/open-contracting/extension_registry/main/extension_versions.csv'
 
     registry = ExtensionRegistry(extension_versions_url, extensions_url)
     for version in registry.filter(core=True, version='v1.1.4', category='tender'):

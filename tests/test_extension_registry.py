@@ -5,8 +5,8 @@ import pytest
 from ocdsextensionregistry import ExtensionRegistry
 from ocdsextensionregistry.exceptions import DoesNotExist, MissingExtensionMetadata
 
-extensions_url = 'https://raw.githubusercontent.com/open-contracting/extension_registry/master/extensions.csv'
-extension_versions_url = 'https://raw.githubusercontent.com/open-contracting/extension_registry/master/extension_versions.csv'  # noqa: E501
+extensions_url = 'https://raw.githubusercontent.com/open-contracting/extension_registry/main/extensions.csv'
+extension_versions_url = 'https://raw.githubusercontent.com/open-contracting/extension_registry/main/extension_versions.csv'  # noqa: E501
 
 extensions_data = """Id,Category,Core
 charges,ppp,

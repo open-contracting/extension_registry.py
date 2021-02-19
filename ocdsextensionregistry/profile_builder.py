@@ -58,7 +58,7 @@ class ProfileBuilder:
         :param str standard_tag: the OCDS version tag, e.g. ``'1__1__4'``
         :param extension_versions: the extension versions
         :param str registry_base_url: the registry's base URL, defaults to
-                                      ``'https://raw.githubusercontent.com/open-contracting/extension_registry/master/'``
+                                      ``'https://raw.githubusercontent.com/open-contracting/extension_registry/main/'``
         :param str standard_base_url: the standard's base URL, defaults to
                                       ``'https://codeload.github.com/open-contracting/standard/zip/' + standard_tag``
         :param str schema_base_url: the schema's base URL, e.g.
@@ -67,7 +67,7 @@ class ProfileBuilder:
         """
         # Allows setting the registry URL to e.g. a pull request, when working on a profile.
         if not registry_base_url:
-            registry_base_url = 'https://raw.githubusercontent.com/open-contracting/extension_registry/master/'
+            registry_base_url = 'https://raw.githubusercontent.com/open-contracting/extension_registry/main/'
         if not standard_base_url and standard_tag:
             standard_base_url = 'https://codeload.github.com/open-contracting/standard/zip/' + standard_tag
 

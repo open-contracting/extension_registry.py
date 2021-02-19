@@ -35,7 +35,7 @@ def build_profile(basedir, standard_tag, extension_versions, registry_base_url=N
     :param str standard_tag: the OCDS version tag, e.g. ``'1__1__4'``
     :param extension_versions: the extension versions
     :param str registry_base_url: the registry's base URL, defaults to
-                                  ``'https://raw.githubusercontent.com/open-contracting/extension_registry/master/'``
+                                  ``'https://raw.githubusercontent.com/open-contracting/extension_registry/main/'``
     :param str standard_base_url: the standard's base URL, defaults to
                                   ``'https://codeload.github.com/open-contracting/standard/zip/' + standard_tag``
     :param str schema_base_url: the schema's base URL, e.g.
