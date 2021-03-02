@@ -19,3 +19,5 @@ jobs:
     - run: curl -s -S --retry 3 $BASEDIR/tests/install.sh | bash -
     - run: pip install .[cli]
     - run: curl -s -S --retry 3 $BASEDIR/tests/script.sh | bash -
+    - run: pip install .[test]
+    - run: STANDARD_MAINTENANCE_SCRIPTS_IGNORE=MyST-Parser STANDARD_MAINTENANCE_SCRIPTS_EXTRAS=cli pytest /tmp/test_requirements.py
