@@ -231,7 +231,7 @@ def test_extension_codelists(caplog):
             'https://raw.githubusercontent.com/open-contracting-extensions/ocds_ppp_extension/70c5cb759d4739d1eca5db832e723afb69bbdae0/',  # noqa: E501
             'https://github.com/open-contracting-extensions/ocds_enquiry_extension/archive/v1.1.4.zip',
             'https://github.com/open-contracting-extensions/ocds_charges_extension/archive/master.zip',
-            'https://github.com/open-contracting-extensions/ocds_tariffs_extension/archive/master.zip',
+            'https://github.com/open-contracting-extensions/ocds_tariffs_extension/archive/1.1.zip',
         })
         result = sorted(builder.extension_codelists())
         plus_party_role = next(codelist for codelist in result if codelist.name == '+partyRole.csv')
@@ -271,7 +271,7 @@ def test_patched_codelists(caplog):
         builder = ProfileBuilder('1__1__4', [
             'https://raw.githubusercontent.com/open-contracting-extensions/ocds_ppp_extension/70c5cb759d4739d1eca5db832e723afb69bbdae0/',  # noqa: E501
             'https://github.com/open-contracting-extensions/ocds_charges_extension/archive/master.zip',
-            'https://github.com/open-contracting-extensions/ocds_tariffs_extension/archive/master.zip',
+            'https://github.com/open-contracting-extensions/ocds_tariffs_extension/archive/1.1.zip',
         ])
         result = builder.patched_codelists()
         party_role = next(codelist for codelist in result if codelist.name == 'partyRole.csv')
