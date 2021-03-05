@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.1.3 (2021-03-05)
+~~~~~~~~~~~~~~~~~~
+
+-  ``generate-pot-files``: Add ``-W`` option to turn Sphinx warnings into errors, for debugging.
+
 0.1.2 (2021-02-19)
 ~~~~~~~~~~~~~~~~~~
 

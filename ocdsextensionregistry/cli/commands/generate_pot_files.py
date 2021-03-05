@@ -5,6 +5,7 @@ from glob import glob
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
+import sphinx
 from babel.messages.catalog import Catalog
 from babel.messages.extract import extract, pathmatch
 from babel.messages.pofile import write_po
@@ -36,6 +37,8 @@ class Command(BaseCommand):
                           help="the URL of the registry's extension_versions.csv")
         self.add_argument('--versions-dir',
                           help="a directory containing versions of extensions")
+        self.add_argument('-W', dest='warningiserror', action='store_true',
+                          help='turn Sphinx warnings into errors')
 
     def handle(self):
         output_directory = Path(self.args.output_directory)
@@ -60,10 +63,13 @@ class Command(BaseCommand):
                 'suppress_warnings': [warning_type],
             },
         }
-        # Verbose is useful for debugging.
+        # These options are useful for debugging.
         if not self.args.verbose:
             # sphinx-build -q …
             kwargs['status'] = None
+        if self.args.warningiserror:
+            # sphinx-build -W …
+            kwargs['warningiserror'] = True
 
         # For pybabel, the code path is:
         #
@@ -175,10 +181,13 @@ class Command(BaseCommand):
                         kwargs['confoverrides']['extensions'] = ['myst_parser']
 
                         with patch_docutils(), docutils_namespace():
-                            # sphinx-build -b gettext $(DOCS_DIR) $(POT_DIR)
-                            app = Sphinx('.', None, 'outdir', '.', 'gettext', **kwargs)
-                            # sphinx-build -a …
-                            app.build(True)
+                            try:
+                                # sphinx-build -b gettext $(DOCS_DIR) $(POT_DIR)
+                                app = Sphinx('.', None, 'outdir', '.', 'gettext', **kwargs)
+                                # sphinx-build -a …
+                                app.build(True)
+                            except sphinx.errors.SphinxWarning as e:
+                                raise Exception(str(outdir)) from e
 
                         # https://stackoverflow.com/questions/15408348
                         content = subprocess.run(['msgcat', *glob('outdir/*.pot')],
