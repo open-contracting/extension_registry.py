@@ -103,9 +103,9 @@ def build_profile(basedir, standard_tag, extension_versions, registry_base_url=N
         metadata.pop('codelists', None)
 
     # Update the "dependencies" and "testDependencies" fields in extension.json, without duplication.
-    extensions = {}
+    extensions = set()
     for extension in builder.extensions():
-        extensions[extension.id] = extension.get_url('extension.json')
+        extensions.add(extension.id)
 
     for field in ('dependencies', 'testDependencies'):
         metadata[field] = set()
@@ -116,7 +116,7 @@ def build_profile(basedir, standard_tag, extension_versions, registry_base_url=N
                     extension = builder.registry.get_from_url(url)
                     if extension.id in extensions:
                         continue
-                    extensions[extension.id] = url
+                    extensions.add(extension.id)
                 except DoesNotExist:
                     pass
                 metadata[field].add(url)
