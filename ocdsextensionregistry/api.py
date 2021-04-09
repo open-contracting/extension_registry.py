@@ -14,10 +14,6 @@ from .util import json_dump
 VALID_FIELDNAMES = ('Code', 'Title', 'Description', 'Extension')
 
 
-def identity(text, *args, **kwargs):
-    return text
-
-
 def build_profile(basedir, standard_tag, extension_versions, registry_base_url=None, standard_base_url=None,
                   schema_base_url=None, update_codelist_urls=None):
     """
