@@ -11,7 +11,7 @@ args = ['ocdsextensionregistry', 'generate-pot-files']
 
 @patch('sys.stdout', new_callable=StringIO)
 def test_command(stdout, monkeypatch, tmpdir):
-    monkeypatch.setattr(sys, 'argv', args + [str(tmpdir), 'location==v1.1.4'])
+    monkeypatch.setattr(sys, 'argv', args + ['-W', str(tmpdir), 'location==v1.1.4'])
     main()
 
     assert stdout.getvalue() == ''

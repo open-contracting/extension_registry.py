@@ -55,8 +55,20 @@ def test_command_missing_locale_dir(stdout, stderr, monkeypatch):
     assert excinfo.value.code == 2
 
 
+@patch('sys.stderr', new_callable=StringIO)
 @patch('sys.stdout', new_callable=StringIO)
-def test_command_directory(stdout, monkeypatch, tmpdir):
+def test_command_missing_language(stdout, stderr, monkeypatch, tmpdir):
+    with pytest.raises(SystemExit) as excinfo:
+        monkeypatch.setattr(sys, 'argv', args + ['--locale-dir', '.', '--languages', 'es', 'location==v1.1.4'])
+        main()
+
+    assert stdout.getvalue() == ''
+    assert 'translations to es are not available' in stderr.getvalue()
+    assert excinfo.value.code == 2
+
+
+@patch('sys.stdout', new_callable=StringIO)
+def test_command_locale_dir(stdout, monkeypatch, tmpdir):
     versions_dir = tmpdir.mkdir('outputdir')
     version_dir = versions_dir.mkdir('location').mkdir('v1.1.4')
     locale_dir = tmpdir.mkdir('localedir')
@@ -68,6 +80,74 @@ def test_command_directory(stdout, monkeypatch, tmpdir):
 
     monkeypatch.setattr(sys, 'argv', args + ['--versions-dir', str(versions_dir), '--locale-dir', str(locale_dir),
                                              'location==v1.1.4'])
+    main()
+
+    assert json.loads(stdout.getvalue()) == {
+        'location': {
+            'id': 'location',
+            'category': 'item',
+            'core': True,
+            'name': {
+                'en': 'Location',
+                'es': 'Location',
+            },
+            'description': {
+                'en': '…',
+                'es': '…',
+            },
+            'latest_version': 'v1.1.4',
+            'versions': {
+                'v1.1.4': {
+                    'id': 'location',
+                    'date': '2019-02-25',
+                    'version': 'v1.1.4',
+                    'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.4/',  # noqa: E501
+                    'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.4',  # noqa: E501
+                    'publisher': {
+                        'name': 'open-contracting-extensions',
+                        'url': 'https://github.com/open-contracting-extensions',
+                    },
+                    'metadata': {
+                        'name': {
+                            'en': 'Location',
+                            'es': 'Location',
+                        },
+                        'description': {
+                            'en': '…',
+                            'es': '…',
+                        },
+                        'documentationUrl': {},
+                        'compatibility': ['1.1'],
+                    },
+                    'schemas': {
+                        'record-package-schema.json': {},
+                        'release-package-schema.json': {},
+                        'release-schema.json': {},
+                    },
+                    'codelists': {},
+                    'readme': {
+                        'en': '# Location\n',
+                        'es': '# Location\n',
+                    },
+                },
+            },
+        },
+    }
+
+
+@patch('sys.stdout', new_callable=StringIO)
+def test_command_languages(stdout, monkeypatch, tmpdir):
+    versions_dir = tmpdir.mkdir('outputdir')
+    version_dir = versions_dir.mkdir('location').mkdir('v1.1.4')
+    locale_dir = tmpdir.mkdir('localedir')
+    for locale in ('en', 'es', 'fr'):
+        locale_dir.mkdir(locale)
+
+    version_dir.join('extension.json').write('{"name": "Location", "description": "…"}')
+    version_dir.join('README.md').write('# Location')
+
+    monkeypatch.setattr(sys, 'argv', args + ['--versions-dir', str(versions_dir), '--locale-dir', str(locale_dir),
+                                             '--languages', 'es', 'location==v1.1.4'])
     main()
 
     assert json.loads(stdout.getvalue()) == {

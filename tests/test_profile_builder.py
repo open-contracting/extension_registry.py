@@ -75,9 +75,9 @@ def test_release_schema_patch():
 
 def test_patched_release_schema():
     # Use the ppp extension to test null values.
-    builder = ProfileBuilder('1__1__4', {
+    builder = ProfileBuilder('1__1__5', {
         'https://raw.githubusercontent.com/open-contracting-extensions/ocds_ppp_extension/70c5cb759d4739d1eca5db832e723afb69bbdae0/',  # noqa: E501
-        'https://github.com/open-contracting-extensions/ocds_location_extension/archive/v1.1.4.zip',
+        'https://github.com/open-contracting-extensions/ocds_location_extension/archive/v1.1.5.zip',
     })
     result = builder.patched_release_schema()
 
