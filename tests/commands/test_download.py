@@ -63,7 +63,7 @@ def test_command_versions_collision(stdout, monkeypatch, tmpdir):
 
 @patch('sys.stdout', new_callable=StringIO)
 def test_command_versions_invalid(stdout, monkeypatch, tmpdir, caplog):
-    caplog.set_level(logging.INFO)  # silence connectionpool.py DEBUG messages
+    caplog.set_level(logging.INFO, logger='ocdsextensionregistry')
 
     with pytest.raises(SystemExit) as excinfo:
         monkeypatch.setattr(sys, 'argv', args + [str(tmpdir), 'location=v1.1.4'])
@@ -80,7 +80,7 @@ def test_command_versions_invalid(stdout, monkeypatch, tmpdir, caplog):
 # Require the user to decide what to overwrite.
 @patch('sys.stdout', new_callable=StringIO)
 def test_command_repeated(stdout, monkeypatch, tmpdir, caplog):
-    caplog.set_level(logging.INFO)  # silence connectionpool.py DEBUG messages
+    caplog.set_level(logging.INFO, logger='ocdsextensionregistry')
     argv = args + [str(tmpdir), 'location==v1.1.4']
 
     monkeypatch.setattr(sys, 'argv', argv)
