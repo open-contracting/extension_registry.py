@@ -52,9 +52,9 @@ You can mix and match specifying extensions and versions:
 
 If you've already downloaded versions of extensions, you will need to specify how to handle repeated downloads using the ``--overwrite`` option:
 
-* ``--overwrite any`` overwrite any downloaded versions
-* ``--overwrite none`` overwrite no downloaded versions
-* ``--overwrite live`` overwrite only live versions (like the master branch of an extension)
+--overwrite any         overwrite any downloaded versions
+--overwrite none        overwrite no downloaded versions
+--overwrite live        overwrite only live versions (like the master branch of an extension)
 
 Within the output directory, the extension files are organized like `{extension}/{version}/{files}`, for example: ``lots/v1.1.4/README.md``.
 
