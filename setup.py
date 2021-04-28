@@ -31,7 +31,7 @@ setup(
         ],
         'cli': [
             'Babel',
-            'MyST-Parser',
+            'MyST-Parser>=0.13.5',
             'ocds-babel[markdown]>=0.3.0',
             'Sphinx',
         ]
