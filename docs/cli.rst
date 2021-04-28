@@ -100,7 +100,7 @@ The default behavior is to add all available translations, To select translation
 
 .. code-block:: bash
 
-    ocdsextensionregistry generate-data-file --locale-dir locale --languages es,fr > data.json
+    ocdsextensionregistry generate-data-file --locale-dir locale --languages es > data.json
 
 To create MO files from existing translations, see :doc:`translation`.
 
