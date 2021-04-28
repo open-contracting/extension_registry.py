@@ -19,7 +19,7 @@ Create a `~/.transifexrc <https://docs.transifex.com/client/client-configuration
 Create new translations
 -----------------------
 
-Create a project on Transifex (in this example, our project's identifier is ``ocds-extensions``). You might want to `upload <https://docs.transifex.com/setup/glossary/uploading-an-existing-glossary>`__ the `OCDS glossary <https://github.com/open-contracting/glossary/tree/main/glossaries>`__ in your language to Transifex, to assist with translation.
+Create a project on Transifex (in this example, our project's identifier is ``ocds-extensions``).
 
 Generate POT files for all versions of all extensions:
 
