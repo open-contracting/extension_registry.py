@@ -1,5 +1,5 @@
-Utilities
-=========
+Operations
+==========
 
 .. automodule:: ocdsextensionregistry.api
    :members:
