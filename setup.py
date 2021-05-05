@@ -32,7 +32,7 @@ setup(
         'cli': [
             'Babel',
             'MyST-Parser>=0.13.5',
-            'ocds-babel[markdown]>=0.3.0',
+            'ocds-babel[markdown]>=0.3.3',
             'Sphinx',
         ]
     },
