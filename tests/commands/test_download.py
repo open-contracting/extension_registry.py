@@ -2,8 +2,6 @@ import logging
 import os
 import sys
 from glob import glob
-from io import StringIO
-from unittest.mock import patch
 
 import pytest
 
@@ -12,12 +10,11 @@ from ocdsextensionregistry.cli.__main__ import main
 args = ['ocdsextensionregistry', 'download']
 
 
-@patch('sys.stdout', new_callable=StringIO)
-def test_command(stdout, monkeypatch, tmpdir):
+def test_command(capsys, monkeypatch, tmpdir):
     monkeypatch.setattr(sys, 'argv', args + [str(tmpdir), 'location==v1.1.4'])
     main()
 
-    assert stdout.getvalue() == ''
+    assert capsys.readouterr().out == ''
 
     tree = list(os.walk(tmpdir))
 
@@ -36,12 +33,11 @@ def test_command(stdout, monkeypatch, tmpdir):
     assert sorted(tree[3][2]) == ['geometryType.csv', 'locationGazetteers.csv']
 
 
-@patch('sys.stdout', new_callable=StringIO)
-def test_command_versions(stdout, monkeypatch, tmpdir):
+def test_command_versions(capsys, monkeypatch, tmpdir):
     monkeypatch.setattr(sys, 'argv', args + [str(tmpdir), 'location'])
     main()
 
-    assert stdout.getvalue() == ''
+    assert capsys.readouterr().out == ''
 
     tree = list(os.walk(tmpdir))
 
@@ -49,27 +45,25 @@ def test_command_versions(stdout, monkeypatch, tmpdir):
 
 
 # Take the strictest of restrictions.
-@patch('sys.stdout', new_callable=StringIO)
-def test_command_versions_collision(stdout, monkeypatch, tmpdir):
+def test_command_versions_collision(capsys, monkeypatch, tmpdir):
     monkeypatch.setattr(sys, 'argv', args + [str(tmpdir), 'location==v1.1.4', 'location'])
     main()
 
-    assert stdout.getvalue() == ''
+    assert capsys.readouterr().out == ''
 
     tree = list(os.walk(tmpdir))
 
     assert len(tree[1][1]) == 1
 
 
-@patch('sys.stdout', new_callable=StringIO)
-def test_command_versions_invalid(stdout, monkeypatch, tmpdir, caplog):
+def test_command_versions_invalid(capsys, monkeypatch, tmpdir, caplog):
     caplog.set_level(logging.INFO, logger='ocdsextensionregistry')
 
     with pytest.raises(SystemExit) as excinfo:
         monkeypatch.setattr(sys, 'argv', args + [str(tmpdir), 'location=v1.1.4'])
         main()
 
-    assert stdout.getvalue() == ''
+    assert capsys.readouterr().out == ''
 
     assert len(caplog.records) == 1
     assert caplog.records[0].levelname == 'CRITICAL'
@@ -78,8 +72,7 @@ def test_command_versions_invalid(stdout, monkeypatch, tmpdir, caplog):
 
 
 # Require the user to decide what to overwrite.
-@patch('sys.stdout', new_callable=StringIO)
-def test_command_repeated(stdout, monkeypatch, tmpdir, caplog):
+def test_command_repeated(capsys, monkeypatch, tmpdir, caplog):
     caplog.set_level(logging.INFO, logger='ocdsextensionregistry')
     argv = args + [str(tmpdir), 'location==v1.1.4']
 
@@ -90,7 +83,7 @@ def test_command_repeated(stdout, monkeypatch, tmpdir, caplog):
         monkeypatch.setattr(sys, 'argv', argv)
         main()
 
-    assert stdout.getvalue() == ''
+    assert capsys.readouterr().out == ''
 
     assert len(caplog.records) == 1
     assert caplog.records[0].levelname == 'CRITICAL'
@@ -98,8 +91,7 @@ def test_command_repeated(stdout, monkeypatch, tmpdir, caplog):
     assert excinfo.value.code == 1
 
 
-@patch('sys.stdout', new_callable=StringIO)
-def test_command_repeated_overwrite_any(stdout, monkeypatch, tmpdir):
+def test_command_repeated_overwrite_any(capsys, monkeypatch, tmpdir):
     argv = args + [str(tmpdir), 'location==v1.1.4']
     pattern = str(tmpdir / '*' / '*' / 'extension.json')
 
@@ -112,13 +104,12 @@ def test_command_repeated_overwrite_any(stdout, monkeypatch, tmpdir):
     monkeypatch.setattr(sys, 'argv', argv + ['--overwrite', 'any'])
     main()
 
-    assert stdout.getvalue() == ''
+    assert capsys.readouterr().out == ''
 
     assert len(glob(pattern)) == 1
 
 
-@patch('sys.stdout', new_callable=StringIO)
-def test_command_repeated_overwrite_none(stdout, monkeypatch, tmpdir):
+def test_command_repeated_overwrite_none(capsys, monkeypatch, tmpdir):
     argv = args + [str(tmpdir), 'location==v1.1.4']
     pattern = str(tmpdir / '*' / '*' / 'extension.json')
 
@@ -131,13 +122,12 @@ def test_command_repeated_overwrite_none(stdout, monkeypatch, tmpdir):
     monkeypatch.setattr(sys, 'argv', argv + ['--overwrite', 'none'])
     main()
 
-    assert stdout.getvalue() == ''
+    assert capsys.readouterr().out == ''
 
     assert len(glob(pattern)) == 0
 
 
-@patch('sys.stdout', new_callable=StringIO)
-def test_command_repeated_overwrite_live(stdout, monkeypatch, tmpdir):
+def test_command_repeated_overwrite_live(capsys, monkeypatch, tmpdir):
     argv = args + [str(tmpdir), 'location==v1.1.4', 'location==master']
     pattern = str(tmpdir / '*' / '*' / 'extension.json')
 
@@ -151,7 +141,7 @@ def test_command_repeated_overwrite_live(stdout, monkeypatch, tmpdir):
     monkeypatch.setattr(sys, 'argv', argv + ['--overwrite', 'live'])
     main()
 
-    assert stdout.getvalue() == ''
+    assert capsys.readouterr().out == ''
 
     filenames = glob(pattern)
 
@@ -159,13 +149,12 @@ def test_command_repeated_overwrite_live(stdout, monkeypatch, tmpdir):
     assert filenames[0] == str(tmpdir / 'location' / 'master' / 'extension.json')
 
 
-@patch('sys.stdout', new_callable=StringIO)
-def test_command_help(stdout, monkeypatch, caplog):
+def test_command_help(capsys, monkeypatch, caplog):
     with pytest.raises(SystemExit) as excinfo:
         monkeypatch.setattr(sys, 'argv', ['ocdsextensionregistry', '--help'])
         main()
 
-    assert stdout.getvalue().startswith('usage: ocdsextensionregistry [-h]')
+    assert capsys.readouterr().out.startswith('usage: ocdsextensionregistry [-h]')
 
     assert len(caplog.records) == 0
     assert excinfo.value.code == 0

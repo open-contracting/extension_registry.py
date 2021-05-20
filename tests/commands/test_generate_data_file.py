@@ -1,7 +1,5 @@
 import json
 import sys
-from io import StringIO
-from unittest.mock import patch
 
 import pytest
 
@@ -11,64 +9,59 @@ from tests import read
 args = ['ocdsextensionregistry', 'generate-data-file']
 
 
-@patch('sys.stdout', new_callable=StringIO)
-def test_command(stdout, monkeypatch):
+def test_command(capsys, monkeypatch):
     monkeypatch.setattr(sys, 'argv', args + ['location==v1.1.4'])
     main()
 
-    assert stdout.getvalue() == read('location-v1.1.4.json')
+    assert capsys.readouterr().out == read('location-v1.1.4.json')
 
 
-@patch('sys.stdout', new_callable=StringIO)
-def test_command_latest_version_master(stdout, monkeypatch):
+def test_command_latest_version_master(capsys, monkeypatch):
     monkeypatch.setattr(sys, 'argv', args + ['location==v1.1.4', 'location==master'])
     main()
 
-    assert json.loads(stdout.getvalue())['location']['latest_version'] == 'master'
+    assert json.loads(capsys.readouterr().out)['location']['latest_version'] == 'master'
 
 
-@patch('sys.stdout', new_callable=StringIO)
-def test_command_latest_version_default(stdout, monkeypatch):
+def test_command_latest_version_default(capsys, monkeypatch):
     monkeypatch.setattr(sys, 'argv', args + ['legalBasis==1.1', 'legalBasis==1.2'])
     main()
 
-    assert json.loads(stdout.getvalue())['legalBasis']['latest_version'] == '1.1'
+    assert json.loads(capsys.readouterr().out)['legalBasis']['latest_version'] == '1.1'
 
 
-@patch('sys.stdout', new_callable=StringIO)
-def test_command_latest_version_dated(stdout, monkeypatch):
+def test_command_latest_version_dated(capsys, monkeypatch):
     monkeypatch.setattr(sys, 'argv', args + ['location==v1.1.5', 'location==v1.1.4'])
     main()
 
-    assert json.loads(stdout.getvalue())['location']['latest_version'] == 'v1.1.5'
+    assert json.loads(capsys.readouterr().out)['location']['latest_version'] == 'v1.1.5'
 
 
-@patch('sys.stderr', new_callable=StringIO)
-@patch('sys.stdout', new_callable=StringIO)
-def test_command_missing_locale_dir(stdout, stderr, monkeypatch):
+def test_command_missing_locale_dir(capsys, monkeypatch):
     with pytest.raises(SystemExit) as excinfo:
         monkeypatch.setattr(sys, 'argv', args + ['--languages', 'es', 'location==v1.1.4'])
         main()
 
-    assert stdout.getvalue() == ''
-    assert '--locale-dir is required if --languages is set.' in stderr.getvalue()
+    captured = capsys.readouterr()
+
+    assert captured.out == ''
+    assert '--locale-dir is required if --languages is set.' in captured.err
     assert excinfo.value.code == 2
 
 
-@patch('sys.stderr', new_callable=StringIO)
-@patch('sys.stdout', new_callable=StringIO)
-def test_command_missing_language(stdout, stderr, monkeypatch, tmpdir):
+def test_command_missing_language(capsys, monkeypatch, tmpdir):
     with pytest.raises(SystemExit) as excinfo:
         monkeypatch.setattr(sys, 'argv', args + ['--locale-dir', '.', '--languages', 'es', 'location==v1.1.4'])
         main()
 
-    assert stdout.getvalue() == ''
-    assert 'translations to es are not available' in stderr.getvalue()
+    captured = capsys.readouterr()
+
+    assert captured.out == ''
+    assert 'translations to es are not available' in captured.err
     assert excinfo.value.code == 2
 
 
-@patch('sys.stdout', new_callable=StringIO)
-def test_command_locale_dir(stdout, monkeypatch, tmpdir):
+def test_command_locale_dir(capsys, monkeypatch, tmpdir):
     versions_dir = tmpdir.mkdir('outputdir')
     version_dir = versions_dir.mkdir('location').mkdir('v1.1.4')
     locale_dir = tmpdir.mkdir('localedir')
@@ -82,7 +75,7 @@ def test_command_locale_dir(stdout, monkeypatch, tmpdir):
                                              'location==v1.1.4'])
     main()
 
-    assert json.loads(stdout.getvalue()) == {
+    assert json.loads(capsys.readouterr().out) == {
         'location': {
             'id': 'location',
             'category': 'item',
@@ -135,8 +128,7 @@ def test_command_locale_dir(stdout, monkeypatch, tmpdir):
     }
 
 
-@patch('sys.stdout', new_callable=StringIO)
-def test_command_languages(stdout, monkeypatch, tmpdir):
+def test_command_languages(capsys, monkeypatch, tmpdir):
     versions_dir = tmpdir.mkdir('outputdir')
     version_dir = versions_dir.mkdir('location').mkdir('v1.1.4')
     locale_dir = tmpdir.mkdir('localedir')
@@ -150,7 +142,7 @@ def test_command_languages(stdout, monkeypatch, tmpdir):
                                              '--languages', 'es', 'location==v1.1.4'])
     main()
 
-    assert json.loads(stdout.getvalue()) == {
+    assert json.loads(capsys.readouterr().out) == {
         'location': {
             'id': 'location',
             'category': 'item',
