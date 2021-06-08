@@ -77,7 +77,7 @@ def _resolve_zip(url, root=''):
                     if directory == '__pycache__':
                         dirs.remove(directory)
                 for file in sorted(files):
-                    zipfile.write(os.path.join(root, file), arcname='zip/{}'.format(file))
+                    zipfile.write(os.path.join(root, file), arcname=f'zip/{file}')
     else:
         response = requests.get(url, allow_redirects=True)
         response.raise_for_status()

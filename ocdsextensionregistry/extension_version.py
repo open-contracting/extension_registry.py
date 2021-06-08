@@ -35,7 +35,7 @@ class ExtensionVersion:
 
     def __repr__(self):
         if self.id and self.version:
-            return '{}=={}'.format(self.id, self.version)
+            return f'{self.id}=={self.version}'
         elif self.base_url:
             return self.base_url
         else:
@@ -78,7 +78,7 @@ class ExtensionVersion:
         try:
             return self.files[basename]
         except KeyError:
-            raise DoesNotExist('File {!r} does not exist in {}'.format(basename, self))
+            raise DoesNotExist(f'File {basename!r} does not exist in {self}')
 
     @property
     def files(self):
@@ -275,7 +275,7 @@ class ExtensionVersion:
         config = self._configuration(parsed)
         if config:
             return getattr(self, '_repository_' + prop)(parsed, config)
-        raise NotImplementedError("can't determine {} from {}".format(prop, self.base_url))
+        raise NotImplementedError(f"can't determine {prop} from {self.base_url}")
 
     def _configuration(self, parsed):
         # Multiple websites are implemented to explore the robustness of the approach.

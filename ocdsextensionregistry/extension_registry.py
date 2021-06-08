@@ -10,9 +10,9 @@ Filter the versions of extensions in the registry, and access information about 
 
     registry = ExtensionRegistry(extension_versions_url, extensions_url)
     for version in registry.filter(core=True, version='v1.1.4', category='tender'):
-        print('The {0.metadata[name][en]} extension ("{0.id}") is maintained at {0.repository_html_page}'.format(version))
-        print('Run `git clone {0.repository_url}` to make a local copy in a {0.repository_name} directory'.format(version))
-        print('Get its patch at {0.base_url}release-schema.json\\n'.format(version))
+        print(f'The {version.metadata[name][en]} extension ("{version.id}") is maintained at {version.repository_html_page}')
+        print(f'Run `git clone {version.repository_url}` to make a local copy in a {version.repository_name} directory')
+        print(f'Get its patch at {version.base_url}release-schema.json\\n')
 
 Output::
 
@@ -87,7 +87,7 @@ class ExtensionRegistry:
         try:
             return next(ver for ver in self.versions if all(getattr(ver, k) == v for k, v in kwargs.items()))
         except StopIteration:
-            raise DoesNotExist('Extension version matching {!r} does not exist.'.format(kwargs))
+            raise DoesNotExist(f'Extension version matching {kwargs!r} does not exist.')
         except AttributeError as e:
             self._handle_attribute_error(e)
 

@@ -70,7 +70,7 @@ class Codelist:
         return self.name < other.name
 
     def __repr__(self):
-        return 'Codelist(name={!r}, rows={!r})'.format(self.name, self.rows)
+        return f'Codelist(name={self.name!r}, rows={self.rows!r})'
 
     def extend(self, rows, extension_name=None):
         """

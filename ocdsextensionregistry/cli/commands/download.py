@@ -32,7 +32,7 @@ class Command(BaseCommand):
 
         for version in self.versions():
             if not version.download_url:
-                logger.warning('Not downloading {}=={} (no Download URL)'.format(version.id, version.version))
+                logger.warning(f'Not downloading {version.id}=={version.version} (no Download URL)')
                 continue
 
             version_directory = output_directory / version.id / version.version
@@ -57,5 +57,4 @@ class Command(BaseCommand):
                             info.filename = filename
                             zipfile.extract(info, version_directory)
             except FileExistsError as e:
-                raise CommandError('File {} already exists! Set the --overwrite option.'
-                                   .format(e.filename))
+                raise CommandError(f'File {e.filename} already exists! Set the --overwrite option.')

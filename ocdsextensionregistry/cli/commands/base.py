@@ -34,7 +34,7 @@ class BaseCommand:
                 versions[extension].append(version)
             elif '=' in value:
                 # Help users with a common error.
-                raise CommandError("Couldn't parse '{}'. Use '==' not '='.".format(value))
+                raise CommandError(f"Couldn't parse '{value}'. Use '==' not '='.")
             else:
                 versions[value]
 

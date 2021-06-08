@@ -237,7 +237,7 @@ class ProfileBuilder:
                     codelists[name] = Codelist(name)
                     originals[name] = content
                 elif not codelists[name].patch:
-                    assert originals[name] == content, 'codelist {} differs across extensions'.format(name)
+                    assert originals[name] == content, f'codelist {name} differs across extensions'
                     continue
 
                 codelists[name].extend(csv.DictReader(StringIO(content)), extension.metadata['name']['en'])
@@ -260,13 +260,13 @@ class ProfileBuilder:
                 if codelist.addend:
                     for row in codelist:
                         code = row['Code']
-                        assert code in codes, '{} added by {}, but not in {}'.format(code, name, basename)
-                    logger.info('{0} has the codes added by {1} - ignoring {1}'.format(basename, name))
+                        assert code in codes, f'{code} added by {name}, but not in {basename}'
+                    logger.info(f'{basename} has the codes added by {name} - ignoring {name}')
                 else:
                     for row in codelist:
                         code = row['Code']
-                        assert code not in codes, '{} removed by {}, but in {}'.format(code, name, basename)
-                    logger.info('{0} has no codes removed by {1} - ignoring {1}'.format(basename, name))
+                        assert code not in codes, f'{code} removed by {name}, but in {basename}'
+                    logger.info(f'{basename} has no codes removed by {name} - ignoring {name}')
                 del codelists[name]
 
         return list(codelists.values())

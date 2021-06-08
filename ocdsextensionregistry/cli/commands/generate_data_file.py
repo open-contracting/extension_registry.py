@@ -19,11 +19,11 @@ logger = logging.getLogger('ocdsextensionregistry')
 
 
 def _translator(version, domain, localedir, language):
-    domain = '{}/{}/{}'.format(version.id, version.version, domain)
+    domain = f'{version.id}/{version.version}/{domain}'
     try:
         return gettext.translation(domain, localedir, languages=[language], fallback=language == 'en')
     except FileNotFoundError as e:
-        logger.warning('{}: {!r}'.format(e.strerror, e.filename))
+        logger.warning(f'{e.strerror}: {e.filename!r}')
         return gettext.NullTranslations()
 
 
@@ -64,7 +64,7 @@ class Command(BaseCommand):
                     if language in available_translations:
                         languages.add(language)
                     else:
-                        self.subparser.error('translations to {} are not available'.format(language))
+                        self.subparser.error(f'translations to {language} are not available')
             else:
                 languages.update(available_translations)
 
@@ -103,8 +103,8 @@ class Command(BaseCommand):
 
             parsed = urlparse(version_data['publisher']['url'])
             if parsed.netloc == 'github.com' and 'OCDS_GITHUB_ACCESS_TOKEN' in os.environ:
-                api_url = 'https://api.github.com/users/{}'.format(version_data['publisher']['name'])
-                headers = {'Authorization': 'token {}'.format(os.getenv('OCDS_GITHUB_ACCESS_TOKEN'))}
+                api_url = f"https://api.github.com/users/{version_data['publisher']['name']}"
+                headers = {'Authorization': f"token {os.getenv('OCDS_GITHUB_ACCESS_TOKEN')}"}
                 version_data['publisher']['name'] = requests.get(api_url, headers=headers).json()['name']
 
             for language in sorted(languages):
@@ -159,7 +159,7 @@ class Command(BaseCommand):
                 if dated:
                     latest_version = max(dated, key=lambda kv: kv[1]['date'])[0]
                 else:
-                    raise CommandError("Couldn't determine latest version of {}".format(_id))
+                    raise CommandError(f"Couldn't determine latest version of {_id}")
 
             # Apply the latest version.
             data[_id]['latest_version'] = latest_version

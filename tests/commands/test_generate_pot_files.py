@@ -69,7 +69,7 @@ def test_command_missing_directory(capsys, monkeypatch, tmpdir, caplog):
 
     assert len(caplog.records) == 1
     assert caplog.records[0].levelname == 'WARNING'
-    assert caplog.records[0].message == 'Not processing location==v1.1.4 (not in {})'.format(versions_dir)
+    assert caplog.records[0].message == f'Not processing location==v1.1.4 (not in {versions_dir})'
 
 
 def test_command_missing_download_url(capsys, monkeypatch, tmpdir, caplog):
