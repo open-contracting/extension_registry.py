@@ -43,7 +43,7 @@ def get_latest_version(versions):
     if default_minor_version in version_numbers:
         return version_numbers[default_minor_version]
 
-    dated = list(filter(lambda version: version.date, versions))
+    dated = [version for version in versions if version.date]
     if dated:
         return max(dated, key=lambda version: version.date)
 

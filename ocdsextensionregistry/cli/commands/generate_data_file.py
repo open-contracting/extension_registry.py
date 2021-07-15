@@ -155,7 +155,7 @@ class Command(BaseCommand):
             elif default_minor_version in versions:
                 latest_version = default_minor_version
             else:
-                dated = list(filter(lambda kv: kv[1]['date'], versions.items()))
+                dated = [kv for kv in version.items() if kv[1]['date']]
                 if dated:
                     latest_version = max(dated, key=lambda kv: kv[1]['date'])[0]
                 else:

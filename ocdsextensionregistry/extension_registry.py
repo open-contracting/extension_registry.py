@@ -72,7 +72,7 @@ class ExtensionRegistry:
                                           was not initialized with extensions data
         """
         try:
-            return list(filter(lambda ver: all(getattr(ver, k) == v for k, v in kwargs.items()), self.versions))
+            return [ver for ver in self.versions if all(getattr(ver, k) == v for k, v in kwargs.items())]
         except AttributeError as e:
             self._handle_attribute_error(e)
 
