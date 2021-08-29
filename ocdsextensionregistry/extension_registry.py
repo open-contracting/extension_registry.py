@@ -32,7 +32,7 @@ See additional details in :doc:`extension_version`.
 
 import csv
 from io import StringIO
-from urllib.parse import urlparse
+from urllib.parse import urlsplit
 
 from .exceptions import DoesNotExist, MissingExtensionMetadata
 from .extension import Extension
@@ -97,7 +97,7 @@ class ExtensionRegistry:
 
         :raises DoesNotExist: if no extension version matches
         """
-        parsed = urlparse(url)
+        parsed = urlsplit(url)
         path = parsed.path.rsplit('/', 1)[0] + '/'
         return self.get(base_url=parsed._replace(path=path).geturl())
 

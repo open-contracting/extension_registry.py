@@ -4,7 +4,7 @@ import os
 import re
 from contextlib import closing
 from io import StringIO
-from urllib.parse import urlparse
+from urllib.parse import urlsplit
 
 import requests
 import requests_cache
@@ -271,7 +271,7 @@ class ExtensionVersion:
         return config['url:prefix'] + self._repository_full_name(parsed, config) + config['url:suffix']
 
     def _repository_property(self, prop):
-        parsed = urlparse(self.base_url)
+        parsed = urlsplit(self.base_url)
         config = self._configuration(parsed)
         if config:
             return getattr(self, '_repository_' + prop)(parsed, config)

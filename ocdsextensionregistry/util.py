@@ -1,7 +1,7 @@
 import json
 import os
 from io import BytesIO
-from urllib.parse import urlparse
+from urllib.parse import urlsplit
 from zipfile import ZipFile
 
 import requests
@@ -51,7 +51,7 @@ def get_latest_version(versions):
 
 
 def _resolve(data_or_url):
-    parsed = urlparse(data_or_url)
+    parsed = urlsplit(data_or_url)
 
     if parsed.scheme:
         if parsed.scheme == 'file':
@@ -66,7 +66,7 @@ def _resolve(data_or_url):
 
 
 def _resolve_zip(url, root=''):
-    parsed = urlparse(url)
+    parsed = urlsplit(url)
 
     if parsed.scheme == 'file':
         io = BytesIO()

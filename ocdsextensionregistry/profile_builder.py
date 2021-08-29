@@ -35,7 +35,7 @@ import logging
 import os
 import re
 from io import StringIO
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin, urlsplit
 
 import json_merge_patch
 from jsonref import JsonRef
@@ -95,7 +95,7 @@ class ProfileBuilder:
                 yield self.registry.get(id=identifier, version=version)
         else:
             for url in self.extension_versions:
-                parsed = urlparse(url)
+                parsed = urlsplit(url)
                 data = dict.fromkeys(['Id', 'Date', 'Version', 'Base URL', 'Download URL'])
                 if parsed.scheme == 'file':
                     data['Download URL'] = url

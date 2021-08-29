@@ -3,7 +3,7 @@ import logging
 import os
 import sys
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import urlsplit
 
 import requests
 from ocds_babel import TRANSLATABLE_EXTENSION_METADATA_KEYWORDS
@@ -101,7 +101,7 @@ class Command(BaseCommand):
                 'readme': {},
             }
 
-            parsed = urlparse(version_data['publisher']['url'])
+            parsed = urlsplit(version_data['publisher']['url'])
             if parsed.netloc == 'github.com' and 'OCDS_GITHUB_ACCESS_TOKEN' in os.environ:
                 api_url = f"https://api.github.com/users/{version_data['publisher']['name']}"
                 headers = {'Authorization': f"token {os.getenv('OCDS_GITHUB_ACCESS_TOKEN')}"}
