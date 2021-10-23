@@ -37,7 +37,7 @@ def main():
             command.args = args
             command.handle()
         except CommandError as e:
-            logger.exception('')
+            logger.critical(e)
             sys.exit(1)
     else:
         parser.print_help()
