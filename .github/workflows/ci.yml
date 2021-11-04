@@ -17,7 +17,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt update
-          sudo apt install shellcheck
+          sudo apt install gettext
       - name: Install gettext (macOS)
         if: matrix.os == 'macos-latest'
         run: |
