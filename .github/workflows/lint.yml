@@ -8,22 +8,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
+      - uses: actions/setup-python@v2
         with:
           python-version: 3.6
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('.github/workflows/lint.yml') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt', 'setup.py') }}
           restore-keys: |
             ${{ runner.os }}-pip-
-      - run: pip install --upgrade pip
       - run: curl -s -S --retry 3 $BASEDIR/tests/install.sh | bash -
       - run: curl -s -S --retry 3 $BASEDIR/tests/script.sh | bash -
       - run: pip install .[cli,test]
       - env:
-          STANDARD_MAINTENANCE_SCRIPTS_IGNORE: MyST-Parser
           STANDARD_MAINTENANCE_SCRIPTS_EXTRAS: cli
+          STANDARD_MAINTENANCE_SCRIPTS_IGNORE: MyST-Parser
         run: pytest /tmp/test_requirements.py
       - run: pip install --upgrade check-manifest setuptools
       - run: check-manifest
