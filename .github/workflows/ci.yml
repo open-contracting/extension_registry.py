@@ -15,10 +15,13 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install gettext (Linux)
         if: matrix.os == 'ubuntu-latest'
-        run: sudo apt install gettext
+        run: |
+          sudo apt update
+          sudo apt install shellcheck
       - name: Install gettext (macOS)
         if: matrix.os == 'macos-latest'
         run: |
+          brew update
           brew install gettext
           brew link gettext --force
       - name: Install gettext (Windows)
