@@ -261,12 +261,12 @@ class ProfileBuilder:
                     for row in codelist:
                         code = row['Code']
                         assert code in codes, f'{code} added by {name}, but not in {basename}'
-                    logger.info(f'{basename} has the codes added by {name} - ignoring {name}')
+                    logger.info('%s has the codes added by %s - ignoring %s', basename, name, name)
                 else:
                     for row in codelist:
                         code = row['Code']
                         assert code not in codes, f'{code} removed by {name}, but in {basename}'
-                    logger.info(f'{basename} has no codes removed by {name} - ignoring {name}')
+                    logger.info('%s has no codes removed by %s - ignoring %s', basename, name, name)
                 del codelists[name]
 
         return list(codelists.values())

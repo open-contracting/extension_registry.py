@@ -107,12 +107,16 @@ class Command(BaseCommand):
             if self.args.versions_dir:
                 download_dir = versions_directory / version.id / version.version
                 if not download_dir.is_dir():
-                    logger.warning(f'Not processing {version.id}=={version.version} (not in {versions_directory})')
+                    logger.warning(
+                        'Not processing %s==%s (not in %s)', version.id, version.version, versions_directory
+                    )
                     continue
                 version.download_url = download_dir.as_uri()
             else:
                 if not version.download_url:
-                    logger.warning(f'Not processing {version.id}=={version.version} (no Download URL)')
+                    logger.warning(
+                        'Not processing %s==%s (no Download URL)', version.id, version.version
+                    )
                     continue
 
             outdir = output_directory / version.id / version.version

@@ -23,7 +23,7 @@ def _translator(version, domain, localedir, language):
     try:
         return gettext.translation(domain, localedir, languages=[language], fallback=language == 'en')
     except FileNotFoundError as e:
-        logger.warning(f'{e.strerror}: {e.filename!r}')
+        logger.warning('%s: %r', e.strerror, e.filename)
         return gettext.NullTranslations()
 
 
