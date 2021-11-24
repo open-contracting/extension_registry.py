@@ -5,7 +5,6 @@ import sys
 from pathlib import Path
 from urllib.parse import urlsplit
 
-import requests
 from ocds_babel import TRANSLATABLE_EXTENSION_METADATA_KEYWORDS
 from ocds_babel.translate import (translate_codelist_data, translate_extension_metadata_data, translate_markdown_data,
                                   translate_schema_data)

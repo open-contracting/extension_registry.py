@@ -4,7 +4,6 @@ from io import BytesIO
 from urllib.parse import urlsplit
 from zipfile import ZipFile
 
-import requests
 from requests_cache import CachedSession
 
 from .exceptions import UnknownLatestVersion
