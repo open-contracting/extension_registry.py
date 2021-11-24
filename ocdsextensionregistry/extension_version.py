@@ -7,11 +7,10 @@ from io import StringIO
 from urllib.parse import urlsplit
 
 import requests
-import requests_cache
 
 from .codelist import Codelist
 from .exceptions import DoesNotExist, NotAvailableInBulk
-from .util import _resolve_zip, encoding
+from .util import _resolve_zip, encoding, session
 
 SCHEMAS = ('record-package-schema.json', 'release-package-schema.json', 'release-schema.json')
 
@@ -69,8 +68,7 @@ class ExtensionVersion:
         """
         if basename not in self.files:
             if not self.download_url:
-                with requests_cache.enabled(backend='memory'):
-                    response = requests.get(self.get_url(basename))
+                response = session.get(self.get_url(basename))
                 response.raise_for_status()
                 self._files[basename] = response.text
 

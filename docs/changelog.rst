@@ -4,7 +4,7 @@ Changelog
 0.1.5 (2021-11-24)
 ------------------
 
--  Use ``with requests_cache.enabled()`` context manager, to avoid interfering with logging behavior in applications.
+-  Do not globally patch requests.
 
 0.1.4 (2021-04-10)
 ------------------

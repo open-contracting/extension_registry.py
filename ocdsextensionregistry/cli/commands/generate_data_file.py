@@ -6,7 +6,6 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 import requests
-import requests_cache
 from ocds_babel import TRANSLATABLE_EXTENSION_METADATA_KEYWORDS
 from ocds_babel.translate import (translate_codelist_data, translate_extension_metadata_data, translate_markdown_data,
                                   translate_schema_data)
@@ -14,7 +13,7 @@ from ocds_babel.translate import (translate_codelist_data, translate_extension_m
 from ocdsextensionregistry import EXTENSION_VERSIONS_DATA, EXTENSIONS_DATA
 from ocdsextensionregistry.cli.commands.base import BaseCommand
 from ocdsextensionregistry.exceptions import CommandError
-from ocdsextensionregistry.util import default_minor_version, json_dump
+from ocdsextensionregistry.util import default_minor_version, json_dump, session
 
 logger = logging.getLogger('ocdsextensionregistry')
 
@@ -106,8 +105,7 @@ class Command(BaseCommand):
             if parsed.netloc == 'github.com' and 'OCDS_GITHUB_ACCESS_TOKEN' in os.environ:
                 api_url = f"https://api.github.com/users/{version_data['publisher']['name']}"
                 headers = {'Authorization': f"token {os.getenv('OCDS_GITHUB_ACCESS_TOKEN')}"}
-                with requests_cache.enabled(backend='memory'):
-                    version_data['publisher']['name'] = requests.get(api_url, headers=headers).json()['name']
+                version_data['publisher']['name'] = session.get(api_url, headers=headers).json()['name']
 
             for language in sorted(languages):
                 # Update the version's metadata and add the version's schema.
