@@ -15,8 +15,6 @@ from .util import _resolve_zip, encoding
 
 SCHEMAS = ('record-package-schema.json', 'release-package-schema.json', 'release-schema.json')
 
-requests_cache.install_cache(backend='memory')
-
 
 class ExtensionVersion:
     def __init__(self, data):
@@ -71,7 +69,8 @@ class ExtensionVersion:
         """
         if basename not in self.files:
             if not self.download_url:
-                response = requests.get(self.get_url(basename))
+                with requests_cache.enabled(backend='memory'):
+                    response = requests.get(self.get_url(basename))
                 response.raise_for_status()
                 self._files[basename] = response.text
 

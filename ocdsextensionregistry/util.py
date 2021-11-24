@@ -18,8 +18,6 @@ else:
 
 default_minor_version = '1.1'
 
-requests_cache.install_cache(backend='memory')
-
 
 def json_dump(data, io):
     """
@@ -58,7 +56,8 @@ def _resolve(data_or_url):
             with open(data_or_url[file_uri_offset:]) as f:
                 return f.read()
 
-        response = requests.get(data_or_url)
+        with requests_cache.enabled(backend='memory'):
+            response = requests.get(data_or_url)
         response.raise_for_status()
         return response.text
 
@@ -79,7 +78,8 @@ def _resolve_zip(url, root=''):
                 for file in sorted(files):
                     zipfile.write(os.path.join(root, file), arcname=f'zip/{file}')
     else:
-        response = requests.get(url, allow_redirects=True)
+        with requests_cache.enabled(backend='memory'):
+            response = requests.get(url, allow_redirects=True)
         response.raise_for_status()
         io = BytesIO(response.content)
 
