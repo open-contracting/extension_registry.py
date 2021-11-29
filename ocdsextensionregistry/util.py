@@ -9,10 +9,8 @@ from requests_cache import CachedSession
 from .exceptions import UnknownLatestVersion
 
 if os.name == 'nt':
-    encoding = 'cp1252'
     file_uri_offset = 8
 else:
-    encoding = 'utf-8'
     file_uri_offset = 7
 
 default_minor_version = '1.1'

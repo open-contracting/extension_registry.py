@@ -68,8 +68,8 @@ def test_command_locale_dir(capsys, monkeypatch, tmpdir):
     for locale in ('en', 'es'):
         locale_dir.mkdir(locale)
 
-    version_dir.join('extension.json').write('{"name": "Location", "description": "…"}')
-    version_dir.join('README.md').write('# Location')
+    version_dir.join('extension.json').write_text('{"name": "Location", "description": "…"}', encoding='utf-8')
+    version_dir.join('README.md').write_text('# Location', encoding='utf-8')
 
     monkeypatch.setattr(sys, 'argv', args + ['--versions-dir', str(versions_dir), '--locale-dir', str(locale_dir),
                                              'location==v1.1.4'])
@@ -135,8 +135,8 @@ def test_command_languages(capsys, monkeypatch, tmpdir):
     for locale in ('en', 'es', 'fr'):
         locale_dir.mkdir(locale)
 
-    version_dir.join('extension.json').write('{"name": "Location", "description": "…"}')
-    version_dir.join('README.md').write('# Location')
+    version_dir.join('extension.json').write_text('{"name": "Location", "description": "…"}', encoding='utf-8')
+    version_dir.join('README.md').write_text('# Location', encoding='utf-8')
 
     monkeypatch.setattr(sys, 'argv', args + ['--versions-dir', str(versions_dir), '--locale-dir', str(locale_dir),
                                              '--languages', 'es', 'location==v1.1.4'])

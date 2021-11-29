@@ -43,7 +43,7 @@ from jsonref import JsonRef
 from .codelist import Codelist
 from .extension_registry import ExtensionRegistry
 from .extension_version import ExtensionVersion
-from .util import _resolve_zip, encoding
+from .util import _resolve_zip
 
 logger = logging.getLogger('ocdsextensionregistry')
 
@@ -317,7 +317,7 @@ class ProfileBuilder:
 
             for name in names[1:]:
                 if path in name:
-                    self._file_cache[name[start:]] = zipfile.read(name).decode(encoding)
+                    self._file_cache[name[start:]] = zipfile.read(name).decode('utf-8')
 
         return self._file_cache[basename]
 

@@ -10,7 +10,7 @@ import requests
 
 from .codelist import Codelist
 from .exceptions import DoesNotExist, NotAvailableInBulk
-from .util import _resolve_zip, encoding, session
+from .util import _resolve_zip, session
 
 SCHEMAS = ('record-package-schema.json', 'release-package-schema.json', 'release-schema.json')
 
@@ -101,7 +101,7 @@ class ExtensionVersion:
                         if filename[-1] != '/' and not filename.startswith('.'):
                             content = zipfile.read(name)
                             if os.path.splitext(name)[1] in ('.csv', '.json', '.md'):
-                                content = content.decode(encoding)
+                                content = content.decode('utf-8')
                             self._files[filename] = content
 
         return self._files
