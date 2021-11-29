@@ -57,9 +57,10 @@ class ExtensionVersion:
         """
         return ''.join([self.base_url, basename])
 
-    def remote(self, basename):
+    def remote(self, basename, default=None):
         """
-        Returns the contents of the file within the extension.
+        Returns the contents of the file within the extension. If the ``default`` is set and the file does not exist,
+        returns the provided ``default`` value.
 
         If the extension has a download URL, caches all the files' contents. Otherwise, downloads and caches the
         requested file's contents. Raises an HTTPError if a download fails.
@@ -69,13 +70,15 @@ class ExtensionVersion:
         if basename not in self.files:
             if not self.download_url:
                 response = session.get(self.get_url(basename))
-                response.raise_for_status()
-                self._files[basename] = response.text
+                if default is None or response.status_code != requests.codes.not_found:
+                    response.raise_for_status()
+                    self._files[basename] = response.text
 
-        try:
-            return self.files[basename]
-        except KeyError:
+        if default is not None:
+            return self.files.get(basename, default)
+        elif basename not in self.files:
             raise DoesNotExist(f'File {basename!r} does not exist in {self}')
+        return self.files[basename]
 
     @property
     def files(self):

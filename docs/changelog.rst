@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.1.6 (2021-11-29)
+------------------
+
+-  :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`: :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.remote` returns the ``default`` argument, if provided, if the file does not exist.
+
 0.1.5 (2021-11-24)
 ------------------
 

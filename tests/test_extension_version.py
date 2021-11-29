@@ -147,6 +147,24 @@ def test_zipfile_not_available_in_bulk():
     assert str(excinfo.value) == "ExtensionVersion.zipfile() requires a download_url."
 
 
+def test_remote_codelists_only_base_url():
+    args = dict.fromkeys(['Id', 'Date', 'Version', 'Base URL', 'Download URL'])
+    args['Base URL'] = 'https://raw.githubusercontent.com/contratacionesabiertas/ocds_publicNotices_extension/master/'
+
+    obj = ExtensionVersion(args)
+
+    assert obj.remote('release-schema.json', default={}) == {}
+
+
+def test_remote_codelists_only_download_url():
+    args = dict.fromkeys(['Id', 'Date', 'Version', 'Base URL', 'Download URL'])
+    args['Download URL'] = 'https://api.github.com/repos/contratacionesabiertas/ocds_publicNotices_extension/zipball/master'  # noqa: E501
+
+    obj = ExtensionVersion(args)
+
+    assert obj.remote('release-schema.json', default={}) == {}
+
+
 def test_files():
     obj = ExtensionVersion(arguments())
     data = obj.files
