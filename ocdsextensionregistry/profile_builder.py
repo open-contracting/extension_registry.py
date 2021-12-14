@@ -155,7 +155,7 @@ class ProfileBuilder:
         schema URLs.
 
         :param dict schema: the release schema
-        :param bool embed: whether to embed or ``$ref``erence the patched release schema
+        :param bool embed: whether to embed or ``$ref``'erence the patched release schema
         """
         if not schema:
             schema = json.loads(self.get_standard_file_contents('release-package-schema.json'))
@@ -177,7 +177,7 @@ class ProfileBuilder:
         schema URLs.
 
         :param dict schema: the record schema
-        :param bool embed: whether to embed or ``$ref``erence the patched release schema
+        :param bool embed: whether to embed or ``$ref``'erence the patched release schema
         """
         if not schema:
             schema = json.loads(self.get_standard_file_contents('record-package-schema.json'))
