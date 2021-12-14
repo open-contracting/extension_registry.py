@@ -25,9 +25,9 @@ setup(
             'pytest',
         ],
         'docs': [
-            'Sphinx',
+            'furo',
+            'sphinx',
             'sphinx-autobuild',
-            'sphinx-rtd-theme',
         ],
         'cli': [
             'Babel',
