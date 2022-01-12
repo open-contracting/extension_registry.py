@@ -4,6 +4,7 @@ from io import BytesIO
 from urllib.parse import urlsplit
 from zipfile import ZipFile
 
+from requests.adapters import HTTPAdapter
 from requests_cache import CachedSession
 
 from .exceptions import UnknownLatestVersion
@@ -15,7 +16,12 @@ else:
 
 default_minor_version = '1.1'
 
+# https://2.python-requests.org/projects/3/api/#requests.adapters.HTTPAdapter
+# https://urllib3.readthedocs.io/en/latest/advanced-usage.html#customizing-pool-behavior
+adapter = HTTPAdapter(pool_maxsize=os.getenv('REQUESTS_POOL_MAXSIZE', 10))
 session = CachedSession(backend='memory')
+session.mount('https://', adapter)
+session.mount('http://', adapter)
 
 
 def json_dump(data, io):

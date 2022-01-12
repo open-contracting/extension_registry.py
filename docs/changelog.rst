@@ -4,6 +4,7 @@ Changelog
 0.1.7 (Unreleased)
 ------------------
 
+-  Use the ``REQUESTS_POOL_MAXSIZE`` environment variable to set the maximum number of connections to save in the `connection pool <https://urllib3.readthedocs.io/en/latest/advanced-usage.html#customizing-pool-behavior>`__.
 -  Drop support for Python 3.6 (end-of-life 2021-12-23).
 
 0.1.6 (2021-11-29)
