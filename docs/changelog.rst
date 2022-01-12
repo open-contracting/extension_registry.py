@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.1.7 (Unreleased)
+0.1.7 (2022-01-12)
 ------------------
 
 -  Use the ``REQUESTS_POOL_MAXSIZE`` environment variable to set the maximum number of connections to save in the `connection pool <https://urllib3.readthedocs.io/en/latest/advanced-usage.html#customizing-pool-behavior>`__.
