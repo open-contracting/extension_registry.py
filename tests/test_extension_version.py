@@ -153,7 +153,7 @@ def test_remote_codelists_only_base_url():
 
     obj = ExtensionVersion(args)
 
-    assert obj.remote('release-schema.json', default={}) == {}
+    assert obj.remote('release-schema.json', default='{}') == '{}'
 
 
 def test_remote_codelists_only_download_url():
@@ -162,7 +162,7 @@ def test_remote_codelists_only_download_url():
 
     obj = ExtensionVersion(args)
 
-    assert obj.remote('release-schema.json', default={}) == {}
+    assert obj.remote('release-schema.json', default='{}') == '{}'
 
 
 def test_files():

@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.1.8 (2022-01-20)
+------------------
+
+-  Fix the default value for an extension's ``release-schema.json`` file.
+
 0.1.7 (2022-01-12)
 ------------------
 

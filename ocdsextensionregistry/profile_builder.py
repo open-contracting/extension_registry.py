@@ -119,7 +119,7 @@ class ProfileBuilder:
 
         # Replaces `null` with sentinel values, to preserve the null'ing of fields by extensions in the final patch.
         for extension in self.extensions():
-            patch = extension.remote('release-schema.json', default={})
+            patch = extension.remote('release-schema.json', default='{}')
             patch = json.loads(re.sub(r':\s*null\b', ': "REPLACE_WITH_NULL"', patch))
             if extension_field:
                 _add_extension_field(patch, extension.metadata['name'][language], extension_field)
