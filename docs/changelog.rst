@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.1.9 (2022-01-20)
+0.1.9 (2022-01-24)
 ------------------
 
 -  fix: Convert the ``REQUESTS_POOL_MAXSIZE`` environment variable to ``int``.
