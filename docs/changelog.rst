@@ -1,21 +1,26 @@
 Changelog
 =========
 
+0.1.9 (2022-01-20)
+------------------
+
+-  fix: Convert the ``REQUESTS_POOL_MAXSIZE`` environment variable to ``int``.
+
 0.1.8 (2022-01-20)
 ------------------
 
--  Fix the default value for an extension's ``release-schema.json`` file.
+-  fix: Fix the default value for an extension's ``release-schema.json`` file.
 
 0.1.7 (2022-01-12)
 ------------------
 
--  Use the ``REQUESTS_POOL_MAXSIZE`` environment variable to set the maximum number of connections to save in the `connection pool <https://urllib3.readthedocs.io/en/latest/advanced-usage.html#customizing-pool-behavior>`__.
+-  feat: Use the ``REQUESTS_POOL_MAXSIZE`` environment variable to set the maximum number of connections to save in the `connection pool <https://urllib3.readthedocs.io/en/latest/advanced-usage.html#customizing-pool-behavior>`__.
 -  Drop support for Python 3.6 (end-of-life 2021-12-23).
 
 0.1.6 (2021-11-29)
 ------------------
 
--  :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`: :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.remote` returns the ``default`` argument, if provided, if the file does not exist.
+-  feat: :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`: :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.remote` returns the ``default`` argument, if provided, if the file does not exist.
 
 0.1.5 (2021-11-24)
 ------------------
