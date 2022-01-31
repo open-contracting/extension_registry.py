@@ -5,7 +5,7 @@ with open('README.rst') as f:
 
 setup(
     name='ocdsextensionregistry',
-    version='0.1.9',
+    version='0.1.10',
     author='Open Contracting Partnership',
     author_email='data@open-contracting.org',
     url='https://github.com/open-contracting/extension_registry.py',
