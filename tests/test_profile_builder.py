@@ -145,6 +145,15 @@ def test_patched_release_schema_with_absolute_path():
     assert 'coveredBy' in result['definitions']['Tender']['properties']
 
 
+def test_patched_release_schema_with_release_schema_patch_url():
+    url = 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_coveredBy_extension/master/release-schema.json'  # noqa: E501
+    builder = ProfileBuilder('1__1__4', [url])
+    result = builder.patched_release_schema()
+
+    assert '$schema' in result
+    assert 'coveredBy' in result['definitions']['Tender']['properties']
+
+
 def test_patched_release_schema_with_schema_base_url():
     schema_base_url = 'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/'
     builder = ProfileBuilder('1__1__4', {}, schema_base_url=schema_base_url)

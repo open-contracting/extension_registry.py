@@ -97,15 +97,18 @@ class ProfileBuilder:
             for url in self.extension_versions:
                 parsed = urlsplit(url)
                 data = dict.fromkeys(['Id', 'Date', 'Version', 'Base URL', 'Download URL'])
+                kwargs = {}
                 if parsed.scheme == 'file':
                     data['Download URL'] = url
                 elif url.endswith('/extension.json'):
                     data['Base URL'] = url[:-14]
                 elif url.endswith('/'):
                     data['Base URL'] = url
+                elif parsed.path.endswith('.json'):
+                    kwargs['file_urls'] = {'release-schema.json': url}
                 else:
                     data['Download URL'] = url
-                yield ExtensionVersion(data)
+                yield ExtensionVersion(data, **kwargs)
 
     def release_schema_patch(self, extension_field=None, language='en'):
         """

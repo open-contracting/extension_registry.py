@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.1.10 (2022-01-31)
+-------------------
+
+-  feat: :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.__init__`: The ``extension_versions`` argument can be a list of extensions' release schema patch files.
+
 0.1.9 (2022-01-24)
 ------------------
 

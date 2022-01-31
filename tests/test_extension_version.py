@@ -89,6 +89,14 @@ def test_get_url():
     assert obj.get_url('extension.json') == url
 
 
+def test_get_url_file_urls():
+    url = 'https://example.com/release-schema.json'
+
+    obj = ExtensionVersion(arguments(), file_urls={'release-schema.json': url})
+
+    assert obj.get_url('release-schema.json') == url
+
+
 def test_remote():
     obj = ExtensionVersion(arguments(**{'Download URL': None}))
 
@@ -121,6 +129,19 @@ def test_remote_directory(tmpdir):
     data = obj.remote('extension.json')
 
     assert json.loads(data) == {'key': 'value'}
+
+
+def test_remote_file_urls():
+    url = 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_coveredBy_extension/master/release-schema.json'  # noqa: E501
+
+    obj = ExtensionVersion(arguments(**{'Download URL': None}), file_urls={'release-schema.json': url})
+
+    data = obj.remote('release-schema.json')
+    # Repeat requests should return the same result.
+    data = obj.remote('release-schema.json')
+
+    print(data)
+    assert 'coveredBy' in json.loads(data)['definitions']['Tender']['properties']
 
 
 def test_remote_nonexistent():

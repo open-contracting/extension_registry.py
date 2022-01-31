@@ -16,7 +16,7 @@ SCHEMAS = ('record-package-schema.json', 'release-package-schema.json', 'release
 
 
 class ExtensionVersion:
-    def __init__(self, data):
+    def __init__(self, data, file_urls=None):
         """
         Accepts a row from extension_versions.csv and assigns values to properties.
         """
@@ -25,6 +25,7 @@ class ExtensionVersion:
         self.version = data['Version']
         self.base_url = data['Base URL']
         self.download_url = data['Download URL']
+        self.file_urls = file_urls or {}
         self._files = None
         self._metadata = None
         self._schemas = None
@@ -55,6 +56,8 @@ class ExtensionVersion:
         """
         Returns the URL of the file within the extension.
         """
+        if basename in self.file_urls:
+            return self.file_urls[basename]
         return ''.join([self.base_url, basename])
 
     def remote(self, basename, default=None):
