@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.1.12 (2022-04-05)
+-------------------
+
+-  fix: Ignore ResourceWarning from `requests-cache <https://requests-cache.readthedocs.io/en/stable/user_guide/troubleshooting.html#common-error-messages>`__.
+
 0.1.11 (2022-02-01)
 -------------------
 

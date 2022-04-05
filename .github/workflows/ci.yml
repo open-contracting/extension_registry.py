@@ -31,5 +31,6 @@ jobs:
           scoop install gettext
       - run: pip install tox
       - env:
+          PYTHONWARNINGS: error
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: tox

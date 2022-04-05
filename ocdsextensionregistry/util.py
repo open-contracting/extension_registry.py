@@ -1,5 +1,6 @@
 import json
 import os
+import warnings
 from io import BytesIO
 from urllib.parse import urlsplit
 from zipfile import ZipFile
@@ -10,11 +11,19 @@ from requests_cache import CachedSession
 from .exceptions import UnknownLatestVersion
 
 if os.name == 'nt':
-    file_uri_offset = 8
+    FILE_URI_OFFSET = 8  # "file:///C|/tmp"
 else:
-    file_uri_offset = 7
+    FILE_URI_OFFSET = 7  # "file:///tmp"
 
-default_minor_version = '1.1'
+DEFAULT_MINOR_VERSION = '1.1'
+
+# https://requests-cache.readthedocs.io/en/stable/user_guide/troubleshooting.html#common-error-messages
+# https://docs.python.org/3/library/socket.html#constants
+warnings.filterwarnings(
+    'ignore',
+    category=ResourceWarning,
+    message=r"^unclosed <ssl\.SSLSocket fd=\d+, family=AddressFamily\.AF_INET6?, type=SocketKind\.SOCK_STREAM, ",
+)
 
 # https://2.python-requests.org/projects/3/api/#requests.adapters.HTTPAdapter
 # https://urllib3.readthedocs.io/en/latest/advanced-usage.html#customizing-pool-behavior
@@ -43,8 +52,8 @@ def get_latest_version(versions):
     version_numbers = {version.version: version for version in versions}
     if 'master' in version_numbers:
         return version_numbers['master']
-    if default_minor_version in version_numbers:
-        return version_numbers[default_minor_version]
+    if DEFAULT_MINOR_VERSION in version_numbers:
+        return version_numbers[DEFAULT_MINOR_VERSION]
 
     dated = [version for version in versions if version.date]
     if dated:
@@ -58,7 +67,7 @@ def _resolve(data_or_url):
 
     if parsed.scheme:
         if parsed.scheme == 'file':
-            with open(data_or_url[file_uri_offset:]) as f:
+            with open(data_or_url[FILE_URI_OFFSET:]) as f:
                 return f.read()
 
         response = session.get(data_or_url)
@@ -74,8 +83,8 @@ def _resolve_zip(url, root=''):
     if parsed.scheme == 'file':
         io = BytesIO()
         with ZipFile(io, 'w') as zipfile:
-            zipfile.write(url[file_uri_offset:], arcname='zip/')
-            for root, dirs, files in os.walk(os.path.join(url[file_uri_offset:], root)):
+            zipfile.write(url[FILE_URI_OFFSET:], arcname='zip/')
+            for root, dirs, files in os.walk(os.path.join(url[FILE_URI_OFFSET:], root)):
                 for directory in dirs:
                     if directory == '__pycache__':
                         dirs.remove(directory)
