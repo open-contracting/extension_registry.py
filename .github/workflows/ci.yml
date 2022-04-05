@@ -30,7 +30,7 @@ jobs:
           iwr -useb get.scoop.sh -outfile 'install.ps1'
           .\install.ps1 -RunAsAdmin
           scoop install gettext
-      - run: pip install --upgrade pip tox
+      - run: pip install tox
       - env:
           PYTHONWARNINGS: error
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
