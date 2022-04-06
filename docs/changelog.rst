@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.1.12 (2022-04-05)
+0.1.12 (2022-04-06)
 -------------------
 
 -  ``generate-pot-files``: Drop support for Sphinx<4.3, before which Python 3.10 is unsupported.
