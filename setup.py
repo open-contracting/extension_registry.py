@@ -48,7 +48,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'ocdsextensionregistry = ocdsextensionregistry.cli.__main__:main',
+            'ocdsextensionregistry = ocdsextensionregistry.cli.__main__:main [cli]',
         ],
     },
 )
