@@ -109,6 +109,15 @@ def test_patched_release_schema_with_extension_field_and_language():
     assert definition['properties']['geometry']['properties']['type']['extension'] == 'Ubicación'
 
 
+def test_patched_release_schema_with_absolute_path():
+    url = Path(path('ocds_coveredBy_extension')).resolve().as_uri()
+    builder = ProfileBuilder('1__1__4', [url])
+    result = builder.patched_release_schema()
+
+    assert '$schema' in result
+    assert 'coveredBy' in result['definitions']['Tender']['properties']
+
+
 def test_patched_release_schema_with_metadata_url():
     url = 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_coveredBy_extension/master/extension.json'  # noqa: E501
     builder = ProfileBuilder('1__1__4', [url])
@@ -127,26 +136,26 @@ def test_patched_release_schema_with_base_url():
     assert 'coveredBy' in result['definitions']['Tender']['properties']
 
 
-def test_patched_release_schema_with_download_url():
-    url = 'https://github.com/open-contracting-extensions/ocds_coveredBy_extension/archive/master.zip'
-    builder = ProfileBuilder('1__1__4', [url])
-    result = builder.patched_release_schema()
-
-    assert '$schema' in result
-    assert 'coveredBy' in result['definitions']['Tender']['properties']
-
-
-def test_patched_release_schema_with_absolute_path():
-    url = Path(path('ocds_coveredBy_extension')).resolve().as_uri()
-    builder = ProfileBuilder('1__1__4', [url])
-    result = builder.patched_release_schema()
-
-    assert '$schema' in result
-    assert 'coveredBy' in result['definitions']['Tender']['properties']
-
-
 def test_patched_release_schema_with_release_schema_patch_url():
     url = 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_coveredBy_extension/master/release-schema.json'  # noqa: E501
+    builder = ProfileBuilder('1__1__4', [url])
+    result = builder.patched_release_schema()
+
+    assert '$schema' in result
+    assert 'coveredBy' in result['definitions']['Tender']['properties']
+
+
+def test_patched_release_schema_with_release_schema_patch_api():
+    url = 'https://chilecompracl.visualstudio.com/a6a3f587-5f23-42f6-9255-ac5852fae1e7/_apis/git/repositories/fb91c43b-011b-434b-901d-9d36ec50c586/items?path=%2Fextension.json&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=octetStream&api-version=5.0'  # noqa: E501
+    builder = ProfileBuilder('1__1__4', [url])
+    result = builder.patched_release_schema()
+
+    assert '$schema' in result
+    assert 'dateCreated' in result['definitions']['Contract']['properties']
+
+
+def test_patched_release_schema_with_download_url():
+    url = 'https://github.com/open-contracting-extensions/ocds_coveredBy_extension/archive/master.zip'
     builder = ProfileBuilder('1__1__4', [url])
     result = builder.patched_release_schema()
 

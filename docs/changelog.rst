@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.1.13 (2022-06-20)
+-------------------
+
+-  feat: :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`: :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.__init__`: The ``extension_versions`` argument can be a list of extensions' metadata files served via API.
+
 0.1.12 (2022-04-06)
 -------------------
 

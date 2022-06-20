@@ -106,6 +106,9 @@ class ProfileBuilder:
                     data['Base URL'] = url
                 elif parsed.path.endswith('.json'):
                     kwargs['file_urls'] = {'release-schema.json': url}
+                # If the files are served via API, with the filename as a query string parameter.
+                elif 'extension.json' in url:
+                    kwargs['file_urls'] = {'release-schema.json': url.replace('extension.json', 'release-schema.json')}
                 else:
                     data['Download URL'] = url
                 yield ExtensionVersion(data, **kwargs)
