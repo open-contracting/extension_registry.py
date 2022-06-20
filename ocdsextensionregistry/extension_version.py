@@ -69,6 +69,7 @@ class ExtensionVersion:
         requested file's contents. Raises an HTTPError if a download fails.
 
         :raises DoesNotExist: if the file isn't in the extension
+        :raises zipfile.BadZipFile: if the download URL is not a ZIP file
         """
         if basename not in self.files:
             if not self.download_url:
@@ -90,6 +91,8 @@ class ExtensionVersion:
 
         If the extension has a download URL, caches all the files' contents. Otherwise, returns an empty dict. Raises
         an HTTPError if the download fails.
+
+        :raises zipfile.BadZipFile: if the download URL is not a ZIP file
         """
         if self._files is None:
             self._files = {}
@@ -114,6 +117,7 @@ class ExtensionVersion:
         If the extension has a download URL, downloads and returns the ZIP archive.
 
         :raises NotAvailableInBulk: if the extension has no download URL
+        :raises zipfile.BadZipFile: if the download URL is not a ZIP file
         """
         if self.download_url:
             return _resolve_zip(self.download_url)
