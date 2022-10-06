@@ -15,7 +15,7 @@ from sphinx.util.docutils import docutils_namespace, patch_docutils
 from sphinx.util.osutil import cd
 
 from ocdsextensionregistry import EXTENSION_VERSIONS_DATA, EXTENSIONS_DATA
-from ocdsextensionregistry.cli.commands.base import BaseCommand
+from ocdsextensionregistry.commands.base import BaseCommand
 
 logger = logging.getLogger('ocdsextensionregistry')
 

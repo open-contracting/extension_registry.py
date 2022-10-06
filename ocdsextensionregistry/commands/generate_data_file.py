@@ -10,7 +10,7 @@ from ocds_babel.translate import (translate_codelist_data, translate_extension_m
                                   translate_schema_data)
 
 from ocdsextensionregistry import EXTENSION_VERSIONS_DATA, EXTENSIONS_DATA
-from ocdsextensionregistry.cli.commands.base import BaseCommand
+from ocdsextensionregistry.commands.base import BaseCommand
 from ocdsextensionregistry.exceptions import CommandError
 from ocdsextensionregistry.util import DEFAULT_MINOR_VERSION, json_dump, session
 

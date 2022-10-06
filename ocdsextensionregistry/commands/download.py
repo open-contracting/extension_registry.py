@@ -4,7 +4,7 @@ from contextlib import closing
 from pathlib import Path
 
 from ocdsextensionregistry import EXTENSION_VERSIONS_DATA, EXTENSIONS_DATA
-from ocdsextensionregistry.cli.commands.base import BaseCommand
+from ocdsextensionregistry.commands.base import BaseCommand
 from ocdsextensionregistry.exceptions import CommandError
 
 logger = logging.getLogger('ocdsextensionregistry')

@@ -17,7 +17,7 @@ If you see a message at the start of the output like:
 
 .. code-block:: none
 
-    exception "No module named 'babel'" prevented loading of ocdsextensionregistry.cli.commands.generate_pot_files module
+    exception "No module named 'babel'" prevented loading of ocdsextensionregistry.commands.generate_pot_files module
 
 then you installed ``ocdsextensionregistry`` without command-line tools. To fix this, install as above.
 

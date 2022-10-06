@@ -5,7 +5,7 @@ from glob import glob
 
 import pytest
 
-from ocdsextensionregistry.cli.__main__ import main
+from ocdsextensionregistry.__main__ import main
 
 args = ['ocdsextensionregistry', 'download']
 

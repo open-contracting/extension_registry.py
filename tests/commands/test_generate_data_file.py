@@ -3,7 +3,7 @@ import sys
 
 import pytest
 
-from ocdsextensionregistry.cli.__main__ import main
+from ocdsextensionregistry.__main__ import main
 from tests import read
 
 args = ['ocdsextensionregistry', 'generate-data-file']

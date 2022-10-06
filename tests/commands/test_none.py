@@ -1,6 +1,6 @@
 import sys
 
-from ocdsextensionregistry.cli.__main__ import main
+from ocdsextensionregistry.__main__ import main
 
 args = ['ocdsextensionregistry']
 

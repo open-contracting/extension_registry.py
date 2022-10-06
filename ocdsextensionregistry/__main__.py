@@ -8,9 +8,9 @@ from ocdsextensionregistry.exceptions import CommandError
 logger = logging.getLogger('ocdsextensionregistry')
 
 COMMAND_MODULES = (
-    'ocdsextensionregistry.cli.commands.download',
-    'ocdsextensionregistry.cli.commands.generate_data_file',
-    'ocdsextensionregistry.cli.commands.generate_pot_files',
+    'ocdsextensionregistry.commands.download',
+    'ocdsextensionregistry.commands.generate_data_file',
+    'ocdsextensionregistry.commands.generate_pot_files',
 )
 
 

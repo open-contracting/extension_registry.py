@@ -50,7 +50,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'ocdsextensionregistry = ocdsextensionregistry.cli.__main__:main',
+            'ocdsextensionregistry = ocdsextensionregistry.__main__:main',
         ],
     },
 )

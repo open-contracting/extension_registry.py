@@ -2,7 +2,7 @@ import os
 import sys
 from pathlib import Path
 
-from ocdsextensionregistry.cli.__main__ import main
+from ocdsextensionregistry.__main__ import main
 
 args = ['ocdsextensionregistry', 'generate-pot-files']
 
