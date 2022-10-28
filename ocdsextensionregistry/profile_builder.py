@@ -38,7 +38,7 @@ from io import StringIO
 from urllib.parse import urljoin, urlsplit
 
 import json_merge_patch
-from jsonref import JsonRef
+import jsonref
 
 from .codelist import Codelist
 from .extension_registry import ExtensionRegistry
@@ -153,7 +153,8 @@ class ProfileBuilder:
         return schema
 
     def _dereferenced_patched_release_schema(self):
-        return JsonRef.replace_refs(self.patched_release_schema())
+        # jsonref.JsonRef is deprecated, but used for backwards-compatibility with jsonref 0.x.
+        return jsonref.JsonRef.replace_refs(self.patched_release_schema())
 
     def release_package_schema(self, schema=None, embed=False):
         """
