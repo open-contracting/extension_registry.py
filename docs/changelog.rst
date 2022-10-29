@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.2.0 (2022-10-29)
+------------------
+
+-  fix: :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_package_schema` and :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.record_package_schema` return a JSON-serializable object when ``embed=True``.
+
 0.1.14 (2022-09-07)
 -------------------
 

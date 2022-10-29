@@ -5,7 +5,7 @@ with open('README.rst') as f:
 
 setup(
     name='ocdsextensionregistry',
-    version='0.1.14',
+    version='0.2.0',
     author='Open Contracting Partnership',
     author_email='data@open-contracting.org',
     url='https://github.com/open-contracting/extension_registry.py',
@@ -16,7 +16,7 @@ setup(
     long_description_content_type='text/x-rst',
     install_requires=[
         'json-merge-patch',
-        'jsonref',
+        'jsonref>=1',
         'requests',
         'requests-cache',
         # https://github.com/python-attrs/cattrs/issues/253

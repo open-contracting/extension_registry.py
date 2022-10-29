@@ -153,8 +153,7 @@ class ProfileBuilder:
         return schema
 
     def _dereferenced_patched_release_schema(self):
-        # jsonref.JsonRef is deprecated, but used for backwards-compatibility with jsonref 0.x.
-        return jsonref.JsonRef.replace_refs(self.patched_release_schema())
+        return jsonref.replace_refs(self.patched_release_schema(), proxies=False)
 
     def release_package_schema(self, schema=None, embed=False):
         """
