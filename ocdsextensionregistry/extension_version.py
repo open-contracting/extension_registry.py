@@ -58,7 +58,7 @@ class ExtensionVersion:
         """
         if basename in self._file_urls:
             return self._file_urls[basename]
-        return ''.join([self.base_url, basename])
+        return self.base_url + basename
 
     def remote(self, basename, default=None):
         """
