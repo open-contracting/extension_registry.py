@@ -55,7 +55,7 @@ Once you've translated strings on Transifex, email data@open-contracting.org so 
 
 .. code-block:: bash
 
-    tx pull -a -f
+    tx pull -f -a
     sphinx-intl build -d locale
 
 Update existing translations
