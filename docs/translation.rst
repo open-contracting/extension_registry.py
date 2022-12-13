@@ -4,11 +4,11 @@ Translation
 Setup
 -----
 
-:doc:`Install this package with command-line tools<cli>`, and then install ``sphinx-intl`` and ``transifex-client``:
+:doc:`Install this package with command-line tools<cli>`, `install the Transifex Client <https://developers.transifex.com/docs/cli>`__, and install ``sphinx-intl``:
 
 .. code-block:: bash
 
-    pip install 'sphinx-intl<1' transifex-client
+    pip install sphinx-intl
 
 Create a `~/.transifexrc <https://docs.transifex.com/client/client-configuration#%7E/-transifexrc>`__ file (replace ``USERNAME`` and ``PASSWORD``):
 
