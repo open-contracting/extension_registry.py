@@ -10,12 +10,6 @@ Setup
 
     pip install sphinx-intl
 
-Create a `~/.transifexrc <https://docs.transifex.com/client/client-configuration#%7E/-transifexrc>`__ file (replace ``USERNAME`` and ``PASSWORD``):
-
-.. code-block:: bash
-
-    sphinx-intl create-transifexrc --transifex-username USERNAME --transifex-password PASSWORD
-
 Create new translations
 -----------------------
 
