@@ -75,7 +75,7 @@ Change into its directory:
 
     cd ocds-extensions-translations
 
-And push its translations. See `Transifex's documentation <https://docs.transifex.com/client/push>`__ for more information on how to specify which languages or resources to push:
+And push its translations. See `Transifex's documentation <https://developers.transifex.com/docs/using-the-client#pushing-files-to-transifex>`__ for more information on how to specify which languages or resources to push:
 
 .. code-block:: bash
 
