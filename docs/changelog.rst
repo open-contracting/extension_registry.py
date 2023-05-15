@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Unreleased
+----------
+
+-  Drop Python 3.7 support.
+
 0.2.0 (2022-10-29)
 ------------------
 
