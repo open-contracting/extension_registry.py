@@ -39,11 +39,11 @@ Create a new ``.tx/config`` file:
 
     sphinx-intl create-txconfig
 
-Update the ``.tx/config`` file based on the POT files (replace ``ocds-extensions`` with your project):
+Update the ``.tx/config`` file based on the POT files (replace ``open-contracting-partnership-1`` with your organization and ``ocds-extensions`` with your project):
 
 .. code-block:: bash
 
-    sphinx-intl update-txconfig-resources --transifex-project-name ocds-extensions --pot-dir build/locale --locale-dir locale
+    sphinx-intl update-txconfig-resources --transifex-organization-name open-contracting-partnership-1 --transifex-project-name ocds-extensions --pot-dir build/locale --locale-dir locale
 
 Push source files to Transifex for translation:
 
