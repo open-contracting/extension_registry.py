@@ -20,6 +20,7 @@ jobs:
       - run: pip install .[cli,test]
       - env:
           STANDARD_MAINTENANCE_SCRIPTS_EXTRAS: cli
+          # MyST-Parser is used as a Sphinx extension.
           # https://github.com/requests-cache/requests-cache/issues/825
           STANDARD_MAINTENANCE_SCRIPTS_IGNORE: MyST-Parser,urllib3
         run: pytest /tmp/test_requirements.py
