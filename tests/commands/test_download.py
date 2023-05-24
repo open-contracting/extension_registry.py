@@ -71,6 +71,17 @@ def test_command_versions_invalid(capsys, monkeypatch, tmpdir, caplog):
     assert excinfo.value.code == 1
 
 
+def test_command_versions_no_frozen(capsys, monkeypatch, tmpdir):
+    monkeypatch.setattr(sys, 'argv', args + ['--no-frozen', str(tmpdir), 'location'])
+    main()
+
+    assert capsys.readouterr().out == ''
+
+    tree = list(os.walk(tmpdir))
+
+    assert len(tree[1][1]) == 1
+
+
 # Require the user to decide what to overwrite.
 def test_command_repeated(capsys, monkeypatch, tmpdir, caplog):
     caplog.set_level(logging.INFO, logger='ocdsextensionregistry')

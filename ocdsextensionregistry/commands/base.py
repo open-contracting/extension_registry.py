@@ -10,6 +10,7 @@ class BaseCommand:
         Initializes the subparser and adds arguments.
         """
         self.subparser = subparsers.add_parser(self.name, description=self.help)
+        self.add_argument('--no-frozen', action='store_true', help='exclude frozen versions')
         self.add_arguments()
 
     def add_arguments(self):
@@ -39,6 +40,9 @@ class BaseCommand:
                 versions[value]
 
         for version in registry:
-            if ((not self.args.versions or version.id in versions) and
-                    (not versions[version.id] or version.version in versions[version.id])):
+            if (
+                (not self.args.versions or version.id in versions)
+                and (not versions[version.id] or version.version in versions[version.id])
+                and (not self.args.no_frozen or not version.date)
+            ):
                 yield version

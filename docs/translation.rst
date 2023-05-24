@@ -21,6 +21,12 @@ Generate POT files for all versions of all extensions:
 
     ocdsextensionregistry generate-pot-files build/locale
 
+Or, generate POT files for only live versions of extensions:
+
+.. code-block:: bash
+
+    ocdsextensionregistry generate-pot-files --no-frozen build/locale
+
 Or, generate POT files for the versions of extensions you want to translate, for example:
 
 .. code-block:: bash

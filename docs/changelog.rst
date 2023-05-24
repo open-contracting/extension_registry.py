@@ -1,9 +1,10 @@
 Changelog
 =========
 
-Unreleased
-----------
+0.2.1 (2023-05-24)
+------------------
 
+-  feat: Add a ``--no-frozen`` option to all commands.
 -  Drop Python 3.7 support.
 
 0.2.0 (2022-10-29)
