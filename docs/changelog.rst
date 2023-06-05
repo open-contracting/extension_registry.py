@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.2.2 (2023-06-05)
+------------------
+
+-  fix: :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_full_name` and :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_name` return the correct name for GitLab URLs.
+-  fix: Clarify error message for ``AttributeError`` on :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_full_name`, :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_name`, and :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_user`.
+
 0.2.1 (2023-05-24)
 ------------------
 

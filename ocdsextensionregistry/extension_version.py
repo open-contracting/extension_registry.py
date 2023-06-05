@@ -260,13 +260,22 @@ class ExtensionVersion:
         return self._repository_property('url')
 
     def _repository_full_name(self, parsed, config):
-        return re.match(config['full_name:pattern'], parsed.path).group(1)
+        match = re.search(config['full_name:pattern'], parsed.path)
+        if match:
+            return match.group(1)
+        raise AttributeError(f"{parsed.path} !~ {config['full_name:pattern']}")
 
     def _repository_name(self, parsed, config):
-        return re.match(config['name:pattern'], parsed.path).group(1)
+        match = re.search(config['name:pattern'], parsed.path)
+        if match:
+            return match.group(1)
+        raise AttributeError(f"{parsed.path} !~ {config['name:pattern']}")
 
     def _repository_user(self, parsed, config):
-        return re.match(config['user:pattern'], parsed.path).group(1)
+        match = re.search(config['user:pattern'], parsed.path)
+        if match:
+            return match.group(1)
+        raise AttributeError(f"{parsed.path} !~ {config['user:pattern']}")
 
     def _repository_user_page(self, parsed, config):
         return config['html_page:prefix'] + self._repository_user(parsed, config)
@@ -317,8 +326,8 @@ class ExtensionVersion:
         if netloc == 'gitlab.com':
             # A base URL may look like: https://gitlab.com/gitlab-org/gitter/env/raw/master/
             return {
-                'full_name:pattern': r'\A/(.+)/raw/',
-                'name:pattern': r'/([^/]+)/raw/',
+                'full_name:pattern': r'\A/(.+)/-/raw/',
+                'name:pattern': r'/([^/]+)/-/raw/',
                 'user:pattern': r'\A/([^/]+)',
                 'html_page:prefix': 'https://gitlab.com/',
                 'url:prefix': 'https://gitlab.com/',
