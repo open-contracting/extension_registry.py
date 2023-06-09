@@ -52,7 +52,7 @@ Changelog
 0.1.8 (2022-01-20)
 ------------------
 
--  fix: Fix the default value for an extension's ``release-schema.json`` file.
+-  fix: Fix the default value for an extension's ``release-schema.json`` file (``{}``).
 
 0.1.7 (2022-01-12)
 ------------------
@@ -63,7 +63,7 @@ Changelog
 0.1.6 (2021-11-29)
 ------------------
 
--  feat: :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`: :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.remote` returns the ``default`` argument, if provided, if the file does not exist.
+-  feat: :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`: :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.remote` returns the ``default`` argument, if provided, if the file does not exist. :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_schema_patch` uses a default of ``{}`` for ``release-schema.json``.
 
 0.1.5 (2021-11-24)
 ------------------
