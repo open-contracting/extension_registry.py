@@ -6,7 +6,7 @@ from urllib.parse import urlsplit
 from zipfile import ZipFile
 
 from requests.adapters import HTTPAdapter
-from requests_cache import CachedSession, NEVER_EXPIRE
+from requests_cache import NEVER_EXPIRE, CachedSession
 
 from .exceptions import UnknownLatestVersion
 
