@@ -33,7 +33,8 @@ def test_init():
 
 
 @pytest.mark.parametrize('args,expected', [
-    (arguments(), 'location==v1.1.3'),
+    (arguments(),
+     'location==v1.1.3'),
     (arguments(**{
         'Id': None,
         'Base URL': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/',
@@ -90,7 +91,7 @@ def test_as_dict():
 
 @pytest.mark.parametrize('args,expected', [
     (arguments(),
-    'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/extension.json'),
+     'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/extension.json'),
     (arguments(**{
         'Id': None,
         'Base URL': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/',
@@ -116,7 +117,9 @@ def test_get_url_download_url():
 
 
 def test_get_url_file_urls():
-    obj = ExtensionVersion(arguments(), file_urls={'release-schema.json': 'https://example.com/release-schema.json'})
+    url = 'https://example.com/release-schema.json'
+
+    obj = ExtensionVersion(arguments(), file_urls={'release-schema.json': url})
 
     assert obj.get_url('release-schema.json') == url
 
