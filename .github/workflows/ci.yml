@@ -21,7 +21,6 @@ jobs:
       - name: Install gettext (macOS)
         if: matrix.os == 'macos-latest'
         run: |
-          brew update
           brew install gettext
           brew link gettext --force
       - name: Install gettext (Windows)
