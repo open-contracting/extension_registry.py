@@ -12,10 +12,14 @@ from babel.messages.pofile import write_po
 from ocds_babel.extract import extract_codelist, extract_extension_metadata, extract_schema
 from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace, patch_docutils
-from sphinx.util.osutil import cd
 
 from ocdsextensionregistry import EXTENSION_VERSIONS_DATA, EXTENSIONS_DATA
 from ocdsextensionregistry.commands.base import BaseCommand
+
+try:
+    from contextlib import chdir
+except ImportError:
+    from sphinx.util.osutil import cd as chdir
 
 logger = logging.getLogger('ocdsextensionregistry')
 
@@ -173,7 +177,7 @@ class Command(BaseCommand):
                             zipfile.extract(info, srcdir)
                             break
 
-                    with cd(srcdir):
+                    with chdir(srcdir):
                         # Eliminates a warning, without changing the output.
                         with open('index.rst', 'w') as f:
                             f.write('.. toctree::\n   :hidden:\n\n   README')
