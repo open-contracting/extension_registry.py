@@ -56,10 +56,14 @@ class ExtensionVersion:
     def get_url(self, basename):
         """
         Returns the URL of the file within the extension.
+
+        :raises NotImplementedError: if the basename is not in the file URLs and the base URL is not set
         """
         if basename in self._file_urls:
             return self._file_urls[basename]
-        return self.base_url + basename
+        if self.base_url:
+            return self.base_url + basename
+        raise NotImplementedError("get_url() with no base URL or matching file URL is not implemented")
 
     def remote(self, basename, default=None):
         """

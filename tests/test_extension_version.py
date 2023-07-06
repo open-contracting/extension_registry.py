@@ -88,18 +88,35 @@ def test_as_dict():
     }
 
 
-def test_get_url():
-    obj = ExtensionVersion(arguments())
+@pytest.mark.parametrize('args,expected', [
+    (arguments(),
+    'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/extension.json'),
+    (arguments(**{
+        'Id': None,
+        'Base URL': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/',
+    }), 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/extension.json'),
+])
+def test_get_url(args, expected):
+    obj = ExtensionVersion(args)
 
-    url = 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/extension.json'
+    assert obj.get_url('extension.json') == expected
 
-    assert obj.get_url('extension.json') == url
+
+def test_get_url_download_url():
+    args = arguments(**{
+        'Id': None,
+        'Base URL': None,
+        'Download URL': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.3',  # noqa: E501
+    })
+
+    with pytest.raises(NotImplementedError) as excinfo:
+        ExtensionVersion(args).get_url('extension.json')
+
+    assert str(excinfo.value) == 'get_url() with no base URL or matching file URL is not implemented'
 
 
 def test_get_url_file_urls():
-    url = 'https://example.com/release-schema.json'
-
-    obj = ExtensionVersion(arguments(), file_urls={'release-schema.json': url})
+    obj = ExtensionVersion(arguments(), file_urls={'release-schema.json': 'https://example.com/release-schema.json'})
 
     assert obj.get_url('release-schema.json') == url
 
