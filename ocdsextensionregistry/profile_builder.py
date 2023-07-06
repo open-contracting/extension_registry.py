@@ -34,13 +34,17 @@ import json
 import logging
 import os
 import re
+import warnings
+import zipfile
 from io import StringIO
 from urllib.parse import urljoin, urlsplit
 
 import json_merge_patch
 import jsonref
+import requests
 
 from .codelist import Codelist
+from .exceptions import ExtensionWarning, NotAvailableInBulk
 from .extension_registry import ExtensionRegistry
 from .extension_version import ExtensionVersion
 from .util import _resolve_zip
@@ -93,8 +97,10 @@ class ProfileBuilder:
         if isinstance(self.extension_versions, dict):
             for identifier, version in self.extension_versions.items():
                 yield self.registry.get(id=identifier, version=version)
-        else:
+        elif isinstance(self.extension_versions, list):
             for url in self.extension_versions:
+                if not url or not isinstance(url, str):
+                    continue
                 parsed = urlsplit(url)
                 data = dict.fromkeys(['Id', 'Date', 'Version', 'Base URL', 'Download URL'])
                 kwargs = {}
@@ -125,8 +131,17 @@ class ProfileBuilder:
 
         # Replaces `null` with sentinel values, to preserve the null'ing of fields by extensions in the final patch.
         for extension in self.extensions():
-            patch = extension.remote('release-schema.json', default='{}')
-            patch = json.loads(re.sub(r':\s*null\b', ': "REPLACE_WITH_NULL"', patch))
+            try:
+                patch = extension.remote('release-schema.json', default='{}')
+                patch = json.loads(re.sub(r':\s*null\b', ':"REPLACE_WITH_NULL"', patch))
+            except (
+                NotAvailableInBulk,
+                json.JSONDecodeError,
+                requests.RequestException,
+                zipfile.BadZipFile,
+            ) as e:
+                warnings.warn(ExtensionWarning(extension, e))
+                continue
             if extension_field:
                 _add_extension_field(patch, extension.metadata['name'][language], extension_field)
             json_merge_patch.merge(output, patch)

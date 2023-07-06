@@ -20,3 +20,18 @@ class UnknownLatestVersion(OCDSExtensionRegistryError):
 
 class CommandError(OCDSExtensionRegistryError):
     """Errors from within this package's CLI"""
+
+
+class OCDSExtensionRegistryWarning(UserWarning):
+    """Base class for warnings from within this package"""
+
+
+class ExtensionWarning(OCDSExtensionRegistryWarning):
+    """Used when an extension can't be retrieved or merged."""
+
+    def __init__(self, extension, exc):
+        self.extension = extension
+        self.exc = exc
+
+    def __str__(self):
+        return f"{self.extension}: {self.exc.__class__.__module__}.{self.exc.__class__.__name__}: {self.exc}"

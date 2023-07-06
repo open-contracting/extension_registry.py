@@ -1,6 +1,32 @@
 Changelog
 =========
 
+0.3.0 (2023-07-06)
+------------------
+
+-  feat: Make ProfileBuilder more robust to bad data, when using a package's ``extensions`` field as input.
+
+   -  Skip a package's ``extensions`` field if it is not an array.
+   -  Skip an entry in the package's ``extensions`` array if it is blank or is not a string.
+   -  Warn if an extension's ``release-schema.json`` file is not available in bulk, if the request errors (unreachable host, request timeout, HTTP error, too many redirects, etc.), if the bulk file is not a ZIP file, or if the release schema is not a JSON file.
+
+      The previous behavior of raising an exception can be restored with:
+
+      .. code-block:: python
+
+         import warnings
+
+         from ocdsextensionregistry.exceptions import ExtensionWarning
+
+
+         with warnings.catch_warnings():
+             warnings.filterwarnings('error', category=ExtensionWarning)
+             # Use of ProfileBuilder that warns.
+
+-  feat: Configure the expiration behavior of the responses cache using a ``REQUESTS_CACHE_EXPIRE_AFTER`` environment variable. See `requests-cache's documentation <https://requests-cache.readthedocs.io/en/stable/user_guide/expiration.html>`__ (``NEVER_EXPIRE`` is ``-1`` and ``EXPIRE_IMMEDIATELY`` is ``0``, in the `source <https://github.com/requests-cache/requests-cache/blob/main/requests_cache/policy/expiration.py>`__).
+-  fix: :meth:`ocdsextensionregistry.extension_version.ExtensionVersion.__repr__`: No longer errors if initialized with ``file_urls`` only.
+-  fix: :meth:`ocdsextensionregistry.extension_version.ExtensionVersion.get_url`: Raises clearer error if initialized with a Download URL only.
+
 0.2.2 (2023-06-05)
 ------------------
 
@@ -68,7 +94,7 @@ Changelog
 0.1.5 (2021-11-24)
 ------------------
 
--  Do not globally patch requests.
+-  Do not patch ``requests`` to cache responses.
 
 0.1.4 (2021-04-10)
 ------------------
@@ -185,7 +211,7 @@ Changelog
 0.0.14 (2019-09-18)
 -------------------
 
--  Use in-memory HTTP requests cache.
+-  Use in-memory cache for HTTP responses.
 
 0.0.13 (2019-08-29)
 -------------------
