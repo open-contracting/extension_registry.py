@@ -36,6 +36,7 @@ import os
 import re
 import warnings
 import zipfile
+from collections.abc import Iterable
 from io import StringIO
 from urllib.parse import urljoin, urlsplit
 
@@ -97,7 +98,7 @@ class ProfileBuilder:
         if isinstance(self.extension_versions, dict):
             for identifier, version in self.extension_versions.items():
                 yield self.registry.get(id=identifier, version=version)
-        elif isinstance(self.extension_versions, list):
+        elif isinstance(self.extension_versions, Iterable):
             for url in self.extension_versions:
                 if not url or not isinstance(url, str):
                     continue
