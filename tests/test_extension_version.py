@@ -50,6 +50,13 @@ def test_repr(args, expected):
     assert repr(obj) == expected
 
 
+def test_repr_file_urls():
+    data = dict.fromkeys(['Id', 'Date', 'Version', 'Base URL', 'Download URL'])
+    obj = ExtensionVersion(data, file_urls={'release-schema.json': 'https://example.com/release-schema.json'})
+
+    assert repr(obj) == 'https://example.com/release-schema.json'
+
+
 def test_update():
     obj = ExtensionVersion(arguments())
     obj.update(Extension({'Id': 'location', 'Category': 'item', 'Core': 'true'}))

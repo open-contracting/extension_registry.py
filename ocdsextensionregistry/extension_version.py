@@ -36,8 +36,9 @@ class ExtensionVersion:
             return f'{self.id}=={self.version}'
         elif self.base_url:
             return self.base_url
-        else:
+        elif self.download_url:
             return self.download_url
+        return self._file_urls['release-schema.json']
 
     def update(self, other):
         """
