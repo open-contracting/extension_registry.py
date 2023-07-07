@@ -167,7 +167,6 @@ def test_remote_file_urls():
     # Repeat requests should return the same result.
     data = obj.remote('release-schema.json')
 
-    print(data)
     assert 'coveredBy' in json.loads(data)['definitions']['Tender']['properties']
 
 
@@ -341,6 +340,13 @@ def test_repository_user():
     assert result == 'open-contracting-extensions'
 
 
+def test_repository_ref():
+    obj = ExtensionVersion(arguments())
+    result = obj.repository_ref
+
+    assert result == 'v1.1.3'
+
+
 def test_repository_user_page():
     obj = ExtensionVersion(arguments())
     result = obj.repository_user_page
@@ -360,3 +366,10 @@ def test_repository_url():
     result = obj.repository_url
 
     assert result == 'git@github.com:open-contracting-extensions/ocds_location_extension.git'
+
+
+def test_repository_ref_download_url():
+    obj = ExtensionVersion(arguments())
+    result = obj.repository_ref_download_url
+
+    assert result == 'https://github.com/open-contracting-extensions/ocds_location_extension/archive/v1.1.3.zip'

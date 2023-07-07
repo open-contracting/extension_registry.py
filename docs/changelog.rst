@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.3.2 (2023-07-07)
+------------------
+
+-  feat: Add :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_ref` and :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_ref_download_url`.
+
 0.3.1 (2023-07-07)
 ------------------
 

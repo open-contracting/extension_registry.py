@@ -111,14 +111,14 @@ class ProfileBuilder:
                     data['Base URL'] = url[:-14]
                 elif url.endswith('/'):
                     data['Base URL'] = url
-                elif parsed.path.endswith('.json'):
-                    kwargs['file_urls'] = {'release-schema.json': url}
                 # If the files are served via API, with the filename as a query string parameter.
                 elif 'extension.json' in url:
                     kwargs['file_urls'] = {
                         'extension.json': url,
                         'release-schema.json': url.replace('extension.json', 'release-schema.json'),
                     }
+                elif parsed.path.endswith('.json'):
+                    kwargs['file_urls'] = {'release-schema.json': url}
                 else:
                     data['Download URL'] = url
                 yield ExtensionVersion(data, **kwargs)

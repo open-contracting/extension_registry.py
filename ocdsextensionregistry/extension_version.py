@@ -38,7 +38,7 @@ class ExtensionVersion:
             return self.base_url
         elif self.download_url:
             return self.download_url
-        return self._file_urls['release-schema.json']
+        return self._file_urls.get('extension.json', self._file_urls.get('release-schema.json'))
 
     def update(self, other):
         """
@@ -210,8 +210,6 @@ class ExtensionVersion:
         """
         Returns the full name of the extension's repository, which should be a unique identifier on the hosting
         service, e.g. open-contracting-extensions/ocds_bid_extension
-
-        Experimental
         """
         return self._repository_property('full_name')
 
@@ -220,8 +218,6 @@ class ExtensionVersion:
         """
         Returns the short name of the extension's repository, i.e. omitting any organizational prefix, which can be
         used to create directories, e.g. ocds_bid_extension
-
-        Experimental
         """
         return self._repository_property('name')
 
@@ -229,18 +225,21 @@ class ExtensionVersion:
     def repository_user(self):
         """
         Returns the user or organization to which the extension's repository belongs, e.g. open-contracting-extensions
-
-        Experimental
         """
         return self._repository_property('user')
+
+    @property
+    def repository_ref(self):
+        """
+        Returns the ref in the extension's URL, e.g. the commit, tag or branch, like v1.1.5
+        """
+        return self._repository_property('ref')
 
     @property
     def repository_user_page(self):
         """
         Returns the URL to the landing page of the user or organization to which the extension's repository belongs,
         e.g. https://github.com/open-contracting-extensions
-
-        Experimental
         """
         return self._repository_property('user_page')
 
@@ -249,8 +248,6 @@ class ExtensionVersion:
         """
         Returns the URL to the landing page of the extension's repository, e.g.
         https://github.com/open-contracting-extensions/ocds_bid_extension
-
-        Experimental
         """
         return self._repository_property('html_page')
 
@@ -259,10 +256,16 @@ class ExtensionVersion:
         """
         Returns the URL of the extension's repository, in a format that can be input to a VCS program without
         modification, e.g. https://github.com/open-contracting-extensions/ocds_bid_extension.git
-
-        Experimental
         """
         return self._repository_property('url')
+
+    @property
+    def repository_ref_download_url(self):
+        """
+        Returns the download URL for the ref in the extensions's URL, e.g.
+        https://github.com/open-contracting-extensions/ocds_bid_extension/archive/v1.1.5.zip
+        """
+        return self._repository_property('ref_download_url')
 
     def _repository_full_name(self, parsed, config):
         match = re.search(config['full_name:pattern'], parsed.path)
@@ -282,6 +285,12 @@ class ExtensionVersion:
             return match.group(1)
         raise AttributeError(f"{parsed.path} !~ {config['user:pattern']}")
 
+    def _repository_ref(self, parsed, config):
+        match = re.search(config['ref:pattern'], parsed.path)
+        if match:
+            return match.group(1)
+        raise AttributeError(f"{parsed.path} !~ {config['ref:pattern']}")
+
     def _repository_user_page(self, parsed, config):
         return config['html_page:prefix'] + self._repository_user(parsed, config)
 
@@ -290,6 +299,12 @@ class ExtensionVersion:
 
     def _repository_url(self, parsed, config):
         return config['url:prefix'] + self._repository_full_name(parsed, config) + config['url:suffix']
+
+    def _repository_ref_download_url(self, parsed, config):
+        return config['download:format'].format(
+            full_name=self._repository_full_name(parsed, config),
+            ref=self._repository_ref(parsed, config),
+        )
 
     def _repository_property(self, prop):
         parsed = urlsplit(self.base_url)
@@ -314,9 +329,11 @@ class ExtensionVersion:
                 'full_name:pattern': r'\A/([^/]+/[^/]+)',
                 'name:pattern': r'\A/[^/]+/([^/]+)',
                 'user:pattern': r'\A/([^/]+)',
+                'ref:pattern': r'\A/[^/]+/[^/]+/([^/]+)',
                 'html_page:prefix': 'https://github.com/',
                 'url:prefix': 'git@github.com:',
                 'url:suffix': '.git',
+                'download:format': 'https://github.com/{full_name}/archive/{ref}.zip',
             }
         if netloc == 'bitbucket.org':
             # A base URL may look like: https://bitbucket.org/facebook/hgsql/raw/default/
@@ -324,9 +341,11 @@ class ExtensionVersion:
                 'full_name:pattern': r'\A/([^/]+/[^/]+)',
                 'name:pattern': r'\A/[^/]+/([^/]+)',
                 'user:pattern': r'\A/([^/]+)',
+                'ref:pattern': r'\A/[^/]+/[^/]+/raw/([^/]+)',
                 'html_page:prefix': 'https://bitbucket.org/',
                 'url:prefix': 'https://bitbucket.org/',
                 'url:suffix': '.git',  # assumes Git not Mercurial, which can't be disambiguated using the base URL
+                'download:format': 'https://bitbucket.org/{full_name}/get/{ref}.zip',
             }
         if netloc == 'gitlab.com':
             # A base URL may look like: https://gitlab.com/gitlab-org/gitter/env/raw/master/
@@ -334,7 +353,9 @@ class ExtensionVersion:
                 'full_name:pattern': r'\A/(.+)/-/raw/',
                 'name:pattern': r'/([^/]+)/-/raw/',
                 'user:pattern': r'\A/([^/]+)',
+                'ref:pattern': r'/-/raw/([^/]+)',
                 'html_page:prefix': 'https://gitlab.com/',
                 'url:prefix': 'https://gitlab.com/',
                 'url:suffix': '.git',
+                'download:format': 'https://gitlab.com/{full_name}/-/archive/{ref}.zip',
             }
