@@ -5,7 +5,7 @@ Changelog
 ------------------
 
 -  feat: Add :attr:`ocdsextensionregistry.extension_version.ExtensionVersion.repository_ref` and :attr:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_ref_download_url`.
--  feat: Set :meth:`ocdsextensionregistry.extension_version.ExtensionVersion.download_url` to :attr:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_ref_download_url` on initialization, if possible.
+-  feat: Set :attr:`ocdsextensionregistry.extension_version.ExtensionVersion.download_url` to :attr:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_ref_download_url` on initialization, if possible.
 
 0.3.1 (2023-07-07)
 ------------------
