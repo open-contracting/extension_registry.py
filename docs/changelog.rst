@@ -4,7 +4,8 @@ Changelog
 0.3.2 (2023-07-07)
 ------------------
 
--  feat: Add :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_ref` and :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_ref_download_url`.
+-  feat: Add :attr:`ocdsextensionregistry.extension_version.ExtensionVersion.repository_ref` and :attr:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_ref_download_url`.
+-  feat: Set :meth:`ocdsextensionregistry.extension_version.ExtensionVersion.download_url` to :attr:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_ref_download_url` on initialization, if possible.
 
 0.3.1 (2023-07-07)
 ------------------
@@ -41,8 +42,8 @@ Changelog
 0.2.2 (2023-06-05)
 ------------------
 
--  fix: :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_full_name` and :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_name` return the correct name for GitLab URLs.
--  fix: Clarify error message for ``AttributeError`` on :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_full_name`, :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_name`, and :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_user`.
+-  fix: :attr:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_full_name` and :attr:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_name` return the correct name for GitLab URLs.
+-  fix: Clarify error message for ``AttributeError`` on :attr:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_full_name`, :attr:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_name`, and :attr:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_user`.
 
 0.2.1 (2023-05-24)
 ------------------

@@ -34,6 +34,13 @@ class ExtensionVersion:
         self._schemas = None
         self._codelists = None
 
+        # This runs only when using this class outside the context of the extension registry.
+        if not self.download_url:
+            try:
+                self.download_url = self.repository_ref_download_url
+            except (AttributeError, NotImplementedError):
+                pass
+
     def __repr__(self):
         if self.id and self.version:
             return f'{self.id}=={self.version}'
