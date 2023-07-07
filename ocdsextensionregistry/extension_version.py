@@ -22,10 +22,15 @@ class ExtensionVersion:
         """
         Accepts a row from extension_versions.csv and assigns values to properties.
         """
+        #: The Id cell.
         self.id = data['Id']
+        #: The Date cell.
         self.date = data['Date']
+        #: The Version cell.
         self.version = data['Version']
+        #: The Base URL cell.
         self.base_url = data['Base URL']
+        #: The Download URL cell.
         self.download_url = data['Download URL']
 
         self._url_pattern = url_pattern

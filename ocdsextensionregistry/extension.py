@@ -3,8 +3,11 @@ class Extension:
         """
         Accepts a row from extensions.csv and assigns values to properties.
         """
+        #: The Id cell.
         self.id = data['Id']
+        #: The Category cell.
         self.category = data['Category']
+        #: The Core cell.
         self.core = data['Core'] == 'true'
 
     def __repr__(self):
