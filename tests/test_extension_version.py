@@ -177,7 +177,8 @@ def test_remote_directory(tmpdir):
 def test_remote_file_urls():
     url = 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_coveredBy_extension/master/release-schema.json'  # noqa: E501
 
-    obj = ExtensionVersion(arguments(**{'Download URL': None}), file_urls={'release-schema.json': url})
+    obj = ExtensionVersion(arguments(), file_urls={'release-schema.json': url})
+    obj.download_url = None
 
     data = obj.remote('release-schema.json')
     # Repeat requests should return the same result.
@@ -187,7 +188,8 @@ def test_remote_file_urls():
 
 
 def test_remote_nonexistent():
-    obj = ExtensionVersion(arguments(**{'Download URL': None}))
+    obj = ExtensionVersion(arguments())
+    obj.download_url = None
     with pytest.raises(requests.exceptions.HTTPError) as excinfo:
         obj.remote('nonexistent')
 
@@ -203,7 +205,8 @@ def test_remote_download_url_nonexistent():
 
 
 def test_zipfile_not_available_in_bulk():
-    obj = ExtensionVersion(arguments(**{'Download URL': None}))
+    obj = ExtensionVersion(arguments())
+    obj.download_url = None
     with pytest.raises(NotAvailableInBulk) as excinfo:
         obj.zipfile()
 
@@ -230,20 +233,21 @@ def test_remote_codelists_only_download_url():
 
 def test_files():
     obj = ExtensionVersion(arguments())
-    data = obj.files
+    result = obj.files
 
-    assert 'LICENSE' in data
+    assert 'LICENSE' in result
 
     # This method should not parse file contents.
-    for value in data.values():
+    for value in result.values():
         assert isinstance(value, (bytes, str))
 
 
 def test_files_without_download_url():
-    obj = ExtensionVersion(arguments(**{'Download URL': None}))
-    data = obj.files
+    obj = ExtensionVersion(arguments())
+    obj.download_url = None
+    result = obj.files
 
-    assert data == {}
+    assert result == {}
 
 
 def test_metadata():
@@ -308,6 +312,7 @@ def test_codelists():
 
 def test_codelists_without_metadata():
     download_url = 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1'
+
     obj = ExtensionVersion(arguments(**{'Download URL': download_url}))
     result = obj.codelists
 
@@ -318,8 +323,9 @@ def test_codelists_without_metadata():
 
 def test_codelists_without_metadata_or_download_url():
     base_url = 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1/'
-    download_url = None
-    obj = ExtensionVersion(arguments(**{'Base URL': base_url, 'Download URL': download_url}))
+
+    obj = ExtensionVersion(arguments(**{'Base URL': base_url}))
+    obj.download_url = None
     result = obj.codelists
 
     assert result == {}
@@ -327,6 +333,7 @@ def test_codelists_without_metadata_or_download_url():
 
 def test_codelists_with_CR_newlines():
     download_url = 'https://api.github.com/repos/open-contracting-extensions/ocds_bid_extension/zipball/v1.1'
+
     obj = ExtensionVersion(arguments(**{'Download URL': download_url}))
     result = obj.codelists
 

@@ -16,6 +16,7 @@ SCHEMAS = ('record-package-schema.json', 'release-package-schema.json', 'release
 FIELD_NAME = '4F434453'  # OCDS in hexidecimal
 FIELD = f'{{{FIELD_NAME}}}'
 
+
 class ExtensionVersion:
     def __init__(self, data, file_urls=None, url_pattern=None):
         """
