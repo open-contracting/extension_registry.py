@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.3.1 (2023-07-07)
+------------------
+
+-  fix: :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.extensions`: Support retrieval of the metadata file, if the ``extension_versions`` argument is a list of extensions' metadata files served via API.
+
 0.3.0 (2023-07-06)
 ------------------
 
