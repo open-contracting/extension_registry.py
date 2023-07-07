@@ -260,6 +260,7 @@ def test_metadata():
 def test_metadata_old_format():
     # See https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1/extension.json
     download_url = 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1'
+
     obj = ExtensionVersion(arguments(**{'Download URL': download_url}))
     result = obj.metadata
 
@@ -271,6 +272,7 @@ def test_metadata_old_format():
 
 def test_schemas():
     download_url = 'https://github.com/open-contracting-extensions/ocds_location_extension/archive/master.zip'
+
     obj = ExtensionVersion(arguments(**{'Download URL': download_url}))
     result = obj.schemas
 
@@ -280,6 +282,7 @@ def test_schemas():
 
 def test_schemas_without_metadata():
     download_url = 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1'
+
     obj = ExtensionVersion(arguments(**{'Download URL': download_url}))
     result = obj.schemas
 
@@ -292,6 +295,7 @@ def test_schemas_without_metadata():
 def test_schemas_without_metadata_or_download_url():
     base_url = 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1/'
     download_url = None
+
     obj = ExtensionVersion(arguments(**{'Base URL': base_url, 'Download URL': download_url}))
     result = obj.schemas
 
