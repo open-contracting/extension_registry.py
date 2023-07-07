@@ -58,6 +58,13 @@ def test_repr_file_urls():
     assert repr(obj) == 'https://example.com/release-schema.json'
 
 
+def test_repr_url_pattern():
+    data = dict.fromkeys(['Id', 'Date', 'Version', 'Base URL', 'Download URL'])
+    obj = ExtensionVersion(data, url_pattern='https://example.com/?file={4F434453}&key=value')
+
+    assert repr(obj) == 'https://example.com/?file={4F434453}&key=value'
+
+
 def test_update():
     obj = ExtensionVersion(arguments())
     obj.update(Extension({'Id': 'location', 'Category': 'item', 'Core': 'true'}))
@@ -103,6 +110,23 @@ def test_get_url(args, expected):
     assert obj.get_url('extension.json') == expected
 
 
+def test_get_url_file_urls():
+    url = 'https://example.com/release-schema.json'
+
+    obj = ExtensionVersion(arguments(), file_urls={'release-schema.json': url})
+
+    assert obj.get_url('release-schema.json') == url
+
+
+def test_get_url_url_pattern():
+    obj = ExtensionVersion(arguments(**{
+        'Id': None,
+        'Base URL': None,
+    }), url_pattern='https://example.com/?file={4F434453}&key=value')
+
+    assert obj.get_url('release-schema.json') == 'https://example.com/?file=release-schema.json&key=value'
+
+
 def test_get_url_download_url():
     args = arguments(**{
         'Id': None,
@@ -114,14 +138,6 @@ def test_get_url_download_url():
         ExtensionVersion(args).get_url('extension.json')
 
     assert str(excinfo.value) == 'get_url() with no base URL or matching file URL is not implemented'
-
-
-def test_get_url_file_urls():
-    url = 'https://example.com/release-schema.json'
-
-    obj = ExtensionVersion(arguments(), file_urls={'release-schema.json': url})
-
-    assert obj.get_url('release-schema.json') == url
 
 
 def test_remote():

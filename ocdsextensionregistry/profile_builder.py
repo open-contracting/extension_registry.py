@@ -47,7 +47,7 @@ import requests
 from .codelist import Codelist
 from .exceptions import ExtensionWarning, NotAvailableInBulk
 from .extension_registry import ExtensionRegistry
-from .extension_version import ExtensionVersion
+from .extension_version import FIELD, ExtensionVersion
 from .util import _resolve_zip
 
 logger = logging.getLogger('ocdsextensionregistry')
@@ -113,10 +113,9 @@ class ProfileBuilder:
                     data['Base URL'] = url
                 # If the files are served via API, with the filename as a query string parameter.
                 elif 'extension.json' in url:
-                    kwargs['file_urls'] = {
-                        'extension.json': url,
-                        'release-schema.json': url.replace('extension.json', 'release-schema.json'),
-                    }
+                    kwargs['url_pattern'] = url.replace('extension.json', FIELD)
+                elif 'release-schema.json' in url:
+                    kwargs['url_pattern'] = url.replace('release-schema.json', FIELD)
                 elif parsed.path.endswith('.json'):
                     kwargs['file_urls'] = {'release-schema.json': url}
                 else:

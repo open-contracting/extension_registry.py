@@ -13,10 +13,11 @@ from .exceptions import DoesNotExist, NotAvailableInBulk
 from .util import _resolve_zip, session
 
 SCHEMAS = ('record-package-schema.json', 'release-package-schema.json', 'release-schema.json')
-
+FIELD_NAME = '4F434453'  # OCDS in hexidecimal
+FIELD = f'{{{FIELD_NAME}}}'
 
 class ExtensionVersion:
-    def __init__(self, data, file_urls=None):
+    def __init__(self, data, file_urls=None, url_pattern=None):
         """
         Accepts a row from extension_versions.csv and assigns values to properties.
         """
@@ -25,6 +26,8 @@ class ExtensionVersion:
         self.version = data['Version']
         self.base_url = data['Base URL']
         self.download_url = data['Download URL']
+
+        self._url_pattern = url_pattern
         self._file_urls = file_urls or {}
         self._files = None
         self._metadata = None
@@ -38,7 +41,9 @@ class ExtensionVersion:
             return self.base_url
         elif self.download_url:
             return self.download_url
-        return self._file_urls.get('extension.json', self._file_urls.get('release-schema.json'))
+        elif self._url_pattern:
+            return self._url_pattern
+        return self._file_urls['release-schema.json']
 
     def update(self, other):
         """
@@ -63,6 +68,8 @@ class ExtensionVersion:
             return self._file_urls[basename]
         if self.base_url:
             return self.base_url + basename
+        if self._url_pattern:
+            return self._url_pattern.format(**{FIELD_NAME: basename})
         raise NotImplementedError("get_url() with no base URL or matching file URL is not implemented")
 
     def remote(self, basename, default=None):
