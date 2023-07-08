@@ -75,7 +75,7 @@ class ExtensionVersion:
         """
         Returns the object's public properties as a dictionary.
         """
-        return {key: value for key, value in self.__dict__.items() if not key.startswith('_')}
+        return {key: value for key, value in self.__dict__.items() if not key.startswith(('_', 'input_url'))}
 
     def get_url(self, basename):
         """
@@ -359,7 +359,7 @@ class ExtensionVersion:
                 'full_name:pattern': r'\A/([^/]+/[^/]+)',
                 'name:pattern': r'\A/[^/]+/([^/]+)',
                 'user:pattern': r'\A/([^/]+)',
-                'ref:pattern': r'\A/[^/]+/[^/]+/([^/]+)/[^/]+\Z',
+                'ref:pattern': r'\A/[^/]+/[^/]+/([^/]+)/[^/]*\Z',
                 'html_page:prefix': 'https://github.com/',
                 'url:prefix': 'git@github.com:',
                 'url:suffix': '.git',
@@ -371,7 +371,7 @@ class ExtensionVersion:
                 'full_name:pattern': r'\A/([^/]+/[^/]+)',
                 'name:pattern': r'\A/[^/]+/([^/]+)',
                 'user:pattern': r'\A/([^/]+)',
-                'ref:pattern': r'\A/[^/]+/[^/]+/raw/([^/]+)/[^/]+\Z',
+                'ref:pattern': r'\A/[^/]+/[^/]+/raw/([^/]+)/[^/]*\Z',
                 'html_page:prefix': 'https://bitbucket.org/',
                 'url:prefix': 'https://bitbucket.org/',
                 'url:suffix': '.git',  # assumes Git not Mercurial, which can't be disambiguated using the base URL
@@ -383,7 +383,7 @@ class ExtensionVersion:
                 'full_name:pattern': r'\A/(.+)/-/raw/',
                 'name:pattern': r'/([^/]+)/-/raw/',
                 'user:pattern': r'\A/([^/]+)',
-                'ref:pattern': r'/-/raw/([^/]+)/[^/]+\Z',
+                'ref:pattern': r'/-/raw/([^/]+)/[^/]*\Z',
                 'html_page:prefix': 'https://gitlab.com/',
                 'url:prefix': 'https://gitlab.com/',
                 'url:suffix': '.git',
