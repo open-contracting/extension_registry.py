@@ -81,15 +81,19 @@ def _resolve_zip(url, root=''):
     parsed = urlsplit(url)
 
     if parsed.scheme == 'file':
-        io = BytesIO()
-        with ZipFile(io, 'w') as zipfile:
-            zipfile.write(url[FILE_URI_OFFSET:], arcname='zip/')
-            for root, dirs, files in os.walk(os.path.join(url[FILE_URI_OFFSET:], root)):
-                for directory in dirs:
-                    if directory == '__pycache__':
-                        dirs.remove(directory)
-                for file in sorted(files):
-                    zipfile.write(os.path.join(root, file), arcname=f'zip/{file}')
+        if url.endswith('.zip'):
+            with open(url[FILE_URI_OFFSET:], 'rb') as f:
+                io = BytesIO(f.read())
+        else:
+            io = BytesIO()
+            with ZipFile(io, 'w') as zipfile:
+                zipfile.write(url[FILE_URI_OFFSET:], arcname='zip/')
+                for root, dirs, files in os.walk(os.path.join(url[FILE_URI_OFFSET:], root)):
+                    for directory in dirs:
+                        if directory == '__pycache__':
+                            dirs.remove(directory)
+                    for file in sorted(files):
+                        zipfile.write(os.path.join(root, file), arcname=f'zip/{file}')
     else:
         response = session.get(url, allow_redirects=True)
         response.raise_for_status()

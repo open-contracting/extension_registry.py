@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.3.4 (2023-07-08)
+------------------
+
+-  feat: :class:`ocdsextensionregistry.profile_builder.ProfileBuilder` accepts ``standard_base_url`` as a ZIP file, in addition to a directory.
+
 0.3.3 (2023-07-07)
 ------------------
 
