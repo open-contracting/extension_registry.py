@@ -2,6 +2,8 @@ import csv
 import json
 import os
 import re
+import warnings
+import zipfile
 from contextlib import closing
 from io import StringIO
 from urllib.parse import urlsplit
@@ -9,7 +11,7 @@ from urllib.parse import urlsplit
 import requests
 
 from .codelist import Codelist
-from .exceptions import DoesNotExist, NotAvailableInBulk
+from .exceptions import DoesNotExist, ExtensionCodelistWarning, NotAvailableInBulk
 from .util import _resolve_zip, session
 
 SCHEMAS = ('record-package-schema.json', 'release-package-schema.json', 'release-schema.json')
@@ -18,7 +20,7 @@ FIELD = f'{{{FIELD_NAME}}}'
 
 
 class ExtensionVersion:
-    def __init__(self, data, file_urls=None, url_pattern=None):
+    def __init__(self, data, input_url=None, url_pattern=None, file_urls=None):
         """
         Accepts a row from extension_versions.csv and assigns values to properties.
         """
@@ -32,6 +34,9 @@ class ExtensionVersion:
         self.base_url = data['Base URL']
         #: The Download URL cell.
         self.download_url = data['Download URL']
+        #: The URL that was provided in a list to
+        # :meth:`ocdsextensionregistry.profile_builder.ProfileBuilder.extensions`.
+        self.input_url = input_url
 
         self._url_pattern = url_pattern
         self._file_urls = file_urls or {}
@@ -44,6 +49,7 @@ class ExtensionVersion:
         if not self.download_url:
             try:
                 self.download_url = self.repository_ref_download_url
+            # The URL is malformed or unsupported.
             except (AttributeError, NotImplementedError):
                 pass
 
@@ -101,7 +107,7 @@ class ExtensionVersion:
                 response = session.get(self.get_url(basename))
                 if default is None or response.status_code != requests.codes.not_found:
                     response.raise_for_status()
-                    self._files[basename] = response.text
+                    self._files[basename] = response.content.decode('utf-8')
 
         if default is not None:
             return self.files.get(basename, default)
@@ -191,7 +197,7 @@ class ExtensionVersion:
                 try:
                     self._schemas[name] = json.loads(self.remote(name))
                 except requests.exceptions.HTTPError:
-                    if 'schemas' in self.metadata:
+                    if 'schemas' in self.metadata:  # avoid raising if using SCHEMAS
                         raise
 
         return self._schemas
@@ -219,9 +225,13 @@ class ExtensionVersion:
                     # Use universal newlines mode, to avoid parsing errors.
                     io = StringIO(self.remote('codelists/' + name), newline='')
                     self._codelists[name].extend(csv.DictReader(io))
-                except requests.exceptions.HTTPError:
-                    if 'codelists' in self.metadata:
-                        raise
+                except (
+                    UnicodeDecodeError,
+                    requests.RequestException,
+                    zipfile.BadZipFile,
+                ) as e:
+                    warnings.warn(ExtensionCodelistWarning(self, name, e))
+                    continue
 
         return self._codelists
 
@@ -251,7 +261,7 @@ class ExtensionVersion:
     @property
     def repository_ref(self):
         """
-        Returns the ref in the extension's URL, e.g. the commit, tag or branch, like v1.1.5
+        Returns the ref in the extension's URL if the extension's files are in the repository's root, like v1.1.5
         """
         return self._repository_property('ref')
 
@@ -349,7 +359,7 @@ class ExtensionVersion:
                 'full_name:pattern': r'\A/([^/]+/[^/]+)',
                 'name:pattern': r'\A/[^/]+/([^/]+)',
                 'user:pattern': r'\A/([^/]+)',
-                'ref:pattern': r'\A/[^/]+/[^/]+/([^/]+)',
+                'ref:pattern': r'\A/[^/]+/[^/]+/([^/]+)/[^/]+\Z',
                 'html_page:prefix': 'https://github.com/',
                 'url:prefix': 'git@github.com:',
                 'url:suffix': '.git',
@@ -361,7 +371,7 @@ class ExtensionVersion:
                 'full_name:pattern': r'\A/([^/]+/[^/]+)',
                 'name:pattern': r'\A/[^/]+/([^/]+)',
                 'user:pattern': r'\A/([^/]+)',
-                'ref:pattern': r'\A/[^/]+/[^/]+/raw/([^/]+)',
+                'ref:pattern': r'\A/[^/]+/[^/]+/raw/([^/]+)/[^/]+\Z',
                 'html_page:prefix': 'https://bitbucket.org/',
                 'url:prefix': 'https://bitbucket.org/',
                 'url:suffix': '.git',  # assumes Git not Mercurial, which can't be disambiguated using the base URL
@@ -373,7 +383,7 @@ class ExtensionVersion:
                 'full_name:pattern': r'\A/(.+)/-/raw/',
                 'name:pattern': r'/([^/]+)/-/raw/',
                 'user:pattern': r'\A/([^/]+)',
-                'ref:pattern': r'/-/raw/([^/]+)',
+                'ref:pattern': r'/-/raw/([^/]+)/[^/]+\Z',
                 'html_page:prefix': 'https://gitlab.com/',
                 'url:prefix': 'https://gitlab.com/',
                 'url:suffix': '.git',

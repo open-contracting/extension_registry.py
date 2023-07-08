@@ -45,7 +45,7 @@ import jsonref
 import requests
 
 from .codelist import Codelist
-from .exceptions import ExtensionWarning, NotAvailableInBulk
+from .exceptions import ExtensionWarning
 from .extension_registry import ExtensionRegistry
 from .extension_version import FIELD, ExtensionVersion
 from .util import _resolve_zip
@@ -104,7 +104,7 @@ class ProfileBuilder:
                     continue
                 parsed = urlsplit(url)
                 data = dict.fromkeys(['Id', 'Date', 'Version', 'Base URL', 'Download URL'])
-                kwargs = {}
+                kwargs = {'input_url': url}
                 if parsed.scheme == 'file':
                     data['Download URL'] = url
                 elif url.endswith('/extension.json'):
@@ -138,7 +138,7 @@ class ProfileBuilder:
                 patch = extension.remote('release-schema.json', default='{}')
                 patch = json.loads(re.sub(r':\s*null\b', ':"REPLACE_WITH_NULL"', patch))
             except (
-                NotAvailableInBulk,
+                UnicodeDecodeError,
                 json.JSONDecodeError,
                 requests.RequestException,
                 zipfile.BadZipFile,

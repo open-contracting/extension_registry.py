@@ -1,6 +1,30 @@
 Changelog
 =========
 
+0.3.3 (2023-07-07)
+------------------
+
+-  feat: Make ExtensionVersion more robust to bad data, when using a package's ``extensions`` field as input.
+
+   -  Warn if the request errors for an extension's codelist file (unreachable host, request timeout, HTTP error, too many redirects, etc.), if the bulk file is not a ZIP file, or if the codelist is not UTF-8.
+
+      The previous behavior of raising an exception can be restored with:
+
+      .. code-block:: python
+
+         import warnings
+
+         from ocdsextensionregistry.exceptions import ExtensionCodelistWarning
+
+
+         with warnings.catch_warnings():
+             warnings.filterwarnings('error', category=ExtensionCodelistWarning)
+             # Use of ExtensionVersion.codelist that warns.
+
+-  feat: Warn if the extension's release schema patch or codelist file is not UTF-8.
+-  feat: Add :attr:`ocdsextensionregistry.extension_version.ExtensionVersion.input_url` for the URL that was provided in a list to :meth:`ocdsextensionregistry.profile_builder.ProfileBuilder.extensions`.
+-  fix: :attr:`ocdsextensionregistry.extension_version.ExtensionVersion.repository_ref` only matches if the extension's files are in the repository's root – which is required by :attr:`~ocdsextensionregistry.extension_version.ExtensionVersion.repository_ref_download_url`.
+
 0.3.2 (2023-07-07)
 ------------------
 
@@ -19,7 +43,7 @@ Changelog
 
    -  Skip a package's ``extensions`` field if it is not an array.
    -  Skip an entry in the package's ``extensions`` array if it is blank or is not a string.
-   -  Warn if an extension's ``release-schema.json`` file is not available in bulk, if the request errors (unreachable host, request timeout, HTTP error, too many redirects, etc.), if the bulk file is not a ZIP file, or if the release schema is not a JSON file.
+   -  Warn if the request errors for the extension's release schema patch (unreachable host, request timeout, HTTP error, too many redirects, etc.), if the bulk file is not a ZIP file, or if the release schema is not a JSON file.
 
       The previous behavior of raising an exception can be restored with:
 
@@ -32,7 +56,7 @@ Changelog
 
          with warnings.catch_warnings():
              warnings.filterwarnings('error', category=ExtensionWarning)
-             # Use of ProfileBuilder that warns.
+             # Use of ProfileBuilder.release_schema_path() that warns.
 
 -  feat: Configure the expiration behavior of the responses cache using a ``REQUESTS_CACHE_EXPIRE_AFTER`` environment variable. See `requests-cache's documentation <https://requests-cache.readthedocs.io/en/stable/user_guide/expiration.html>`__ (``NEVER_EXPIRE`` is ``-1`` and ``EXPIRE_IMMEDIATELY`` is ``0``, in the `source <https://github.com/requests-cache/requests-cache/blob/main/requests_cache/policy/expiration.py>`__).
 -  fix: :meth:`ocdsextensionregistry.extension_version.ExtensionVersion.__repr__`: No longer errors if initialized with ``file_urls`` only.

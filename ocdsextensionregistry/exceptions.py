@@ -27,11 +27,25 @@ class OCDSExtensionRegistryWarning(UserWarning):
 
 
 class ExtensionWarning(OCDSExtensionRegistryWarning):
-    """Used when an extension can't be retrieved or merged."""
+    """Used when an extension file can't be read."""
 
     def __init__(self, extension, exc):
         self.extension = extension
         self.exc = exc
 
     def __str__(self):
-        return f"{self.extension}: {self.exc.__class__.__module__}.{self.exc.__class__.__name__}: {self.exc}"
+        klass = self.exc.__class__
+        return f"{self.extension}: {klass.__module__}.{klass.__name__}: {self.exc}"
+
+
+class ExtensionCodelistWarning(OCDSExtensionRegistryWarning):
+    """Used when a codelist file can't be read."""
+
+    def __init__(self, extension, codelist, exc):
+        self.extension = extension
+        self.codelist = codelist
+        self.exc = exc
+
+    def __str__(self):
+        klass = self.exc.__class__
+        return f"{self.extension}({self.codelist}): {klass.__module__}.{klass.__name__}: {self.exc}"
