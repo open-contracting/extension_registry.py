@@ -116,7 +116,7 @@ class Codelist:
         """
         Returns all fieldnames used in any rows.
         """
-        fieldnames = {}
+        fieldnames = {}  # sets are unordered
         for row in self.rows:
             for field in row:
                 fieldnames[field] = True
