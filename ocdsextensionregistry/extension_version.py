@@ -126,7 +126,7 @@ class ExtensionVersion:
         :raises zipfile.BadZipFile: if the download URL is not a ZIP file
         """
         if self._files is None:
-            self._files = {}
+            files = {}
 
             if self.download_url:
                 with closing(self.zipfile()) as zipfile:
@@ -139,7 +139,9 @@ class ExtensionVersion:
                             content = zipfile.read(name)
                             if os.path.splitext(name)[1] in ('.csv', '.json', '.md'):
                                 content = content.decode('utf-8')
-                            self._files[filename] = content
+                            files[filename] = content
+
+            self._files = files
 
         return self._files
 
@@ -184,7 +186,7 @@ class ExtensionVersion:
         Retrieves and returns the parsed contents of the extension's schemas files.
         """
         if self._schemas is None:
-            self._schemas = {}
+            schemas = {}
 
             if 'schemas' in self.metadata:
                 names = self.metadata['schemas']
@@ -195,10 +197,12 @@ class ExtensionVersion:
 
             for name in names:
                 try:
-                    self._schemas[name] = json.loads(self.remote(name))
+                    schemas[name] = json.loads(self.remote(name))
                 except requests.exceptions.HTTPError:
                     if 'schemas' in self.metadata:  # avoid raising if using SCHEMAS
                         raise
+
+            self._schemas = schemas
 
         return self._schemas
 
@@ -210,7 +214,7 @@ class ExtensionVersion:
         If the extension has no download URL, and if no codelists are listed in extension.json, returns an empty dict.
         """
         if self._codelists is None:
-            self._codelists = {}
+            codelists = {}
 
             if 'codelists' in self.metadata:
                 names = self.metadata['codelists']
@@ -221,10 +225,10 @@ class ExtensionVersion:
 
             for name in names:
                 try:
-                    self._codelists[name] = Codelist(name)
+                    codelists[name] = Codelist(name)
                     # Use universal newlines mode, to avoid parsing errors.
                     io = StringIO(self.remote('codelists/' + name), newline='')
-                    self._codelists[name].extend(csv.DictReader(io))
+                    codelists[name].extend(csv.DictReader(io))
                 except (
                     UnicodeDecodeError,
                     requests.RequestException,
@@ -232,6 +236,8 @@ class ExtensionVersion:
                 ) as e:
                     warnings.warn(ExtensionCodelistWarning(self, name, e))
                     continue
+
+            self._codelists = codelists
 
         return self._codelists
 

@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.3.6 (2023-07-12)
+------------------
+
+-  fix: Make :meth:`ocdsextensionregistry.extension_version.ExtensionVersion.files`, `~ocdsextensionregistry.extension_version.ExtensionVersion.files`, `~ocdsextensionregistry.extension_version.ExtensionVersion.schemas`, `~ocdsextensionregistry.extension_version.ExtensionVersion.codelists` thread-safe.
+
 0.3.5 (2023-07-12)
 ------------------
 
@@ -221,7 +226,7 @@ Changelog
 
 -  Add Windows support for:
 
-   -  :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.files`
+   -  :meth:`ocdsextensionregistry.extension_version.ExtensionVersion.files`
    -  :meth:`ocdsextensionregistry.profile_builder.ProfileBuilder.get_standard_file_contents`
    -  :meth:`ocdsextensionregistry.profile_builder.ProfileBuilder.standard_codelists`
 
