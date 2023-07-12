@@ -339,9 +339,13 @@ class ProfileBuilder:
                 path += 'schema/'
             start = len(path)
 
+            cache = {}
             for name in names[1:]:
                 if path in name:
-                    self._file_cache[name[start:]] = zipfile.read(name).decode('utf-8')
+                    cache[name[start:]] = zipfile.read(name).decode('utf-8')
+
+            # Set _file_cache at once, e.g. if threaded.
+            self._file_cache = cache
 
         return self._file_cache[basename]
 

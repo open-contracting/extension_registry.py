@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.3.5 (2023-07-12)
+------------------
+
+-  fix: Make :meth:`ocdsextensionregistry.profile_builder.ProfileBuilder.get_standard_file_contents` thread-safe.
+
 0.3.4 (2023-07-08)
 ------------------
 
