@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.3.7 (2023-07-19)
+------------------
+
+-  feat: Change assertions to warnings, when adding or removing codes from an extension's codelist.
+
 0.3.6 (2023-07-12)
 ------------------
 
