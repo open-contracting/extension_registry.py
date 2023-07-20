@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.3.8 (2023-07-20)
+------------------
+
+-  feat: :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`: :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.__init__`: The ``extension_versions`` argument can be a dict in which values are URLs, in addition to versions.
+
 0.3.7 (2023-07-19)
 ------------------
 

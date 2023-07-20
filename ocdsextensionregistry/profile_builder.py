@@ -91,36 +91,43 @@ class ProfileBuilder:
 
         return self._registry
 
+    @staticmethod
+    def _extension_from_url(url, parsed):
+        data = dict.fromkeys(['Id', 'Date', 'Version', 'Base URL', 'Download URL'])
+        kwargs = {'input_url': url}
+        if parsed.scheme == 'file':
+            data['Download URL'] = url
+        elif url.endswith('/extension.json'):
+            data['Base URL'] = url[:-14]
+        elif url.endswith('/'):
+            data['Base URL'] = url
+        # If the files are served via API, with the filename as a query string parameter.
+        elif 'extension.json' in url:
+            kwargs['url_pattern'] = url.replace('extension.json', FIELD)
+        elif 'release-schema.json' in url:
+            kwargs['url_pattern'] = url.replace('release-schema.json', FIELD)
+        elif parsed.path.endswith('.json'):
+            kwargs['file_urls'] = {'release-schema.json': url}
+        else:
+            data['Download URL'] = url
+        return ExtensionVersion(data, **kwargs)
+
     def extensions(self):
         """
         Returns the matching extension versions from the registry.
         """
         if isinstance(self.extension_versions, dict):
             for identifier, version in self.extension_versions.items():
-                yield self.registry.get(id=identifier, version=version)
+                parsed = urlsplit(version)
+                if parsed.scheme:
+                    yield self._extension_from_url(version, parsed)
+                else:
+                    yield self.registry.get(id=identifier, version=version)
         elif isinstance(self.extension_versions, Iterable):
             for url in self.extension_versions:
                 if not url or not isinstance(url, str):
                     continue
-                parsed = urlsplit(url)
-                data = dict.fromkeys(['Id', 'Date', 'Version', 'Base URL', 'Download URL'])
-                kwargs = {'input_url': url}
-                if parsed.scheme == 'file':
-                    data['Download URL'] = url
-                elif url.endswith('/extension.json'):
-                    data['Base URL'] = url[:-14]
-                elif url.endswith('/'):
-                    data['Base URL'] = url
-                # If the files are served via API, with the filename as a query string parameter.
-                elif 'extension.json' in url:
-                    kwargs['url_pattern'] = url.replace('extension.json', FIELD)
-                elif 'release-schema.json' in url:
-                    kwargs['url_pattern'] = url.replace('release-schema.json', FIELD)
-                elif parsed.path.endswith('.json'):
-                    kwargs['file_urls'] = {'release-schema.json': url}
-                else:
-                    data['Download URL'] = url
-                yield ExtensionVersion(data, **kwargs)
+                yield self._extension_from_url(url, urlsplit(url))
 
     def release_schema_patch(self, extension_field=None, language='en'):
         """
