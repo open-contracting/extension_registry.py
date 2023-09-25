@@ -57,7 +57,7 @@ class Command(BaseCommand):
         headers = ['Title', 'Description', 'Extension']
 
         if localedir:
-            available_translations = [n for n in os.listdir(localedir) if os.path.isdir(os.path.join(localedir, n))]
+            available_translations = [entry.name for entry in os.scandir(localedir) if entry.is_dir()]
             if self.args.languages:
                 for language in self.args.languages.split(','):
                     if language in available_translations:
