@@ -60,8 +60,7 @@ class Codelist:
         return self.rows[index]
 
     def __iter__(self):
-        for row in self.rows:
-            yield row
+        yield from self.rows
 
     def __len__(self):
         return len(self.rows)

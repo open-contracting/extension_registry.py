@@ -105,8 +105,7 @@ class ExtensionRegistry:
         """
         Iterates over the extension versions in the registry.
         """
-        for version in self.versions:
-            yield version
+        yield from self.versions
 
     def _handle_attribute_error(self, e):
         if "'category'" in str(e.args) or "'core'" in str(e.args):
