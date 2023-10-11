@@ -1,5 +1,4 @@
 import csv
-import sys
 from io import StringIO
 from textwrap import dedent
 
