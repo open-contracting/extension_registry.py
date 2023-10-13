@@ -20,8 +20,8 @@ If you are viewing this on GitHub or PyPI, open the `full documentation <https:/
 
 .. |PyPI Version| image:: https://img.shields.io/pypi/v/ocdsextensionregistry.svg
    :target: https://pypi.org/project/ocdsextensionregistry/
-.. |Build Status| image:: https://github.com/open-contracting/extension_registry.py/workflows/CI/badge.svg
-   :target: https://github.com/open-contracting/extension_registry.py/actions?query=workflow%3ACI
+.. |Build Status| image:: https://github.com/open-contracting/extension_registry.py/actions/workflows/ci.yml
+   :target: https://github.com/open-contracting//actions/workflows/ci.yml
 .. |Coverage Status| image:: https://coveralls.io/repos/github/open-contracting/extension_registry.py/badge.svg?branch=main
    :target: https://coveralls.io/github/open-contracting/extension_registry.py?branch=main
 .. |Python Version| image:: https://img.shields.io/pypi/pyversions/ocdsextensionregistry.svg
