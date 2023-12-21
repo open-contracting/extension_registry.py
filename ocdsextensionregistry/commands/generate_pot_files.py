@@ -65,6 +65,7 @@ class Command(BaseCommand):
             # sphinx-build -D suppress_warnings=image.not_readable …
             'confoverrides': {
                 'suppress_warnings': [warning_type],
+                'extensions': ['myst_parser'],
             },
         }
         # These options are useful for debugging.
@@ -181,10 +182,6 @@ class Command(BaseCommand):
                         # Eliminates a warning, without changing the output.
                         with open('index.rst', 'w') as f:
                             f.write('.. toctree::\n   :hidden:\n\n   README')
-
-                        # Sphinx's config.py pop()'s extensions.
-                        # https://github.com/sphinx-doc/sphinx/issues/6848
-                        kwargs['confoverrides']['extensions'] = ['myst_parser']
 
                         with patch_docutils(), docutils_namespace():
                             try:
