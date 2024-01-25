@@ -1,6 +1,12 @@
 Changelog
 =========
 
+Unreleased
+----------
+
+-  Add support for Sphinx 7.
+-  Drop support for Sphinx 4.
+
 0.3.8 (2023-07-20)
 ------------------
 
