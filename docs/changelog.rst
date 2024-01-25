@@ -84,8 +84,8 @@ Changelog
              # Use of ProfileBuilder.release_schema_path() that warns.
 
 -  feat: Configure the expiration behavior of the responses cache using a ``REQUESTS_CACHE_EXPIRE_AFTER`` environment variable. See `requests-cache's documentation <https://requests-cache.readthedocs.io/en/stable/user_guide/expiration.html>`__ (``NEVER_EXPIRE`` is ``-1`` and ``EXPIRE_IMMEDIATELY`` is ``0``, in the `source <https://github.com/requests-cache/requests-cache/blob/main/requests_cache/policy/expiration.py>`__).
--  fix: :meth:`ocdsextensionregistry.extension_version.ExtensionVersion.__repr__`: No longer errors if initialized with ``file_urls`` only.
--  fix: :meth:`ocdsextensionregistry.extension_version.ExtensionVersion.get_url`: Raises clearer error if initialized with a Download URL only.
+-  fix: :meth:`ocdsextensionregistry.extension_version.ExtensionVersion.__repr__` no longer errors if initialized with ``file_urls`` only.
+-  fix: :meth:`ocdsextensionregistry.extension_version.ExtensionVersion.get_url` raises clearer error if initialized with a Download URL only.
 -  Add support for Sphinx 6.2 on Python 3.11.
 
 0.2.2 (2023-06-05)

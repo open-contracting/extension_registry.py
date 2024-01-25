@@ -35,7 +35,7 @@ class ExtensionVersion:
         #: The Download URL cell.
         self.download_url = data['Download URL']
         #: The URL that was provided in a list to
-        # :meth:`ocdsextensionregistry.profile_builder.ProfileBuilder.extensions`.
+        #: :meth:`ocdsextensionregistry.profile_builder.ProfileBuilder.extensions`.
         self.input_url = input_url
 
         self._url_pattern = url_pattern
