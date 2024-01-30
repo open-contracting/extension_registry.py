@@ -11,11 +11,6 @@ from ocdsextensionregistry.__main__ import main
 args = ['ocdsextensionregistry', 'download']
 
 
-# https://github.com/pypy/pypy/issues/4009
-@pytest.mark.skipif(
-    platform.system() == 'Darwin' and platform.python_implementation() == 'PyPy',
-    reason='CI outputs .../lib/pypy3.9/site-packages/certifi/cacert.pem None'
-)
 def test_command(capsys, monkeypatch, tmpdir):
     monkeypatch.setattr(sys, 'argv', args + [str(tmpdir), 'location==v1.1.4'])
     main()
