@@ -193,7 +193,7 @@ class Command(BaseCommand):
                                 raise Exception(str(outdir)) from e
 
                         # https://stackoverflow.com/questions/15408348
-                        content = subprocess.run(['msgcat', *glob('outdir/*.pot')],
+                        content = subprocess.run(['msgcat', *glob(os.path.join('outdir', '*.pot'))],
                                                  check=True, stdout=subprocess.PIPE).stdout
 
                 with open(outdir / 'docs.pot', 'wb') as f:
