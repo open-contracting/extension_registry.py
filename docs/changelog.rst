@@ -4,7 +4,6 @@ Changelog
 Unreleased
 ----------
 
--  fix: The ``generate-pot-files`` command no longer errors on Windows in an edge case scenario.
 -  Add support for Sphinx 7.
 -  Drop support for Sphinx 4.
 
