@@ -27,7 +27,8 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: |
           Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-          Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+          irm get.scoop.sh -outfile 'install.ps1'
+          .\install.ps1 -RunAsAdmin
           scoop install gettext --global
       - run: pip install tox
       - env:
