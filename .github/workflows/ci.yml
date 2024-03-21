@@ -28,7 +28,7 @@ jobs:
         run: |
           Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
           Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
-          scoop install gettext
+          scoop install gettext --global
       - run: pip install tox
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
