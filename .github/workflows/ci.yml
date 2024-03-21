@@ -30,7 +30,6 @@ jobs:
           iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
           Join-Path (Resolve-Path ~).Path "scoop\shims" >> $Env:GITHUB_PATH
           scoop install gettext
-          "${env:USERPROFILE}\scoop\persist\gettext\shims" >> "$env:GITHUB_PATH"
       - run: pip install tox
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
