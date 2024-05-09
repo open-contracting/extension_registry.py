@@ -26,6 +26,7 @@ class OCDSExtensionRegistryWarning(UserWarning):
     """Base class for warnings from within this package"""
 
 
+# The attributes are used by lib-cove-ocds.
 class ExtensionWarning(OCDSExtensionRegistryWarning):
     """Used when an extension file can't be read."""
 
@@ -38,6 +39,7 @@ class ExtensionWarning(OCDSExtensionRegistryWarning):
         return f"{self.extension}: {klass.__module__}.{klass.__name__}: {self.exc}"
 
 
+# The attributes are used by lib-cove-ocds.
 class ExtensionCodelistWarning(OCDSExtensionRegistryWarning):
     """Used when a codelist file can't be read."""
 
