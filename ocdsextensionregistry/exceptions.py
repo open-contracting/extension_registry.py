@@ -35,7 +35,7 @@ class ExtensionWarning(OCDSExtensionRegistryWarning):
         self.exc = exc
 
     def __str__(self):
-        klass = self.exc.__class__
+        klass = type(self.exc)
         return f"{self.extension}: {klass.__module__}.{klass.__name__}: {self.exc}"
 
 
@@ -49,5 +49,5 @@ class ExtensionCodelistWarning(OCDSExtensionRegistryWarning):
         self.exc = exc
 
     def __str__(self):
-        klass = self.exc.__class__
+        klass = type(self.exc)
         return f"{self.extension}({self.codelist}): {klass.__module__}.{klass.__name__}: {self.exc}"
