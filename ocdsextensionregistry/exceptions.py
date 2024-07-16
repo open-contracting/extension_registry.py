@@ -35,8 +35,8 @@ class ExtensionWarning(OCDSExtensionRegistryWarning):
         self.exc = exc
 
     def __str__(self):
-        klass = type(self.exc)
-        return f"{self.extension}: {klass.__module__}.{klass.__name__}: {self.exc}"
+        cls = type(self.exc)
+        return f"{self.extension}: {cls.__module__}.{cls.__name__}: {self.exc}"
 
 
 # The attributes are used by lib-cove-ocds.
@@ -49,5 +49,5 @@ class ExtensionCodelistWarning(OCDSExtensionRegistryWarning):
         self.exc = exc
 
     def __str__(self):
-        klass = type(self.exc)
-        return f"{self.extension}({self.codelist}): {klass.__module__}.{klass.__name__}: {self.exc}"
+        cls = type(self.exc)
+        return f"{self.extension}({self.codelist}): {cls.__module__}.{cls.__name__}: {self.exc}"
