@@ -30,6 +30,7 @@ jobs:
           iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
           Join-Path (Resolve-Path ~).Path "scoop\shims" >> $Env:GITHUB_PATH
           scoop install gettext
-      - run: pip install tox
+      - run: pip install coverage tox
       - run: tox -- coverage run --source=ocdsextensionregistry --append -m pytest
+      - run: coverage lcov
       - uses: coverallsapp/github-action@v2
