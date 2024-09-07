@@ -31,5 +31,5 @@ jobs:
           Join-Path (Resolve-Path ~).Path "scoop\shims" >> $Env:GITHUB_PATH
           scoop install gettext
       - run: pip install tox
-      - run: tox
+      - run: tox -- coverage run --source=ocdsextensionregistry --append -m pytest
       - uses: coverallsapp/github-action@v2
