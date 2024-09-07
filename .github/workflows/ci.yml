@@ -31,6 +31,5 @@ jobs:
           Join-Path (Resolve-Path ~).Path "scoop\shims" >> $Env:GITHUB_PATH
           scoop install gettext
       - run: pip install tox
-      - env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: tox
+      - run: tox
+      - uses: coverallsapp/github-action@v2
