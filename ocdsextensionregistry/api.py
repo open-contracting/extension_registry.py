@@ -106,10 +106,10 @@ def build_profile(basedir, standard_tag, extension_versions, registry_base_url=N
         for extension in builder.extensions():
             for url in extension.metadata.get(field, []):
                 try:
-                    extension = builder.registry.get_from_url(url)
-                    if extension.id in extensions:
+                    extension_id = builder.registry.get_from_url(url).id
+                    if extension_id in extensions:
                         continue
-                    extensions.add(extension.id)
+                    extensions.add(extension_id)
                 except DoesNotExist:
                     pass
                 metadata[field].add(url)
