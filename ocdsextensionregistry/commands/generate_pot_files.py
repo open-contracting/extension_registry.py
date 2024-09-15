@@ -117,12 +117,11 @@ class Command(BaseCommand):
                     )
                     continue
                 version.download_url = download_dir.as_uri()
-            else:
-                if not version.download_url:
-                    logger.warning(
-                        'Not processing %s==%s (no Download URL)', version.id, version.version
-                    )
-                    continue
+            elif not version.download_url:
+                logger.warning(
+                    'Not processing %s==%s (no Download URL)', version.id, version.version
+                )
+                continue
 
             outdir = output_directory / version.id / version.version
 
@@ -188,7 +187,7 @@ class Command(BaseCommand):
                                 # sphinx-build -b gettext $(DOCS_DIR) $(POT_DIR)
                                 app = Sphinx('.', None, 'outdir', '.', 'gettext', **kwargs)
                                 # sphinx-build -a …
-                                app.build(True)
+                                app.build(force_all=True)
                             except sphinx.errors.SphinxWarning as e:
                                 raise Exception(str(outdir)) from e
 

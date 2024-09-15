@@ -27,7 +27,7 @@ warnings.filterwarnings(
 
 # https://2.python-requests.org/projects/3/api/#requests.adapters.HTTPAdapter
 # https://urllib3.readthedocs.io/en/latest/advanced-usage.html#customizing-pool-behavior
-adapter = HTTPAdapter(max_retries=3, pool_maxsize=int(os.getenv('REQUESTS_POOL_MAXSIZE', 10)))
+adapter = HTTPAdapter(max_retries=3, pool_maxsize=int(os.getenv('REQUESTS_POOL_MAXSIZE', '10')))
 session = CachedSession(backend='memory', expire_after=os.getenv('REQUESTS_CACHE_EXPIRE_AFTER', NEVER_EXPIRE))
 session.mount('https://', adapter)
 session.mount('http://', adapter)
@@ -77,7 +77,7 @@ def _resolve(data_or_url):
     return data_or_url
 
 
-def _resolve_zip(url, root=''):
+def _resolve_zip(url, base=''):
     parsed = urlsplit(url)
 
     if parsed.scheme == 'file':
@@ -88,7 +88,7 @@ def _resolve_zip(url, root=''):
             io = BytesIO()
             with ZipFile(io, 'w') as zipfile:
                 zipfile.write(url[FILE_URI_OFFSET:], arcname='zip/')
-                for root, dirs, files in os.walk(os.path.join(url[FILE_URI_OFFSET:], root)):
+                for root, dirs, files in os.walk(os.path.join(url[FILE_URI_OFFSET:], base)):
                     for directory in dirs:
                         if directory == '__pycache__':
                             dirs.remove(directory)

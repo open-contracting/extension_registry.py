@@ -110,4 +110,4 @@ class ExtensionRegistry:
     def _handle_attribute_error(self, e):
         if "'category'" in str(e.args) or "'core'" in str(e.args):
             raise MissingExtensionMetadata('ExtensionRegistry must be initialized with extensions data.') from e
-        raise
+        raise  # noqa: PLE0704 # false positive

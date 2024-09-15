@@ -25,7 +25,7 @@ def main():
         try:
             command = importlib.import_module(module).Command(subparsers)
         except ImportError as e:
-            logger.error('exception "%s" prevented loading of %s module', e, module)
+            logger.error('exception "%s" prevented loading of %s module', e, module)  # noqa: TRY400 # UX
         else:
             subcommands[command.name] = command
 

@@ -2,8 +2,8 @@ import json
 import sys
 
 import pytest
-
 from ocdsextensionregistry.__main__ import main
+
 from tests import read
 
 args = ['ocdsextensionregistry', 'generate-data-file']
@@ -94,8 +94,8 @@ def test_command_locale_dir(capsys, monkeypatch, tmpdir):
                     'id': 'location',
                     'date': '2019-02-25',
                     'version': 'v1.1.4',
-                    'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.4/',  # noqa: E501
-                    'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.4',  # noqa: E501
+                    'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.4/',
+                    'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.4',
                     'publisher': {
                         'name': 'open-contracting-extensions',
                         'url': 'https://github.com/open-contracting-extensions',
@@ -161,8 +161,8 @@ def test_command_languages(capsys, monkeypatch, tmpdir):
                     'id': 'location',
                     'date': '2019-02-25',
                     'version': 'v1.1.4',
-                    'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.4/',  # noqa: E501
-                    'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.4',  # noqa: E501
+                    'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.4/',
+                    'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.4',
                     'publisher': {
                         'name': 'open-contracting-extensions',
                         'url': 'https://github.com/open-contracting-extensions',

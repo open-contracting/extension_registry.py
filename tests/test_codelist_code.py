@@ -1,5 +1,4 @@
 import pytest
-
 from ocdsextensionregistry import CodelistCode
 
 

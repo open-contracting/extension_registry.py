@@ -46,11 +46,8 @@ def build_profile(basedir, standard_tag, extension_versions, registry_base_url=N
         """
         os.makedirs(os.path.dirname(name), exist_ok=True)
 
-        f = open(name, mode)
-        try:
+        with open(name, mode) as f:
             yield f
-        finally:
-            f.close()
 
     def write_json_file(data, *parts):
         with open_file(os.path.join(basedir, *parts), 'w') as f:

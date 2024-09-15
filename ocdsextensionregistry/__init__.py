@@ -7,4 +7,4 @@ from .extension_version import ExtensionVersion  # noqa: F401
 from .profile_builder import ProfileBuilder  # noqa: F401
 
 EXTENSIONS_DATA = 'https://raw.githubusercontent.com/open-contracting/extension_registry/main/extensions.csv'
-EXTENSION_VERSIONS_DATA = 'https://raw.githubusercontent.com/open-contracting/extension_registry/main/extension_versions.csv'  # noqa: E501
+EXTENSION_VERSIONS_DATA = 'https://raw.githubusercontent.com/open-contracting/extension_registry/main/extension_versions.csv'

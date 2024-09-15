@@ -1,8 +1,8 @@
 Changelog
 =========
 
-Unreleased
-----------
+0.4.0 (Unreleased)
+------------------
 
 -  Add support for Sphinx 7.
 -  Drop support for Sphinx 4.

@@ -4,7 +4,7 @@ import os
 import re
 import warnings
 import zipfile
-from contextlib import closing
+from contextlib import closing, suppress
 from io import StringIO
 from urllib.parse import urlsplit
 
@@ -47,20 +47,18 @@ class ExtensionVersion:
 
         # This runs only when using this class outside the context of the extension registry.
         if not self.download_url:
-            try:
-                self.download_url = self.repository_ref_download_url
             # The URL is malformed or unsupported.
-            except (AttributeError, NotImplementedError):
-                pass
+            with suppress(AttributeError, NotImplementedError):
+                self.download_url = self.repository_ref_download_url
 
     def __repr__(self):
         if self.id and self.version:
             return f'{self.id}=={self.version}'
-        elif self.base_url:
+        if self.base_url:
             return self.base_url
-        elif self.download_url:
+        if self.download_url:
             return self.download_url
-        elif self._url_pattern:
+        if self._url_pattern:
             return self._url_pattern
         return self._file_urls['release-schema.json']
 
@@ -102,16 +100,15 @@ class ExtensionVersion:
         :raises DoesNotExist: if the file isn't in the extension
         :raises zipfile.BadZipFile: if the download URL is not a ZIP file
         """
-        if basename not in self.files:
-            if not self.download_url:
-                response = session.get(self.get_url(basename))
-                if default is None or response.status_code != requests.codes.not_found:
-                    response.raise_for_status()
-                    self._files[basename] = response.content.decode('utf-8')
+        if basename not in self.files and not self.download_url:
+            response = session.get(self.get_url(basename))
+            if default is None or response.status_code != requests.codes.not_found:
+                response.raise_for_status()
+                self._files[basename] = response.content.decode('utf-8')
 
         if default is not None:
             return self.files.get(basename, default)
-        elif basename not in self.files:
+        if basename not in self.files:
             raise DoesNotExist(f'File {basename!r} does not exist in {self}')
         return self.files[basename]
 
@@ -353,8 +350,8 @@ class ExtensionVersion:
         # Multiple websites are implemented to explore the robustness of the approach.
         #
         # Savannah has both cgit and GitWeb interfaces on the same domain, e.g.
-        # "https://git.savannah.gnu.org/cgit/aspell.git/plain/COPYING?h=devel"
-        # "https://git.savannah.gnu.org/gitweb/?p=aspell.git;a=blob_plain;f=COPYING;h=b1e3f5a2638797271cbc9b91b856c05ed6942c8f;hb=HEAD"
+        # https://git.savannah.gnu.org/cgit/aspell.git/plain/COPYING?h=devel
+        # https://git.savannah.gnu.org/gitweb/?p=aspell.git;a=blob_plain;f=COPYING;h=b1e3f5a2638797271cbc9b91b856c05ed6942c8f;hb=HEAD
         #
         # If all interfaces could be disambiguated using the domain alone, we could implement the lookup of the
         # configuration as a dictionary. Since that's not the case, the lookup is implemented as a method.
@@ -395,3 +392,4 @@ class ExtensionVersion:
                 'url:suffix': '.git',
                 'download:format': 'https://gitlab.com/{full_name}/-/archive/{ref}.zip',
             }
+        return None

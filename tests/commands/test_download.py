@@ -4,7 +4,6 @@ import sys
 from glob import glob
 
 import pytest
-
 from ocdsextensionregistry.__main__ import main
 
 args = ['ocdsextensionregistry', 'download']

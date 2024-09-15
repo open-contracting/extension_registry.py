@@ -38,9 +38,9 @@ class Command(BaseCommand):
         self.add_argument('versions', nargs='*',
                           help="the versions of extensions to process (e.g. 'bids' or 'lots==master')")
         self.add_argument('-d', '--locale-dir',
-                          help='a directory containing MO files'),
+                          help='a directory containing MO files')
         self.add_argument('-l', '--languages',
-                          help='a comma-separated list of translations to include (default all)'),
+                          help='a comma-separated list of translations to include (default all)')
         self.add_argument('--extensions-url', help="the URL of the registry's extensions.csv",
                           default=EXTENSIONS_DATA)
         self.add_argument('--extension-versions-url', help="the URL of the registry's extension_versions.csv",
@@ -152,7 +152,7 @@ class Command(BaseCommand):
             # Determine the latest version. See ocdsextensionregistry.util.get_latest_version().
             versions = data[_id]['versions']
             if len(versions) == 1:
-                latest_version = list(versions)[0]
+                latest_version = next(iter(versions))
             elif 'master' in versions:
                 latest_version = 'master'
             elif DEFAULT_MINOR_VERSION in versions:

@@ -3,7 +3,6 @@ from pathlib import Path
 
 import pytest
 import requests
-
 from ocdsextensionregistry import Extension, ExtensionVersion
 from ocdsextensionregistry.exceptions import DoesNotExist, NotAvailableInBulk
 
@@ -14,7 +13,7 @@ def arguments(**kwargs):
         'Date': '2018-02-01',
         'Version': 'v1.1.3',
         'Base URL': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/',
-        'Download URL': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.3',  # noqa: E501
+        'Download URL': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.3',
     }
 
     data.update(kwargs)
@@ -42,7 +41,7 @@ def test_init():
     (arguments(**{
         'Id': None,
         'Base URL': None,
-        'Download URL': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.3',  # noqa: E501
+        'Download URL': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.3',
     }), 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.3'),
 ])
 def test_repr(args, expected):
@@ -131,7 +130,7 @@ def test_get_url_download_url():
     args = arguments(**{
         'Id': None,
         'Base URL': None,
-        'Download URL': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.3',  # noqa: E501
+        'Download URL': 'https://api.github.com/repos/open-contracting-extensions/ocds_location_extension/zipball/v1.1.3',
     })
 
     with pytest.raises(NotImplementedError) as excinfo:
@@ -175,7 +174,7 @@ def test_remote_directory(tmpdir):
 
 
 def test_remote_file_urls():
-    url = 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_coveredBy_extension/master/release-schema.json'  # noqa: E501
+    url = 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_coveredBy_extension/master/release-schema.json'
 
     obj = ExtensionVersion(arguments(), file_urls={'release-schema.json': url})
     obj.download_url = None
@@ -193,7 +192,7 @@ def test_remote_nonexistent():
     with pytest.raises(requests.exceptions.HTTPError) as excinfo:
         obj.remote('nonexistent')
 
-    assert str(excinfo.value) == "404 Client Error: Not Found for url: https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/nonexistent"  # noqa: E501
+    assert str(excinfo.value) == "404 Client Error: Not Found for url: https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/nonexistent"
 
 
 def test_remote_download_url_nonexistent():
@@ -224,7 +223,7 @@ def test_remote_codelists_only_base_url():
 
 def test_remote_codelists_only_download_url():
     args = dict.fromkeys(['Id', 'Date', 'Version', 'Base URL', 'Download URL'])
-    args['Download URL'] = 'https://api.github.com/repos/contratacionesabiertas/ocds_publicNotices_extension/zipball/master'  # noqa: E501
+    args['Download URL'] = 'https://api.github.com/repos/contratacionesabiertas/ocds_publicNotices_extension/zipball/master'
 
     obj = ExtensionVersion(args)
 
@@ -335,7 +334,7 @@ def test_codelists_without_metadata_or_download_url():
     assert result == {}
 
 
-def test_codelists_with_CR_newlines():
+def test_codelists_with_cr_newlines():
     download_url = 'https://api.github.com/repos/open-contracting-extensions/ocds_bid_extension/zipball/v1.1'
 
     obj = ExtensionVersion(arguments(**{'Download URL': download_url}))
