@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.4.0 (Unreleased)
+0.4.0 (2024-09-15)
 ------------------
 
 -  Some arguments must be keyword arguments in:
