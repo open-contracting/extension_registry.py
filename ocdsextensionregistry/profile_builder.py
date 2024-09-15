@@ -180,7 +180,7 @@ class ProfileBuilder:
     def _dereferenced_patched_release_schema(self):
         return jsonref.replace_refs(self.patched_release_schema(), proxies=False)
 
-    def release_package_schema(self, schema=None, embed=False):
+    def release_package_schema(self, schema=None, *, embed=False):
         """
         Returns a release package schema. If the profile builder was initialized with ``schema_base_url``, updates
         schema URLs.
@@ -202,7 +202,7 @@ class ProfileBuilder:
 
         return schema
 
-    def record_package_schema(self, schema=None, embed=False):
+    def record_package_schema(self, schema=None, *, embed=False):
         """
         Returns a record package schema. If the profile builder was initialized with ``schema_base_url``, updates
         schema URLs.
@@ -269,7 +269,8 @@ class ProfileBuilder:
                     codelists[name] = Codelist(name)
                     originals[name] = content
                 elif not codelists[name].patch:
-                    assert originals[name] == content, f'codelist {name} differs across extensions'
+                    if originals[name] != content:
+                        raise AssertionError(f'codelist {name} differs across extensions')
                     continue
 
                 codelists[name].extend(csv.DictReader(StringIO(content)), extension.metadata['name']['en'])
@@ -369,4 +370,4 @@ def _add_extension_field(schema, extension_name, field_name, pointer=None):
         if len(pointer) > 1 and pointer[-2] in ('definitions', 'properties') and 'title' in schema:
             schema[field_name] = extension_name
         for key, value in schema.items():
-            _add_extension_field(value, extension_name, field_name=field_name, pointer=pointer + (key,))
+            _add_extension_field(value, extension_name, field_name=field_name, pointer=(*pointer, key))

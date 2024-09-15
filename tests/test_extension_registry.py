@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import pytest
+
 from ocdsextensionregistry import ExtensionRegistry
 from ocdsextensionregistry.exceptions import DoesNotExist, MissingExtensionMetadata
 
@@ -209,7 +210,7 @@ def test_get_without_extensions():
 
 def test_iter():
     obj = ExtensionRegistry(extension_versions_data)
-    for i, version in enumerate(obj, 1):
+    for i, _version in enumerate(obj, 1):  # noqa: B007 # used after
         pass
 
     assert i == 14

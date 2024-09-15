@@ -8,7 +8,7 @@ args = ['ocdsextensionregistry', 'generate-pot-files']
 
 
 def test_command(capsys, monkeypatch, tmpdir):
-    monkeypatch.setattr(sys, 'argv', args + ['-W', str(tmpdir), 'location==v1.1.4'])
+    monkeypatch.setattr(sys, 'argv', [*args, '-W', str(tmpdir), 'location==v1.1.4'])
     main()
 
     assert capsys.readouterr().out == ''
@@ -33,7 +33,7 @@ def test_command_directory(capsys, monkeypatch, tmpdir):
 
     versions_dir.mkdir('location').mkdir('v1.1.4').join('README.md').write('# Location')
 
-    monkeypatch.setattr(sys, 'argv', args + ['--versions-dir', str(versions_dir), str(output_dir), 'location==v1.1.4'])
+    monkeypatch.setattr(sys, 'argv', [*args, '--versions-dir', str(versions_dir), str(output_dir), 'location==v1.1.4'])
     main()
 
     assert capsys.readouterr().out == ''
@@ -56,7 +56,7 @@ def test_command_missing_directory(capsys, monkeypatch, tmpdir, caplog):
     output_dir = tmpdir.mkdir('build').mkdir('locale')
     versions_dir = tmpdir.mkdir('outputdir')
 
-    monkeypatch.setattr(sys, 'argv', args + ['--versions-dir', str(versions_dir), str(output_dir), 'location==v1.1.4'])
+    monkeypatch.setattr(sys, 'argv', [*args, '--versions-dir', str(versions_dir), str(output_dir), 'location==v1.1.4'])
     main()
 
     assert capsys.readouterr().out == ''
@@ -78,8 +78,9 @@ def test_command_missing_download_url(capsys, monkeypatch, tmpdir, caplog):
 
     file.write('Id,Date,Version,Base URL,Download URL\nlocation,,v1.1.4,http://example.com/,')
 
-    monkeypatch.setattr(sys, 'argv', args + ['--extension-versions-url', Path(file).as_uri(), str(output_dir),
-                                             'location==v1.1.4'])
+    monkeypatch.setattr(
+        sys, 'argv', [*args, '--extension-versions-url', Path(file).as_uri(), str(output_dir), 'location==v1.1.4']
+    )
     main()
 
     assert capsys.readouterr().out == ''

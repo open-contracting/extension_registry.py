@@ -10,10 +10,8 @@ from requests_cache import NEVER_EXPIRE, CachedSession
 
 from .exceptions import UnknownLatestVersion
 
-if os.name == 'nt':
-    FILE_URI_OFFSET = 8  # "file:///C|/tmp"
-else:
-    FILE_URI_OFFSET = 7  # "file:///tmp"
+# For example: "file:///C|/tmp" or "file:///tmp"
+FILE_URI_OFFSET = 8 if os.name == 'nt' else 7
 
 DEFAULT_MINOR_VERSION = '1.1'
 

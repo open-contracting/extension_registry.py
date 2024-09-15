@@ -1,4 +1,5 @@
 import pytest
+
 from ocdsextensionregistry import ExtensionVersion
 from ocdsextensionregistry.exceptions import UnknownLatestVersion
 from ocdsextensionregistry.util import get_latest_version

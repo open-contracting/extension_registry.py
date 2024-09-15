@@ -3,7 +3,6 @@ import logging
 from pathlib import Path
 
 from ocdsextensionregistry import ProfileBuilder
-
 from tests import path
 
 standard_codelists = [
@@ -262,14 +261,17 @@ def test_extension_codelists(caplog):
 
     # Collects codelists.
     assert len(result) == 9
-    assert [codelist.name for codelist in result] == sorted([
-        '+milestoneType.csv',
-        '+partyRole.csv',
-        '+releaseTag.csv',
-        '-partyRole.csv',
-        'documentType.csv',
-        'initiationType.csv',
-    ] + new_extension_codelists)
+    assert [codelist.name for codelist in result] == sorted(
+        [
+            '+milestoneType.csv',
+            '+partyRole.csv',
+            '+releaseTag.csv',
+            '-partyRole.csv',
+            'documentType.csv',
+            'initiationType.csv',
+            *new_extension_codelists,
+        ]
+    )
 
     # Preserves content.
     assert result[0].name == '+milestoneType.csv'

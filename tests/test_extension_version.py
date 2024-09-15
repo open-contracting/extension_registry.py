@@ -3,6 +3,7 @@ from pathlib import Path
 
 import pytest
 import requests
+
 from ocdsextensionregistry import Extension, ExtensionVersion
 from ocdsextensionregistry.exceptions import DoesNotExist, NotAvailableInBulk
 
@@ -31,7 +32,7 @@ def test_init():
     assert obj.download_url == args['Download URL']
 
 
-@pytest.mark.parametrize('args,expected', [
+@pytest.mark.parametrize(('args', 'expected'), [
     (arguments(),
      'location==v1.1.3'),
     (arguments(**{
@@ -76,10 +77,10 @@ def test_update():
 def test_update_ignore_private_properties():
     obj = ExtensionVersion(arguments())
     other = ExtensionVersion(arguments())
-    other._files = {'key': 'value'}
+    other._files = {'key': 'value'}  # noqa: SLF001
     obj.update(other)
 
-    assert obj._files is None
+    assert obj._files is None  # noqa: SLF001
 
 
 def test_as_dict():
@@ -95,7 +96,7 @@ def test_as_dict():
     }
 
 
-@pytest.mark.parametrize('args,expected', [
+@pytest.mark.parametrize(('args', 'expected'), [
     (arguments(),
      'https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/extension.json'),
     (arguments(**{

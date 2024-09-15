@@ -1,4 +1,5 @@
 import pytest
+
 from ocdsextensionregistry import CodelistCode
 
 
@@ -57,7 +58,7 @@ def test_setitem():
 
 def test_iter():
     obj = CodelistCode(*arguments())
-    for i, item in enumerate(obj):
+    for i, _item in enumerate(obj):  # noqa: B007 # used after
         pass
 
     assert i == 2

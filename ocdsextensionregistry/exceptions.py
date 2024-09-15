@@ -22,6 +22,10 @@ class CommandError(OCDSExtensionRegistryError):
     """Errors from within this package's CLI"""
 
 
+class SphinxError(OCDSExtensionRegistryError):
+    """Raised if Sphinx produces a warning"""
+
+
 class OCDSExtensionRegistryWarning(UserWarning):
     """Base class for warnings from within this package"""
 

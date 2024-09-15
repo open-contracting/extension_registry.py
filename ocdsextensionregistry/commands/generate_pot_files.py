@@ -15,6 +15,7 @@ from sphinx.util.docutils import docutils_namespace, patch_docutils
 
 from ocdsextensionregistry import EXTENSION_VERSIONS_DATA, EXTENSIONS_DATA
 from ocdsextensionregistry.commands.base import BaseCommand
+from ocdsextensionregistry.exceptions import SphinxError
 
 try:
     from contextlib import chdir
@@ -189,7 +190,7 @@ class Command(BaseCommand):
                                 # sphinx-build -a …
                                 app.build(force_all=True)
                             except sphinx.errors.SphinxWarning as e:
-                                raise Exception(str(outdir)) from e
+                                raise SphinxError(str(outdir)) from e
 
                         # https://stackoverflow.com/questions/15408348
                         content = subprocess.run(['msgcat', *glob(str(outdir / '*.pot'))],

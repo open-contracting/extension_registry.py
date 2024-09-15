@@ -4,6 +4,11 @@ Changelog
 0.4.0 (Unreleased)
 ------------------
 
+-  Some arguments must be keyword arguments:
+
+   :meth:`ocdsextensionregistry.profile_builder.ProfileBuilder.release_package_schema`
+   :meth:`ocdsextensionregistry.profile_builder.ProfileBuilder.record_package_schema`
+
 -  Add support for Sphinx 7.
 -  Drop support for Sphinx 4.
 

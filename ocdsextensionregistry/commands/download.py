@@ -57,4 +57,4 @@ class Command(BaseCommand):
                             info.filename = filename
                             zipfile.extract(info, version_directory)
             except FileExistsError as e:
-                raise CommandError(f'File {e.filename} already exists! Set the --overwrite option.')
+                raise CommandError(f'File {e.filename} already exists! Set the --overwrite option.') from None

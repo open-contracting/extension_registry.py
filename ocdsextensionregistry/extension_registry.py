@@ -86,8 +86,8 @@ class ExtensionRegistry:
         """
         try:
             return next(ver for ver in self.versions if all(getattr(ver, k) == v for k, v in kwargs.items()))
-        except StopIteration:
-            raise DoesNotExist(f'Extension version matching {kwargs!r} does not exist.')
+        except StopIteration as e:
+            raise DoesNotExist(f'Extension version matching {kwargs!r} does not exist.') from e
         except AttributeError as e:
             self._handle_attribute_error(e)
 

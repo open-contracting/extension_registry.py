@@ -128,7 +128,7 @@ def build_profile(basedir, standard_tag, extension_versions, registry_base_url=N
     if update_codelist_urls:
         codelists = [codelist.basename for codelist in extension_codelists]
         for directory, schemas in directories_and_schemas.items():
-            for filename, schema in schemas.items():
+            for filename in schemas:
                 path = os.path.join(basedir, directory, filename)
                 with open(path) as f:
                     content = f.read()
