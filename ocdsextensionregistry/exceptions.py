@@ -1,33 +1,33 @@
 class OCDSExtensionRegistryError(Exception):
-    """Base class for exceptions from within this package"""
+    """Base class for exceptions from within this package."""
 
 
 class DoesNotExist(OCDSExtensionRegistryError):  # noqa: N818
-    """Raised if an object wasn't found for the given parameters"""
+    """Raised if an object wasn't found for the given parameters."""
 
 
 class MissingExtensionMetadata(OCDSExtensionRegistryError):  # noqa: N818
-    """Raised if a method call requires extensions metadata, with which the extension registry was not initialized"""
+    """Raised if a method call requires extensions metadata, with which the extension registry was not initialized."""
 
 
 class NotAvailableInBulk(OCDSExtensionRegistryError):  # noqa: N818
-    """Raised if files are required to be available in bulk, but are not"""
+    """Raised if files are required to be available in bulk, but are not."""
 
 
 class UnknownLatestVersion(OCDSExtensionRegistryError):  # noqa: N818
-    """Raised if the latest version of an extension can't be determined"""
+    """Raised if the latest version of an extension can't be determined."""
 
 
 class CommandError(OCDSExtensionRegistryError):
-    """Errors from within this package's CLI"""
+    """Errors from within this package's CLI."""
 
 
 class SphinxError(OCDSExtensionRegistryError):
-    """Raised if Sphinx produces a warning"""
+    """Raised if Sphinx produces a warning."""
 
 
 class OCDSExtensionRegistryWarning(UserWarning):
-    """Base class for warnings from within this package"""
+    """Base class for warnings from within this package."""
 
 
 # The attributes are used by lib-cove-ocds.

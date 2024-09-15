@@ -193,8 +193,11 @@ class Command(BaseCommand):
                                 raise SphinxError(str(outdir)) from e
 
                         # https://stackoverflow.com/questions/15408348
-                        content = subprocess.run(['msgcat', *glob(str(outdir / '*.pot'))],
-                                                 check=True, stdout=subprocess.PIPE).stdout
+                        content = subprocess.run(  # noqa: S603 # trusted input
+                            ['msgcat', *glob(str(outdir / '*.pot'))],  # noqa: S607
+                            check=True,
+                            stdout=subprocess.PIPE,
+                        ).stdout
 
                 with open(outdir / 'docs.pot', 'wb') as f:
                     f.write(content)

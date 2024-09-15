@@ -21,9 +21,7 @@ FIELD = f'{{{FIELD_NAME}}}'
 
 class ExtensionVersion:
     def __init__(self, data, input_url=None, url_pattern=None, file_urls=None):
-        """
-        Accepts a row from extension_versions.csv and assigns values to properties.
-        """
+        """Accept a row from ``extension_versions.csv`` and assign values to properties."""
         #: The Id cell.
         self.id = data['Id']
         #: The Date cell.
@@ -63,21 +61,17 @@ class ExtensionVersion:
         return self._file_urls['release-schema.json']
 
     def update(self, other):
-        """
-        Merges in the properties of another Extension or ExtensionVersion object.
-        """
+        """Merge in the properties of another Extension or ExtensionVersion object."""
         for k, v in other.as_dict().items():
             setattr(self, k, v)
 
     def as_dict(self):
-        """
-        Returns the object's public properties as a dictionary.
-        """
+        """Return the object's public properties as a dictionary."""
         return {key: value for key, value in self.__dict__.items() if not key.startswith(('_', 'input_url'))}
 
     def get_url(self, basename):
         """
-        Returns the URL of the file within the extension.
+        Return the URL of the file within the extension.
 
         :raises NotImplementedError: if the basename is not in the file URLs and the base URL is not set
         """
@@ -91,11 +85,12 @@ class ExtensionVersion:
 
     def remote(self, basename, default=None):
         """
-        Returns the contents of the file within the extension. If the ``default`` is set and the file does not exist,
-        returns the provided ``default`` value.
+        Return the contents of the file within the extension.
 
-        If the extension has a download URL, caches all the files' contents. Otherwise, downloads and caches the
-        requested file's contents. Raises an HTTPError if a download fails.
+        If the ``default`` is set and the file does not exist, return the provided ``default`` value.
+
+        If the extension has a download URL, cache all the files' contents. Otherwise, download and cache the
+        requested file's contents. Raise an HTTPError if a download fails.
 
         :raises DoesNotExist: if the file isn't in the extension
         :raises zipfile.BadZipFile: if the download URL is not a ZIP file
@@ -115,10 +110,10 @@ class ExtensionVersion:
     @property
     def files(self):
         """
-        Returns the unparsed contents of all files. Decodes the contents of CSV, JSON and Markdown files.
+        Return the unparsed contents of all files. Decode the contents of CSV, JSON and Markdown files.
 
-        If the extension has a download URL, caches all the files' contents. Otherwise, returns an empty dict. Raises
-        an HTTPError if the download fails.
+        If the extension has a download URL, cache all the files' contents. Otherwise, return an empty dict.
+        Raise an HTTPError if the download fails.
 
         :raises zipfile.BadZipFile: if the download URL is not a ZIP file
         """
@@ -144,7 +139,7 @@ class ExtensionVersion:
 
     def zipfile(self):
         """
-        If the extension has a download URL, downloads and returns the ZIP archive.
+        If the extension has a download URL, download and return the ZIP archive.
 
         :raises NotAvailableInBulk: if the extension has no download URL
         :raises zipfile.BadZipFile: if the download URL is not a ZIP file
@@ -157,9 +152,9 @@ class ExtensionVersion:
     @property
     def metadata(self):
         """
-        Retrieves and returns the parsed contents of the extension's extension.json file.
+        Retrieve and return the parsed contents of the extension's extension.json file.
 
-        Adds language maps if not present.
+        Add language maps if not present.
         """
         if self._metadata is None:
             self._metadata = json.loads(self.remote('extension.json'))
@@ -179,9 +174,7 @@ class ExtensionVersion:
 
     @property
     def schemas(self):
-        """
-        Retrieves and returns the parsed contents of the extension's schemas files.
-        """
+        """Retrieve and return the parsed contents of the extension's schemas files."""
         if self._schemas is None:
             schemas = {}
 
@@ -206,9 +199,9 @@ class ExtensionVersion:
     @property
     def codelists(self):
         """
-        Retrieves and returns the parsed contents of the extension's codelists files.
+        Retrieve and return the parsed contents of the extension's codelists files.
 
-        If the extension has no download URL, and if no codelists are listed in extension.json, returns an empty dict.
+        If the extension has no download URL, and if no codelists are listed in extension.json, return an empty dict.
         """
         if self._codelists is None:
             codelists = {}
@@ -231,7 +224,7 @@ class ExtensionVersion:
                     requests.RequestException,
                     zipfile.BadZipFile,
                 ) as e:
-                    warnings.warn(ExtensionCodelistWarning(self, name, e))
+                    warnings.warn(ExtensionCodelistWarning(self, name, e), stacklevel=2)
                     continue
 
             self._codelists = codelists
@@ -241,62 +234,91 @@ class ExtensionVersion:
     @property
     def repository_full_name(self):
         """
-        Returns the full name of the extension's repository, which should be a unique identifier on the hosting
-        service, e.g. open-contracting-extensions/ocds_bid_extension
+        Return the full name of the extension's repository, which should be a unique identifier on the hosting
+        service.
+
+        Example::
+
+            open-contracting-extensions/ocds_bid_extension
         """
         return self._repository_property('full_name')
 
     @property
     def repository_name(self):
         """
-        Returns the short name of the extension's repository, i.e. omitting any organizational prefix, which can be
-        used to create directories, e.g. ocds_bid_extension
+        Return the short name of the extension's repository, i.e. omitting any organizational prefix, which can be
+        used to create directories.
+
+        Example::
+
+            ocds_bid_extension
         """
         return self._repository_property('name')
 
     @property
     def repository_user(self):
         """
-        Returns the user or organization to which the extension's repository belongs, e.g. open-contracting-extensions
+        Return the user or organization to which the extension's repository belongs.
+
+        Example::
+
+            open-contracting-extensions
         """
         return self._repository_property('user')
 
     @property
     def repository_ref(self):
         """
-        Returns the ref in the extension's URL if the extension's files are in the repository's root, like v1.1.5
+        Return the ref in the extension's URL if the extension's files are in the repository's root.
+
+        Example::
+
+            v1.1.5
         """
         return self._repository_property('ref')
 
     @property
     def repository_user_page(self):
         """
-        Returns the URL to the landing page of the user or organization to which the extension's repository belongs,
-        e.g. https://github.com/open-contracting-extensions
+        Return the URL to the landing page of the user or organization to which the extension's repository belongs.
+
+        Example::
+
+            https://github.com/open-contracting-extensions
         """
         return self._repository_property('user_page')
 
     @property
     def repository_html_page(self):
         """
-        Returns the URL to the landing page of the extension's repository, e.g.
-        https://github.com/open-contracting-extensions/ocds_bid_extension
+        Return the URL to the landing page of the extension's repository.
+
+        Example::
+
+            https://github.com/open-contracting-extensions/ocds_bid_extension
         """
         return self._repository_property('html_page')
 
     @property
     def repository_url(self):
         """
-        Returns the URL of the extension's repository, in a format that can be input to a VCS program without
-        modification, e.g. https://github.com/open-contracting-extensions/ocds_bid_extension.git
+        Return the URL of the extension's repository, in a format that can be input to a VCS program without
+        modification.
+
+        Example::
+
+            https://github.com/open-contracting-extensions/ocds_bid_extension.git
         """
         return self._repository_property('url')
 
     @property
     def repository_ref_download_url(self):
         """
-        Returns the download URL for the ref in the extensions's URL, e.g.
-        https://github.com/open-contracting-extensions/ocds_bid_extension/archive/v1.1.5.zip
+        Return the download URL for the ref in the extensions's URL.
+
+        Example::
+
+            https://github.com/open-contracting-extensions/ocds_bid_extension/archive/v1.1.5.zip
         """
         return self._repository_property('ref_download_url')
 

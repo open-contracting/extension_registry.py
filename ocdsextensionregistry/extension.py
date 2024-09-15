@@ -1,8 +1,6 @@
 class Extension:
     def __init__(self, data):
-        """
-        Accepts a row from extensions.csv and assigns values to properties.
-        """
+        """Accept a row from ``extensions.csv`` and assign values to properties."""
         #: The Id cell.
         self.id = data['Id']
         #: The Category cell.
@@ -15,7 +13,7 @@ class Extension:
 
     def as_dict(self):
         """
-        Returns the object's properties as a dictionary.
+        Return the object's properties as a dictionary.
 
         This method is defined to match the method in `ExtensionVersion`.
         """

@@ -1,5 +1,5 @@
-"""
-Filter the versions of extensions in the registry, and access information about matching versions:
+r"""
+Filter the versions of extensions in the registry, and access information about matching versions.
 
 .. code:: python
 
@@ -12,7 +12,7 @@ Filter the versions of extensions in the registry, and access information about 
     for version in registry.filter(core=True, version='v1.1.4', category='tender'):
         print(f'The {version.metadata[name][en]} extension ("{version.id}") is maintained at {version.repository_html_page}')
         print(f'Run `git clone {version.repository_url}` to make a local copy in a {version.repository_name} directory')
-        print(f'Get its patch at {version.base_url}release-schema.json\\n')
+        print(f'Get its patch at {version.base_url}release-schema.json\n')
 
 Output::
 
@@ -43,9 +43,11 @@ from .util import _resolve
 class ExtensionRegistry:
     def __init__(self, extension_versions_data, extensions_data=None):
         """
-        Accepts extension_versions.csv and, optionally, extensions.csv as either URLs or data (as string) and reads
-        them into ExtensionVersion objects. If extensions_data is not provided, the extension versions will not have
-        category or core properties. URLs starting with ``file://`` will be read from the filesystem.
+        Accept ``extension_versions.csv`` and, optionally, ``extensions.csv`` as either URLs or data (as string) and
+        read them into :class:`~ocdsextensionregistry.extension_version.ExtensionVersion` objects.
+
+        If extensions_data is not provided, the extension versions will not have category or core properties.
+        URLs starting with ``file://`` will be read from the filesystem.
         """
         self.versions = []
 
@@ -66,7 +68,7 @@ class ExtensionRegistry:
 
     def filter(self, **kwargs):
         """
-        Returns the extension versions in the registry that match the keyword arguments.
+        Return the extension versions in the registry that match the keyword arguments.
 
         :raises MissingExtensionMetadata: if the keyword arguments refer to extensions data, but the extension registry
                                           was not initialized with extensions data
@@ -78,7 +80,7 @@ class ExtensionRegistry:
 
     def get(self, **kwargs):
         """
-        Returns the first extension version in the registry that matches the keyword arguments.
+        Return the first extension version in the registry that matches the keyword arguments.
 
         :raises DoesNotExist: if no extension version matches
         :raises MissingExtensionMetadata: if the keyword arguments refer to extensions data, but the extension registry
@@ -93,7 +95,7 @@ class ExtensionRegistry:
 
     def get_from_url(self, url):
         """
-        Returns the first extension version in the registry whose base URL matches the given URL.
+        Return the first extension version in the registry whose base URL matches the given URL.
 
         :raises DoesNotExist: if no extension version matches
         """
@@ -102,9 +104,7 @@ class ExtensionRegistry:
         return self.get(base_url=parsed._replace(path=path).geturl())
 
     def __iter__(self):
-        """
-        Iterates over the extension versions in the registry.
-        """
+        """Iterate over the extension versions in the registry."""
         yield from self.versions
 
     def _handle_attribute_error(self, e):

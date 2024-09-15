@@ -32,15 +32,13 @@ session.mount('http://', adapter)
 
 
 def json_dump(data, io):
-    """
-    Dumps JSON to a file-like object.
-    """
+    """Dump JSON to a file-like object."""
     json.dump(data, io, ensure_ascii=False, indent=2)
 
 
 def get_latest_version(versions):
     """
-    Returns the identifier of the latest version from a list of versions of the same extension.
+    Return the identifier of the latest version from a list of versions of the same extension.
 
     :raises UnknownLatestVersion: if the latest version of the extension can't be determined
     """

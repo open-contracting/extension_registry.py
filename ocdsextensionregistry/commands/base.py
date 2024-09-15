@@ -6,9 +6,7 @@ from ocdsextensionregistry.exceptions import CommandError
 
 class BaseCommand:
     def __init__(self, subparsers):
-        """
-        Initializes the subparser and adds arguments.
-        """
+        """Initialize the subparser and add arguments."""
         self.subparser = subparsers.add_parser(self.name, description=self.help)
         self.add_argument('--no-frozen', action='store_true', help='exclude frozen versions')
         self.add_arguments()
@@ -17,9 +15,7 @@ class BaseCommand:
         pass
 
     def add_argument(self, *args, **kwargs):
-        """
-        Adds an argument to the subparser.
-        """
+        """Add an argument to the subparser."""
         self.subparser.add_argument(*args, **kwargs)
 
     def handle(self):

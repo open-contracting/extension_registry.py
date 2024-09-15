@@ -1,6 +1,4 @@
-"""
-Complex operations making use of this library's classes are organized into this API module.
-"""
+"""Complex operations making use of this library's classes are organized into this API module."""
 
 import csv
 import json
@@ -17,13 +15,13 @@ VALID_FIELDNAMES = ('Code', 'Title', 'Description', 'Extension')
 def build_profile(basedir, standard_tag, extension_versions, registry_base_url=None, standard_base_url=None,
                   schema_base_url=None, update_codelist_urls=None):
     """
-    Pulls extensions into a profile.
+    Pull extensions into a profile.
 
-    - Merges extensions' JSON Merge Patch files for OCDS' release-schema.json (schema/profile/release-schema.json)
-    - Writes extensions' codelist files (schema/profile/codelists)
-    - Patches OCDS' release-schema.json with extensions' JSON Merge Patch files (schema/patched/release-schema.json)
-    - Patches OCDS' codelist files with extensions' codelist files (schema/patched/codelists)
-    - Updates the "codelists" field in extension.json
+    - Merge extensions' JSON Merge Patch files for OCDS' release-schema.json (schema/profile/release-schema.json)
+    - Write extensions' codelist files (schema/profile/codelists)
+    - Patch OCDS' release-schema.json with extensions' JSON Merge Patch files (schema/patched/release-schema.json)
+    - Patch OCDS' codelist files with extensions' codelist files (schema/patched/codelists)
+    - Update the "codelists" field in extension.json
 
     The profile's codelists exclude deprecated codes and add an Extension column.
 
@@ -41,9 +39,7 @@ def build_profile(basedir, standard_tag, extension_versions, registry_base_url=N
     """
     @contextmanager
     def open_file(name, mode='r'):
-        """
-        Creates the directory if it doesn't exist.
-        """
+        """Create the directory if it doesn't exist."""
         os.makedirs(os.path.dirname(name), exist_ok=True)
 
         with open(name, mode) as f:

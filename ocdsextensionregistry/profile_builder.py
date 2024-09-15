@@ -1,4 +1,6 @@
 """
+Build an OCDS profile.
+
 .. code:: python
 
     from ocdsextensionregistry import ProfileBuilder
@@ -57,8 +59,8 @@ class ProfileBuilder:
     def __init__(self, standard_tag, extension_versions, registry_base_url=None, standard_base_url=None,
                  schema_base_url=None):
         """
-        Accepts an OCDS version and either a dictionary of extension identifiers and versions, or a list of extensions'
-        metadata URLs, base URLs and/or download URLs, and initializes a reader of the extension registry.
+        Accept an OCDS version and either a dictionary of extension identifiers and versions, or a list of extensions'
+        metadata URLs, base URLs and/or download URLs, and initialize a reader of the extension registry.
 
         :param str standard_tag: the OCDS version tag, e.g. ``'1__1__4'``
         :param extension_versions: the extension versions
@@ -113,9 +115,7 @@ class ProfileBuilder:
         return ExtensionVersion(data, **kwargs)
 
     def extensions(self):
-        """
-        Returns the matching extension versions from the registry.
-        """
+        """Return the matching extension versions from the registry."""
         if isinstance(self.extension_versions, dict):
             for identifier, version in self.extension_versions.items():
                 parsed = urlsplit(version)
@@ -131,7 +131,7 @@ class ProfileBuilder:
 
     def release_schema_patch(self, extension_field=None, language='en'):
         """
-        Returns the consolidated release schema patch.
+        Return the consolidated release schema patch.
 
         :param str extension_field: the property with which to annotate each definition and field with the name of the
                                     extension in which the definition or field is defined
@@ -150,7 +150,7 @@ class ProfileBuilder:
                 requests.RequestException,
                 zipfile.BadZipFile,
             ) as e:
-                warnings.warn(ExtensionWarning(extension, e))
+                warnings.warn(ExtensionWarning(extension, e), stacklevel=2)
                 continue
             if extension_field:
                 _add_extension_field(patch, extension.metadata['name'][language], extension_field)
@@ -160,7 +160,7 @@ class ProfileBuilder:
 
     def patched_release_schema(self, schema=None, extension_field=None, language='en'):
         """
-        Returns the patched release schema.
+        Return the patched release schema.
 
         :param dict schema: the release schema
         :param str extension_field: the property with which to annotate each definition and field with the name of the
@@ -182,8 +182,9 @@ class ProfileBuilder:
 
     def release_package_schema(self, schema=None, *, embed=False):
         """
-        Returns a release package schema. If the profile builder was initialized with ``schema_base_url``, updates
-        schema URLs.
+        Return a release package schema.
+
+        If the profile builder was initialized with ``schema_base_url``, update schema URLs.
 
         :param dict schema: the release schema
         :param bool embed: whether to embed or ``$ref``'erence the patched release schema
@@ -204,8 +205,9 @@ class ProfileBuilder:
 
     def record_package_schema(self, schema=None, *, embed=False):
         """
-        Returns a record package schema. If the profile builder was initialized with ``schema_base_url``, updates
-        schema URLs.
+        Return a record package schema.
+
+        If the profile builder was initialized with ``schema_base_url``, update schema URLs.
 
         :param dict schema: the record schema
         :param bool embed: whether to embed or ``$ref``'erence the patched release schema
@@ -227,9 +229,7 @@ class ProfileBuilder:
         return schema
 
     def standard_codelists(self):
-        """
-        Returns the standard's codelists as Codelist objects.
-        """
+        """Return the standard's codelists as :class:`~ocdsextensionregistry.codelist.Codelist` objects."""
         codelists = {}
 
         # Populate the file cache.
@@ -246,7 +246,7 @@ class ProfileBuilder:
 
     def extension_codelists(self):
         """
-        Returns the extensions' codelists as Codelist objects.
+        Return the extensions' codelists as :class:`~ocdsextensionregistry.codelist.Codelist` objects.
 
         The extensions' codelists may be new, or may add codes to (+name.csv), remove codes from (-name.csv) or replace
         (name.csv) the codelists of the standard or other extensions.
@@ -294,22 +294,20 @@ class ProfileBuilder:
                     for row in codelist:
                         code = row['Code']
                         if code not in codes:
-                            warnings.warn(f'{code} added by {name}, but not in {basename}')
+                            warnings.warn(f'{code} added by {name}, but not in {basename}', stacklevel=2)
                     logger.info('%s has the codes added by %s - ignoring %s', basename, name, name)
                 else:
                     for row in codelist:
                         code = row['Code']
                         if code in codes:
-                            warnings.warn(f'{code} removed by {name}, but in {basename}')
+                            warnings.warn(f'{code} removed by {name}, but in {basename}', stacklevel=2)
                     logger.info('%s has no codes removed by %s - ignoring %s', basename, name, name)
                 del codelists[name]
 
         return list(codelists.values())
 
     def patched_codelists(self):
-        """
-        Returns patched and new codelists as Codelist objects.
-        """
+        """Return patched and new codelists as :class:`~ocdsextensionregistry.codelist.Codelist` objects."""
         codelists = {}
 
         for codelist in self.standard_codelists():
@@ -334,9 +332,9 @@ class ProfileBuilder:
 
     def get_standard_file_contents(self, basename):
         """
-        Returns the contents of the file within the standard.
+        Return the contents of the file within the standard.
 
-        Downloads the given version of the standard, and caches the contents of files in the schema/ directory.
+        Download the given version of the standard, and cache the contents of files in the ``schema/`` directory.
         """
         if not self._file_cache:
             zipfile = _resolve_zip(self.standard_base_url, 'schema')
