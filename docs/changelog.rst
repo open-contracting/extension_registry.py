@@ -4,13 +4,14 @@ Changelog
 0.4.0 (Unreleased)
 ------------------
 
--  Some arguments must be keyword arguments:
+-  Some arguments must be keyword arguments in:
 
    :meth:`ocdsextensionregistry.profile_builder.ProfileBuilder.release_package_schema`
    :meth:`ocdsextensionregistry.profile_builder.ProfileBuilder.record_package_schema`
 
 -  Add support for Sphinx 7.
 -  Drop support for Sphinx 4.
+-  Drop support for Python 3.8.
 
 0.3.8 (2023-07-20)
 ------------------
