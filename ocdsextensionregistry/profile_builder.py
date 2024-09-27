@@ -365,7 +365,7 @@ def _add_extension_field(schema, extension_name, field_name, pointer=None):
         for item in schema:
             _add_extension_field(item, extension_name, field_name=field_name, pointer=pointer)
     elif isinstance(schema, dict):
-        if len(pointer) > 1 and pointer[-2] in ('definitions', 'properties') and 'title' in schema:
+        if len(pointer) > 1 and pointer[-2] in {'definitions', 'properties'} and 'title' in schema:
             schema[field_name] = extension_name
         for key, value in schema.items():
             _add_extension_field(value, extension_name, field_name=field_name, pointer=(*pointer, key))

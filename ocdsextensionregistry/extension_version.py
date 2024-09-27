@@ -129,7 +129,7 @@ class ExtensionVersion:
                         filename = name[start:]
                         if filename[-1] != '/' and not filename.startswith('.'):
                             content = zipfile.read(name)
-                            if os.path.splitext(name)[1] in ('.csv', '.json', '.md'):
+                            if os.path.splitext(name)[1] in {'.csv', '.json', '.md'}:
                                 content = content.decode('utf-8')
                             files[filename] = content
 
