@@ -190,7 +190,7 @@ def test_remote_file_urls():
 def test_remote_nonexistent():
     obj = ExtensionVersion(arguments())
     obj.download_url = None
-    with pytest.raises(requests.exceptions.HTTPError) as excinfo:
+    with pytest.raises(requests.HTTPError) as excinfo:
         obj.remote('nonexistent')
 
     assert str(excinfo.value) == "404 Client Error: Not Found for url: https://raw.githubusercontent.com/open-contracting-extensions/ocds_location_extension/v1.1.3/nonexistent"

@@ -188,7 +188,7 @@ class ExtensionVersion:
             for name in names:
                 try:
                     schemas[name] = json.loads(self.remote(name))
-                except requests.exceptions.HTTPError:
+                except requests.HTTPError:
                     if 'schemas' in self.metadata:  # avoid raising if using SCHEMAS
                         raise
 
