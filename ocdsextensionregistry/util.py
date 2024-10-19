@@ -8,7 +8,7 @@ from zipfile import ZipFile
 from requests.adapters import HTTPAdapter
 from requests_cache import NEVER_EXPIRE, CachedSession
 
-from .exceptions import UnknownLatestVersion
+from ocdsextensionregistry.exceptions import UnknownLatestVersion
 
 # For example: "file:///C|/tmp" or "file:///tmp"
 FILE_URI_OFFSET = 8 if os.name == 'nt' else 7

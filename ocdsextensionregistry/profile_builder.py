@@ -46,11 +46,11 @@ import json_merge_patch
 import jsonref
 import requests
 
-from .codelist import Codelist
-from .exceptions import ExtensionWarning
-from .extension_registry import ExtensionRegistry
-from .extension_version import FIELD, ExtensionVersion
-from .util import _resolve_zip
+from ocdsextensionregistry.codelist import Codelist
+from ocdsextensionregistry.exceptions import ExtensionWarning
+from ocdsextensionregistry.extension_registry import ExtensionRegistry
+from ocdsextensionregistry.extension_version import FIELD, ExtensionVersion
+from ocdsextensionregistry.util import _resolve_zip
 
 logger = logging.getLogger('ocdsextensionregistry')
 

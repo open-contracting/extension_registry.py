@@ -34,10 +34,10 @@ import csv
 from io import StringIO
 from urllib.parse import urlsplit
 
-from .exceptions import DoesNotExist, MissingExtensionMetadata
-from .extension import Extension
-from .extension_version import ExtensionVersion
-from .util import _resolve
+from ocdsextensionregistry.exceptions import DoesNotExist, MissingExtensionMetadata
+from ocdsextensionregistry.extension import Extension
+from ocdsextensionregistry.extension_version import ExtensionVersion
+from ocdsextensionregistry.util import _resolve
 
 
 class ExtensionRegistry:

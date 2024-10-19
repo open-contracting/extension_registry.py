@@ -5,9 +5,9 @@ import json
 import os
 from contextlib import contextmanager
 
-from .exceptions import DoesNotExist
-from .profile_builder import ProfileBuilder
-from .util import json_dump
+from ocdsextensionregistry.exceptions import DoesNotExist
+from ocdsextensionregistry.profile_builder import ProfileBuilder
+from ocdsextensionregistry.util import json_dump
 
 VALID_FIELDNAMES = ('Code', 'Title', 'Description', 'Extension')
 

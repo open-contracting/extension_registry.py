@@ -50,7 +50,7 @@ Get the name of the codelist it modifies:
 import csv
 from io import StringIO
 
-from .codelist_code import CodelistCode
+from ocdsextensionregistry.codelist_code import CodelistCode
 
 
 class Codelist:

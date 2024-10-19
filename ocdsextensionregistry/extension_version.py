@@ -10,9 +10,9 @@ from urllib.parse import urlsplit
 
 import requests
 
-from .codelist import Codelist
-from .exceptions import DoesNotExist, ExtensionCodelistWarning, NotAvailableInBulk
-from .util import _resolve_zip, session
+from ocdsextensionregistry.codelist import Codelist
+from ocdsextensionregistry.exceptions import DoesNotExist, ExtensionCodelistWarning, NotAvailableInBulk
+from ocdsextensionregistry.util import _resolve_zip, session
 
 SCHEMAS = ('record-package-schema.json', 'release-package-schema.json', 'release-schema.json')
 FIELD_NAME = '4F434453'  # OCDS in hexidecimal
