@@ -5,6 +5,7 @@ Unreleased
 ----------
 
 -  Fix variable shadowing which prevented codelist translations.
+-  Revert ":class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`: :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.__init__`: The ``extension_versions`` argument can be a list of extensions' local directories." to eliminate possibility of malicious input reading local files.
 
 0.4.0 (2024-09-15)
 ------------------
@@ -308,7 +309,7 @@ Unreleased
 
 The ``generate-pot-files`` and ``generate-data-file`` commands can now be run offline (see `documentation <https://ocdsextensionregistry.readthedocs.io/en/latest/cli.html>`__ for details).
 
--  :class:`~ocdsextensionregistry.extension_registry.ExtensionRegistry`: Support the ``file://`` scheme for the ``extension_versions_data`` and ``extensions_data`` arguments to :meth:`~ocdsextensionregistry.extension_registry.ExtensionRegistry.__init__`. This means the ``--extension-versions-url`` and ``--extensions-url`` CLI options can now refer to local files.
+-  :class:`~ocdsextensionregistry.extension_registry.ExtensionRegistry`: Add ``file://`` scheme support for the ``extension_versions_data`` and ``extensions_data`` arguments to :meth:`~ocdsextensionregistry.extension_registry.ExtensionRegistry.__init__`. This means the ``--extension-versions-url`` and ``--extensions-url`` CLI options can now refer to local files.
 -  Add a ``--versions-dir`` option to the ``generate-pot-files`` and ``generate-data-file`` commands to specify a local directory of extension versions.
 -  :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`: Add :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.available_in_bulk`, to return whether the extension’s files are available in bulk.
 -  :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`: Add :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.zipfile`, to return a ZIP archive of the extension’s files.

@@ -19,7 +19,6 @@ URLs, base URLs, download URLs, and/or absolute paths to local directories, for 
       'https://raw.githubusercontent.com/open-contracting-extensions/ocds_coveredBy_extension/master/extension.json',
       'https://raw.githubusercontent.com/open-contracting-extensions/ocds_options_extension/master/',
       'https://github.com/open-contracting-extensions/ocds_techniques_extension/archive/master.zip',
-      'file:///absolute/path/to/ocds_lots_extension',
     ])
 
 After initializing the profile, you can then:
@@ -97,9 +96,7 @@ class ProfileBuilder:
     def _extension_from_url(url, parsed):
         data = dict.fromkeys(['Id', 'Date', 'Version', 'Base URL', 'Download URL'])
         kwargs = {'input_url': url}
-        if parsed.scheme == 'file':
-            data['Download URL'] = url
-        elif url.endswith('/extension.json'):
+        if url.endswith('/extension.json'):
             data['Base URL'] = url[:-14]
         elif url.endswith('/'):
             data['Base URL'] = url
