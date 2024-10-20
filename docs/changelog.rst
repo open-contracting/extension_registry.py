@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Unreleased
+----------
+
+-  Fix variable shadowing which prevented codelist translations.
+
 0.4.0 (2024-09-15)
 ------------------
 

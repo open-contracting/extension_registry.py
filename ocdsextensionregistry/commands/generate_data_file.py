@@ -106,9 +106,10 @@ class Command(BaseCommand):
 
             parsed = urlsplit(version_data['publisher']['url'])
             if parsed.netloc == 'github.com' and 'OCDS_GITHUB_ACCESS_TOKEN' in os.environ:
-                api_url = f"https://api.github.com/users/{version_data['publisher']['name']}"
-                headers = {'Authorization': f"token {os.getenv('OCDS_GITHUB_ACCESS_TOKEN')}"}
-                version_data['publisher']['name'] = session.get(api_url, headers=headers).json()['name']
+                version_data['publisher']['name'] = session.get(
+                    f"https://api.github.com/users/{version_data['publisher']['name']}",
+                    headers={'Authorization': f"token {os.getenv('OCDS_GITHUB_ACCESS_TOKEN')}"},
+                ).json()['name']
 
             for language in sorted(languages):
                 # Update the version's metadata and add the version's schema.
