@@ -100,7 +100,7 @@ class ExtensionRegistry:
         :raises DoesNotExist: if no extension version matches
         """
         parsed = urlsplit(url)
-        path = parsed.path.rsplit('/', 1)[0] + '/'
+        path = f"{parsed.path.rsplit('/', 1)[0]}/"
         return self.get(base_url=parsed._replace(path=path).geturl())
 
     def __iter__(self):

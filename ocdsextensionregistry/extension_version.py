@@ -78,7 +78,7 @@ class ExtensionVersion:
         if basename in self._file_urls:
             return self._file_urls[basename]
         if self.base_url:
-            return self.base_url + basename
+            return f'{self.base_url}{basename}'
         if self._url_pattern:
             return self._url_pattern.format(**{FIELD_NAME: basename})
         raise NotImplementedError("get_url() with no base URL or matching file URL is not implemented")
@@ -217,7 +217,7 @@ class ExtensionVersion:
                 try:
                     codelists[name] = Codelist(name)
                     # Use universal newlines mode, to avoid parsing errors.
-                    io = StringIO(self.remote('codelists/' + name), newline='')
+                    io = StringIO(self.remote(f'codelists/{name}'), newline='')
                     codelists[name].extend(csv.DictReader(io))
                 except (
                     UnicodeDecodeError,
@@ -347,13 +347,13 @@ class ExtensionVersion:
         raise AttributeError(f"{parsed.path} !~ {config['ref:pattern']}")
 
     def _repository_user_page(self, parsed, config):
-        return config['html_page:prefix'] + self._repository_user(parsed, config)
+        return f"{config['html_page:prefix']}{self._repository_user(parsed, config)}"
 
     def _repository_html_page(self, parsed, config):
-        return config['html_page:prefix'] + self._repository_full_name(parsed, config)
+        return f"{config['html_page:prefix']}{self._repository_full_name(parsed, config)}"
 
     def _repository_url(self, parsed, config):
-        return config['url:prefix'] + self._repository_full_name(parsed, config) + config['url:suffix']
+        return f"{config['url:prefix']}{self._repository_full_name(parsed, config)}{config['url:suffix']}"
 
     def _repository_ref_download_url(self, parsed, config):
         return config['download:format'].format(
@@ -365,7 +365,7 @@ class ExtensionVersion:
         parsed = urlsplit(self.base_url)
         config = self._configuration(parsed)
         if config:
-            return getattr(self, '_repository_' + prop)(parsed, config)
+            return getattr(self, f'_repository_{prop}')(parsed, config)
         raise NotImplementedError(f"can't determine {prop} from {self.base_url}")
 
     def _configuration(self, parsed):

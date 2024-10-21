@@ -75,7 +75,7 @@ class ProfileBuilder:
         if not registry_base_url:
             registry_base_url = 'https://raw.githubusercontent.com/open-contracting/extension_registry/main/'
         if not standard_base_url and standard_tag:
-            standard_base_url = 'https://codeload.github.com/open-contracting/standard/zip/' + standard_tag
+            standard_base_url = f'https://codeload.github.com/open-contracting/standard/zip/{standard_tag}'
 
         self.standard_tag = standard_tag
         self.extension_versions = extension_versions
@@ -88,7 +88,7 @@ class ProfileBuilder:
     @property
     def registry(self):
         if self._registry is None:
-            self._registry = ExtensionRegistry(self.registry_base_url + 'extension_versions.csv')
+            self._registry = ExtensionRegistry(f'{self.registry_base_url}extension_versions.csv')
 
         return self._registry
 
@@ -260,7 +260,7 @@ class ProfileBuilder:
             # We use the "codelists" field in extension.json (which standard-maintenance-scripts validates). An
             # extension is not guaranteed to offer a download URL, which is the only other way to get codelists.
             for name in extension.metadata.get('codelists', []):
-                content = extension.remote('codelists/' + name)
+                content = extension.remote(f'codelists/{name}')
 
                 if name not in codelists:
                     codelists[name] = Codelist(name)
