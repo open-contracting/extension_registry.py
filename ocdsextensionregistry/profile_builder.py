@@ -99,6 +99,10 @@ class ProfileBuilder:
 
     @staticmethod
     def _extension_from_url(url, parsed):
+        # _resolve_zip() supports the file:// scheme, for get_standard_file_contents() only.
+        if parsed.scheme not in {'http', 'https'}:
+            raise NotImplementedError(f'URL format not supported: {url}')
+
         data = dict.fromkeys(['Id', 'Date', 'Version', 'Base URL', 'Download URL'])
         kwargs = {'input_url': url}
         if url.endswith('/extension.json'):
@@ -112,11 +116,8 @@ class ProfileBuilder:
             kwargs['url_pattern'] = url.replace('release-schema.json', FIELD)
         elif parsed.path.endswith('.json'):
             kwargs['file_urls'] = {'release-schema.json': url}
-        # _resolve_zip() supports the file:// scheme, for get_standard_file_contents() only.
-        elif parsed.scheme in {'http', 'https'}:
-            data['Download URL'] = url
         else:
-            raise NotImplementedError(f'URL format not supported: {url}')
+            data['Download URL'] = url
         return ExtensionVersion(data, **kwargs)
 
     def extensions(self):
