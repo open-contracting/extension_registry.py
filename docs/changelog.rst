@@ -1,8 +1,8 @@
 Changelog
 =========
 
-Unreleased
-----------
+0.5.0 (2024-10-20)
+------------------
 
 -  Fix variable shadowing which prevented codelist translations.
 -  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`: :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.__init__`:
