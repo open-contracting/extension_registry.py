@@ -18,11 +18,6 @@ jobs:
         run: |
           sudo apt update
           sudo apt install gettext
-      - name: Install gettext (macOS)
-        if: matrix.os == 'macos-latest'
-        run: |
-          brew install gettext
-          brew link gettext --force
       - name: Install gettext (Windows)
         if: matrix.os == 'windows-latest'
         run: |
