@@ -18,6 +18,10 @@ class UnknownLatestVersion(OCDSExtensionRegistryError):  # noqa: N818
     """Raised if the latest version of an extension can't be determined."""
 
 
+class UnsupportedSchemeError(OCDSExtensionRegistryError):
+    """Raised if a URI scheme is unsupported."""
+
+
 class CommandError(OCDSExtensionRegistryError):
     """Errors from within this package's CLI."""
 

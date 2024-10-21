@@ -4,6 +4,7 @@ import logging
 import pytest
 
 from ocdsextensionregistry import ProfileBuilder
+from ocdsextensionregistry.exceptions import UnsupportedSchemeError
 
 standard_codelists = [
     'awardCriteria.csv',
@@ -112,7 +113,7 @@ def test_patched_release_schema_with_extension_field_and_language():
 def test_patched_release_schema_with_absolute_path():
     builder = ProfileBuilder('1__1__4', ['file:///tmp'])
 
-    with pytest.raises(NotImplementedError) as excinfo:
+    with pytest.raises(UnsupportedSchemeError) as excinfo:
         builder.patched_release_schema()
 
     assert str(excinfo.value) == 'URL format not supported: file:///tmp'

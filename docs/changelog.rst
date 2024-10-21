@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.5.1 (2024-10-21)
+------------------
+
+-  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`: :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.extensions` raises :exc:`~ocdsextensionregistry.exceptions.UnsupportedSchemeError` instead of :exc:`NotImplementedError` if a URI scheme is not supported.
+
 0.5.0 (2024-10-20)
 ------------------
 

@@ -46,7 +46,7 @@ import jsonref
 import requests
 
 from ocdsextensionregistry.codelist import Codelist
-from ocdsextensionregistry.exceptions import ExtensionWarning
+from ocdsextensionregistry.exceptions import ExtensionWarning, UnsupportedSchemeError
 from ocdsextensionregistry.extension_registry import ExtensionRegistry
 from ocdsextensionregistry.extension_version import FIELD, ExtensionVersion
 from ocdsextensionregistry.util import _resolve_zip
@@ -101,7 +101,7 @@ class ProfileBuilder:
     def _extension_from_url(url, parsed):
         # _resolve_zip() supports the file:// scheme, for get_standard_file_contents() only.
         if parsed.scheme not in {'http', 'https'}:
-            raise NotImplementedError(f'URL format not supported: {url}')
+            raise UnsupportedSchemeError(f'URL format not supported: {url}')
 
         data = dict.fromkeys(['Id', 'Date', 'Version', 'Base URL', 'Download URL'])
         kwargs = {'input_url': url}
