@@ -166,6 +166,7 @@ def test_remote_directory(tmpdir):
 
     obj = ExtensionVersion(arguments(**{'Download URL': None}))
     obj.download_url = Path(tmpdir).as_uri()
+    obj.allow_schemes.add('file')
 
     data = obj.remote('extension.json')
     # Repeat requests should return the same result.

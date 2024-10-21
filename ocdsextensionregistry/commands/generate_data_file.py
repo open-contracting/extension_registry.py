@@ -75,6 +75,7 @@ class Command(BaseCommand):
             public_download_url = version.download_url
             if self.args.versions_dir:
                 version.download_url = (versions_directory / version.id / version.version).as_uri()
+                version.allow_schemes.add('file')
 
             # Add the extension's data.
             data.setdefault(version.id, {

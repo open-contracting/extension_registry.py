@@ -23,7 +23,7 @@ copyright = "2018, Open Contracting Partnership"
 author = "Open Contracting Partnership"
 
 # The short X.Y version
-version = "0.5.1"
+version = "0.5.2"
 # The full version, including alpha/beta/rc tags
 release = version
 
@@ -35,6 +35,7 @@ release = version
 # ones.
 extensions = [
     "sphinx.ext.autodoc",
+    "sphinx.ext.extlinks",
     "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
 ]
@@ -72,4 +73,8 @@ autodoc_type_aliases = {}
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
+}
+
+extlinks = {
+    "commit": ("https://github.com/open-contracting/extension_registry.py/commit/%s", "%s"),
 }

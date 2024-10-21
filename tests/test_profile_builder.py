@@ -1,10 +1,12 @@
 import json
 import logging
+from pathlib import Path
 
 import pytest
 
 from ocdsextensionregistry import ProfileBuilder
-from ocdsextensionregistry.exceptions import UnsupportedSchemeError
+from ocdsextensionregistry.exceptions import ExtensionWarning
+from tests import path
 
 standard_codelists = [
     'awardCriteria.csv',
@@ -111,12 +113,14 @@ def test_patched_release_schema_with_extension_field_and_language():
 
 
 def test_patched_release_schema_with_absolute_path():
-    builder = ProfileBuilder('1__1__4', ['file:///tmp'])
+    url = Path(path('ocds_coveredBy_extension')).resolve().as_uri()
+    builder = ProfileBuilder('1__1__4', [url])
 
-    with pytest.raises(UnsupportedSchemeError) as excinfo:
-        builder.patched_release_schema()
+    with pytest.warns(ExtensionWarning):
+        result = builder.patched_release_schema()
 
-    assert str(excinfo.value) == 'URL format not supported: file:///tmp'
+    assert '$schema' in result
+    assert 'coveredBy' not in result['definitions']['Tender']['properties']  # NOT!
 
 
 def test_patched_release_schema_with_metadata_url():

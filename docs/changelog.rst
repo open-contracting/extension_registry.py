@@ -1,6 +1,18 @@
 Changelog
 =========
 
+0.5.2 (2024-10-21)
+------------------
+
+-  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`:
+
+   -  Revert "Disallow the ``file:`` scheme for the ``extension_versions`` argument." :commit:`097825c` :commit:`1012d2a`
+
+-  :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`:
+
+   -  Allow URI schemes other than ``http`` and ``https`` by adding or replacing the :attr:`~ocdsextensionregistry.extension_version.ExtensionVersion.allow_schemes` set.
+   -  Check URI schemes in :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.remote` and :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.zipfile`, to raise errors before sending requests, not when initializing :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`.
+
 0.5.1 (2024-10-21)
 ------------------
 
@@ -9,10 +21,10 @@ Changelog
 0.5.0 (2024-10-20)
 ------------------
 
--  Fix variable shadowing which prevented codelist translations.
+-  Fix variable shadowing that prevented codelist translations.
 -  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`:
 
-   -  Revert "The ``extension_versions`` argument can be a list of extensions' local directories" to eliminate possibility of malicious input reading local files.
+   -  Revert "The ``extension_versions`` argument can be a list of extensions' local directories" to eliminate possibility of malicious input reading local files. :commit:`7aba524`
    -  :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.extensions`: Disallow the ``file:`` scheme for the ``extension_versions`` argument.
 
 0.4.0 (2024-09-15)
@@ -36,7 +48,7 @@ Changelog
 0.3.6 (2023-07-12)
 ------------------
 
--  fix: :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`: Make :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.files`, :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.schemas`, :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.codelists` thread-safe.
+-  fix: :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`: Make :attr:`~ocdsextensionregistry.extension_version.ExtensionVersion.files`, :attr:`~ocdsextensionregistry.extension_version.ExtensionVersion.schemas`, :attr:`~ocdsextensionregistry.extension_version.ExtensionVersion.codelists` thread-safe.
 
 0.3.5 (2023-07-12)
 ------------------
@@ -267,7 +279,7 @@ Changelog
 
    -  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`: :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.get_standard_file_contents`
    -  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`: :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.standard_codelists`
-   -  :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`: :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.files`
+   -  :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`: :attr:`~ocdsextensionregistry.extension_version.ExtensionVersion.files`
 
 0.0.19 (2020-04-07)
 -------------------

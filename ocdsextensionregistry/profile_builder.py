@@ -99,10 +99,6 @@ class ProfileBuilder:
 
     @staticmethod
     def _extension_from_url(url, parsed):
-        # _resolve_zip() supports the file:// scheme, for get_standard_file_contents() only.
-        if parsed.scheme not in {'http', 'https'}:
-            raise UnsupportedSchemeError(f'URL format not supported: {url}')
-
         data = dict.fromkeys(['Id', 'Date', 'Version', 'Base URL', 'Download URL'])
         kwargs = {'input_url': url}
         if url.endswith('/extension.json'):
@@ -152,6 +148,7 @@ class ProfileBuilder:
                 patch = json.loads(re.sub(r':\s*null\b', ':"REPLACE_WITH_NULL"', patch))
             except (
                 UnicodeDecodeError,
+                UnsupportedSchemeError,
                 json.JSONDecodeError,
                 requests.RequestException,
                 zipfile.BadZipFile,

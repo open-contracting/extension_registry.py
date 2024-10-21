@@ -118,6 +118,7 @@ class Command(BaseCommand):
                     )
                     continue
                 version.download_url = download_dir.as_uri()
+                version.allow_schemes.add('file')
             elif not version.download_url:
                 logger.warning(
                     'Not processing %s==%s (no Download URL)', version.id, version.version

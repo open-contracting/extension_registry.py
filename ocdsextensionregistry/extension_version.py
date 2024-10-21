@@ -11,7 +11,12 @@ from urllib.parse import urlsplit
 import requests
 
 from ocdsextensionregistry.codelist import Codelist
-from ocdsextensionregistry.exceptions import DoesNotExist, ExtensionCodelistWarning, NotAvailableInBulk
+from ocdsextensionregistry.exceptions import (
+    DoesNotExist,
+    ExtensionCodelistWarning,
+    NotAvailableInBulk,
+    UnsupportedSchemeError,
+)
 from ocdsextensionregistry.util import _resolve_zip, session
 
 SCHEMAS = ('record-package-schema.json', 'release-package-schema.json', 'release-schema.json')
@@ -41,6 +46,8 @@ class ExtensionVersion:
         #: The URL that was provided in a list to
         #: :meth:`ocdsextensionregistry.profile_builder.ProfileBuilder.extensions`.
         self.input_url = input_url
+        #: The URL schemes to allow.
+        self.allow_schemes = {'http', 'https'}
 
         self._url_pattern = url_pattern
         self._file_urls = file_urls or {}
@@ -73,7 +80,10 @@ class ExtensionVersion:
 
     def as_dict(self):
         """Return the object's public properties as a dictionary."""
-        return {key: value for key, value in self.__dict__.items() if not key.startswith(('_', 'input_url'))}
+        return {
+            key: value for key, value in self.__dict__.items()
+            if key not in {'input_url', 'allow_schemes'} and not key.startswith('_')
+        }
 
     def get_url(self, basename):
         """
@@ -102,7 +112,12 @@ class ExtensionVersion:
         :raises zipfile.BadZipFile: if the download URL is not a ZIP file
         """
         if basename not in self.files and not self.download_url:
-            response = session.get(self.get_url(basename))
+            url = self.get_url(basename)
+
+            # requests supports http(s) only, but raise in case other packages add adapters for other schemes.
+            self._raise_for_scheme(url)
+            response = session.get(url)
+
             if default is None or response.status_code != requests.codes.not_found:
                 response.raise_for_status()
                 self._files[basename] = response.content.decode('utf-8')
@@ -152,9 +167,13 @@ class ExtensionVersion:
         """
         if self.download_url:
             # `download_url` is either:
+            #
             # - a "Download URL" cell in the `extension_versions.csv` file (ExtensionRegistry.__init__)
             # - a ZIP file from a hosting service like GitHub (ExtensionVersion.repository_ref_download_url)
             # - an `extensions` entry in an unrecognized format (ProfileBuilder._extension_from_url)
+            #
+            # _resolve_zip() supports the file:// scheme, for get_standard_file_contents() only.
+            self._raise_for_scheme(self.download_url)
             return _resolve_zip(self.download_url)
 
         raise NotAvailableInBulk('ExtensionVersion.zipfile() requires a download_url.')
@@ -231,6 +250,7 @@ class ExtensionVersion:
                     codelists[name].extend(csv.DictReader(io))
                 except (
                     UnicodeDecodeError,
+                    UnsupportedSchemeError,
                     requests.RequestException,
                     zipfile.BadZipFile,
                 ) as e:
@@ -425,3 +445,7 @@ class ExtensionVersion:
                 'download:format': 'https://gitlab.com/{full_name}/-/archive/{ref}.zip',
             }
         return None
+
+    def _raise_for_scheme(self, url):
+        if urlsplit(url).scheme not in self.allow_schemes:
+            raise UnsupportedSchemeError(f'URL format not supported: {url}')
