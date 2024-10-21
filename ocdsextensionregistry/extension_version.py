@@ -447,5 +447,6 @@ class ExtensionVersion:
         return None
 
     def _raise_for_scheme(self, url):
-        if urlsplit(url).scheme not in self.allow_schemes:
-            raise UnsupportedSchemeError(f'URL format not supported: {url}')
+        scheme = urlsplit(url).scheme
+        if scheme not in self.allow_schemes:
+            raise UnsupportedSchemeError(f"URI scheme '{scheme}' not supported")

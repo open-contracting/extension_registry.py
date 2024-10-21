@@ -116,11 +116,16 @@ def test_patched_release_schema_with_absolute_path():
     url = Path(path('ocds_coveredBy_extension')).resolve().as_uri()
     builder = ProfileBuilder('1__1__4', [url])
 
-    with pytest.warns(ExtensionWarning):
+    with pytest.warns(ExtensionWarning) as records:
         result = builder.patched_release_schema()
 
     assert '$schema' in result
     assert 'coveredBy' not in result['definitions']['Tender']['properties']  # NOT!
+
+    assert sorted(str(record.message) for record in records) == [
+        f"{url}: ocdsextensionregistry.exceptions.UnsupportedSchemeError: URI scheme 'file' not supported"
+    ]
+    assert len(records) == 1
 
 
 def test_patched_release_schema_with_metadata_url():
