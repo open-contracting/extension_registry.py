@@ -61,6 +61,11 @@ class ProfileBuilder:
         Accept an OCDS version and either a dictionary of extension identifiers and versions, or a list of extensions'
         metadata URLs, base URLs and/or download URLs, and initialize a reader of the extension registry.
 
+        .. attention::
+
+           This method is vulnerable to server-side request forgery (SSRF). The extension URLs in a release package or
+           record package would receive a GET request.
+
         :param str standard_tag: the OCDS version tag, e.g. ``'1__1__4'``
         :param extension_versions: the extension versions
         :param str registry_base_url: the registry's base URL, defaults to

@@ -21,7 +21,13 @@ FIELD = f'{{{FIELD_NAME}}}'
 
 class ExtensionVersion:
     def __init__(self, data, input_url=None, url_pattern=None, file_urls=None):
-        """Accept a row from ``extension_versions.csv`` and assign values to properties."""
+        """
+        Accept a row from ``extension_versions.csv`` and assign values to properties.
+
+        .. attention::
+
+           Check the arguments to prevent server-side request forgery (SSRF).
+        """
         #: The Id cell.
         self.id = data['Id']
         #: The Date cell.
@@ -145,6 +151,10 @@ class ExtensionVersion:
         :raises zipfile.BadZipFile: if the download URL is not a ZIP file
         """
         if self.download_url:
+            # `download_url` is either:
+            # - a "Download URL" cell in the `extension_versions.csv` file (ExtensionRegistry.__init__)
+            # - a ZIP file from a hosting service like GitHub (ExtensionVersion.repository_ref_download_url)
+            # - an `extensions` entry in an unrecognized format (ProfileBuilder._extension_from_url)
             return _resolve_zip(self.download_url)
 
         raise NotAvailableInBulk('ExtensionVersion.zipfile() requires a download_url.')
