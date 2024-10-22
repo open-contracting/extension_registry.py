@@ -231,6 +231,9 @@ class ExtensionVersion:
         Retrieve and return the parsed contents of the extension's codelists files.
 
         If the extension has no download URL, and if no codelists are listed in extension.json, return an empty dict.
+
+        :warns ExtensionCodelistWarning: if the codelist file's URL is not a supported scheme, if the request fails, if
+            the bulk file is not a ZIP file, or if the codelist file is not UTF-8
         """
         if self._codelists is None:
             codelists = {}

@@ -10,8 +10,8 @@ Changelog
 
 -  :class:`~ocdsextensionregistry.extension_version.ExtensionVersion`:
 
-   -  Allow URI schemes other than ``http`` and ``https`` by adding or replacing the :attr:`~ocdsextensionregistry.extension_version.ExtensionVersion.allow_schemes` set.
-   -  Check URI schemes in :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.remote` and :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.zipfile`, to raise errors before sending requests, not when initializing :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`.
+   -  Allow URI schemes other than ``http`` and ``https`` by adding or replacing the :attr:`~ocdsextensionregistry.extension_version.ExtensionVersion.allow_schemes` `set <https://docs.python.org/3/tutorial/datastructures.html#sets>`__.
+   -  Check URI schemes in :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.remote` and :meth:`~ocdsextensionregistry.extension_version.ExtensionVersion.zipfile`, to issue warnings before sending requests, not when initializing :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`.
 
 0.5.1 (2024-10-21)
 ------------------

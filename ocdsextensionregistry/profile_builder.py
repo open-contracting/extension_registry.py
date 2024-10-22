@@ -138,6 +138,8 @@ class ProfileBuilder:
         :param str extension_field: the property with which to annotate each definition and field with the name of the
                                     extension in which the definition or field is defined
         :param str language: the language to use for the name of the extension
+        :warns ExtensionWarning: if the release schema patch's URL is not a supported scheme, if the request fails, if
+            the bulk file is not a ZIP file, or if the release schema patch is not UTF-8 or not JSON
         """
         output = {}
 
