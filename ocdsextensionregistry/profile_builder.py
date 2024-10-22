@@ -63,8 +63,8 @@ class ProfileBuilder:
 
         .. attention::
 
-           This method is vulnerable to server-side request forgery (SSRF). The extension URLs in a release package or
-           record package would receive a GET request.
+           This method is vulnerable to server-side request forgery (SSRF). A user can create a release package or
+           record package whose extension URLs point to internal resources, which would receive a GET request.
 
         :param str standard_tag: the OCDS version tag, e.g. ``'1__1__4'``
         :param extension_versions: the extension versions
