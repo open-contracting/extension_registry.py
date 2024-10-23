@@ -12,7 +12,7 @@ logger = logging.getLogger('ocdsextensionregistry')
 
 class Command(BaseCommand):
     name = 'download'
-    help = 'downloads versions of extensions to a local directory'
+    help = 'Download versions of extensions to a local directory.'
 
     def add_arguments(self):
         self.add_argument('output_directory',
@@ -22,6 +22,8 @@ class Command(BaseCommand):
         self.add_argument('--overwrite', choices=['any', 'none', 'live'],
                           help='overwrite any downloaded versions (any), no downloaded versions (none), or only live '
                                'versions (live) like the master branch')
+        self.add_argument('--no-frozen', action='store_true',
+                          help='exclude frozen versions')
         self.add_argument('--extensions-url', default=EXTENSIONS_DATA,
                           help="the URL of the registry's extensions.csv")
         self.add_argument('--extension-versions-url', default=EXTENSION_VERSIONS_DATA,

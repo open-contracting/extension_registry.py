@@ -8,7 +8,6 @@ class BaseCommand:
     def __init__(self, subparsers):
         """Initialize the subparser and add arguments."""
         self.subparser = subparsers.add_parser(self.name, description=self.help)
-        self.add_argument('--no-frozen', action='store_true', help='exclude frozen versions')
         self.add_arguments()
 
     def add_arguments(self):

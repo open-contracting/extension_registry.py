@@ -27,23 +27,25 @@ logger = logging.getLogger('ocdsextensionregistry')
 
 class Command(BaseCommand):
     name = 'generate-pot-files'
-    help = 'generates POT files (message catalogs) for versions of extensions'
+    help = 'Generate POT files (message catalogs) for versions of extensions.'
 
     def add_arguments(self):
         self.add_argument('output_directory',
                           help='the directory in which to write the output')
         self.add_argument('versions', nargs='*',
                           help="the versions of extensions to process (e.g. 'bids' or 'lots==master')")
+        self.add_argument('-W', dest='warningiserror', action='store_true',
+                          help='turn Sphinx warnings into errors')
         self.add_argument('-v', '--verbose', action='store_true',
                           help='print verbose output')
+        self.add_argument('--versions-dir',
+                          help="a directory containing versions of extensions")
+        self.add_argument('--no-frozen', action='store_true',
+                          help='exclude frozen versions')
         self.add_argument('--extensions-url', default=EXTENSIONS_DATA,
                           help="the URL of the registry's extensions.csv")
         self.add_argument('--extension-versions-url', default=EXTENSION_VERSIONS_DATA,
                           help="the URL of the registry's extension_versions.csv")
-        self.add_argument('--versions-dir',
-                          help="a directory containing versions of extensions")
-        self.add_argument('-W', dest='warningiserror', action='store_true',
-                          help='turn Sphinx warnings into errors')
 
     def handle(self):
         output_directory = Path(self.args.output_directory)

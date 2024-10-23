@@ -32,7 +32,7 @@ def _translator(version, domain, localedir, language):
 
 class Command(BaseCommand):
     name = 'generate-data-file'
-    help = 'generates a data file in JSON format with all the information about versions of extensions'
+    help = 'Generate a data file in JSON format with all the information about versions of extensions.'
 
     def add_arguments(self):
         self.add_argument('versions', nargs='*',
@@ -41,12 +41,14 @@ class Command(BaseCommand):
                           help='a directory containing MO files')
         self.add_argument('-l', '--languages',
                           help='a comma-separated list of translations to include (default all)')
-        self.add_argument('--extensions-url', help="the URL of the registry's extensions.csv",
-                          default=EXTENSIONS_DATA)
-        self.add_argument('--extension-versions-url', help="the URL of the registry's extension_versions.csv",
-                          default=EXTENSION_VERSIONS_DATA)
         self.add_argument('--versions-dir',
                           help="a directory containing versions of extensions")
+        self.add_argument('--no-frozen', action='store_true',
+                          help='exclude frozen versions')
+        self.add_argument('--extensions-url', default=EXTENSIONS_DATA,
+                          help="the URL of the registry's extensions.csv")
+        self.add_argument('--extension-versions-url', default=EXTENSION_VERSIONS_DATA,
+                          help="the URL of the registry's extension_versions.csv")
 
     def handle(self):
         if self.args.languages and not self.args.locale_dir:
