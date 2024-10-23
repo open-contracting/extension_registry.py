@@ -1,0 +1,5 @@
+{
+  "extensions": [
+    "https://raw.githubusercontent.com/open-contracting-extensions/ocds_withheldInformation_extension/master/extension.json"
+  ]
+}

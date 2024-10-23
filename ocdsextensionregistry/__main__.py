@@ -11,6 +11,7 @@ COMMAND_MODULES = (
     'ocdsextensionregistry.commands.download',
     'ocdsextensionregistry.commands.generate_data_file',
     'ocdsextensionregistry.commands.generate_pot_files',
+    'ocdsextensionregistry.commands.patched_release_schema',
 )
 
 
