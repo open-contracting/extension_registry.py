@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.5.4 (2024-10-27)
+------------------
+
+-  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`: Add ``extension_value`` argument to :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_schema_patch` and :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.patched_release_schema`.
+
 0.5.3 (2024-10-23)
 ------------------
 

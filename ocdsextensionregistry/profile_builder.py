@@ -131,15 +131,20 @@ class ProfileBuilder:
                     continue
                 yield self._extension_from_url(url, urlsplit(url))
 
-    def release_schema_patch(self, extension_field=None, language='en'):
+    def release_schema_patch(self, *, extension_field=None, extension_value='name', language='en'):
         """
         Return the consolidated release schema patch.
 
-        :param str extension_field: the property with which to annotate each definition and field with the name of the
-                                    extension in which the definition or field is defined
+        Use ``extension_field`` and ``extension_value`` to annotate each definition and field with the extension
+        that defined or patched it.
+
+        :param str extension_field: the name of the property to add to each definition and field in the extension
+        :param str extension_value: the value of the property to add to each definition and field in the extension,
+                                    either the 'name' or 'url'
         :param str language: the language to use for the name of the extension
         :warns ExtensionWarning: if the release schema patch's URL is not a supported scheme, if the request fails, if
             the bulk file is not a ZIP file, or if the release schema patch is not UTF-8 or not JSON
+        :raises NotImplementedError: if the ``extension_value`` is not recognized
         """
         output = {}
 
@@ -158,24 +163,39 @@ class ProfileBuilder:
                 warnings.warn(ExtensionWarning(extension, e), stacklevel=2)
                 continue
             if extension_field:
-                _add_extension_field(patch, extension.metadata['name'][language], extension_field)
+                if extension_value == 'name':
+                    value = extension.metadata['name'][language]
+                elif extension_value == 'url':
+                    value = extension.get_url('release-schema.json')
+                else:
+                    raise NotImplementedError
+                _add_extension_field(patch, value, extension_field)
             json_merge_patch.merge(output, patch)
 
         return json.loads(json.dumps(output).replace('"REPLACE_WITH_NULL"', 'null'))
 
-    def patched_release_schema(self, schema=None, extension_field=None, language='en'):
+    def patched_release_schema(self, *, schema=None, extension_field=None, extension_value='name', language='en'):
         """
         Return the patched release schema.
 
+        Use ``extension_field`` and ``extension_value`` to annotate each definition and field with the extension
+        that defined or patched it.
+
         :param dict schema: the release schema
-        :param str extension_field: the property with which to annotate each definition and field with the name of the
-                                    extension in which the definition or field is defined
+        :param str extension_field: the name of the property to add to each definition and field in the extension
+        :param str extension_value: the value of the property to add to each definition and field in the extension,
+                                    either the 'name' or 'url'
         :param str language: the language to use for the name of the extension
         """
         if not schema:
             schema = json.loads(self.get_standard_file_contents('release-schema.json'))
 
-        json_merge_patch.merge(schema, self.release_schema_patch(extension_field=extension_field, language=language))
+        json_merge_patch.merge(
+            schema,
+            self.release_schema_patch(
+                extension_field=extension_field, extension_value=extension_value, language=language
+            ),
+        )
 
         if self.schema_base_url:
             schema['id'] = urljoin(self.schema_base_url, 'release-schema.json')
