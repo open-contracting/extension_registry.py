@@ -141,21 +141,21 @@ def test_patch():
     for i, name in enumerate(('test.csv', '+test.csv', '-test.csv')):
         obj = Codelist(name)
 
-        assert not i and not obj.patch or i and obj.patch
+        assert (not i and not obj.patch) or (i and obj.patch)
 
 
 def test_addend():
     for i, name in enumerate(('+test.csv', 'test.csv', '-test.csv')):
         obj = Codelist(name)
 
-        assert not i and obj.addend or i and not obj.addend
+        assert (not i and obj.addend) or (i and not obj.addend)
 
 
 def test_subtrahend():
     for i, name in enumerate(('-test.csv', 'test.csv', '+test.csv')):
         obj = Codelist(name)
 
-        assert not i and obj.subtrahend or i and not obj.subtrahend
+        assert (not i and obj.subtrahend) or (i and not obj.subtrahend)
 
 
 def fixture():

@@ -152,9 +152,9 @@ class Command(BaseCommand):
 
             data[version.id]['versions'][version.version] = version_data
 
-        for _id in data:
+        for version_id, value in data.items():
             # Determine the latest version. See ocdsextensionregistry.util.get_latest_version().
-            versions = data[_id]['versions']
+            versions = value['versions']
             if len(versions) == 1:
                 latest_version = next(iter(versions))
             elif 'master' in versions:
@@ -166,11 +166,11 @@ class Command(BaseCommand):
                 if dated:
                     latest_version = max(dated, key=lambda kv: kv[1]['date'])[0]
                 else:
-                    raise CommandError(f"Couldn't determine latest version of {_id}")
+                    raise CommandError(f"Couldn't determine latest version of {version_id}")
 
             # Apply the latest version.
-            data[_id]['latest_version'] = latest_version
+            value['latest_version'] = latest_version
             for field in ('name', 'description'):
-                data[_id][field] = data[_id]['versions'][latest_version]['metadata'][field]
+                value[field] = value['versions'][latest_version]['metadata'][field]
 
         json_dump(data, sys.stdout)

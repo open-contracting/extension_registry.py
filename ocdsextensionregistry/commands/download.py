@@ -40,9 +40,9 @@ class Command(BaseCommand):
             version_directory = output_directory / version.id / version.version
 
             if version_directory.is_dir():
-                if self.args.overwrite == 'any' or self.args.overwrite == 'live' and not version.date:
+                if self.args.overwrite == 'any' or (self.args.overwrite == 'live' and not version.date):
                     shutil.rmtree(version_directory)
-                elif self.args.overwrite == 'none' or self.args.overwrite == 'live' and version.date:
+                elif self.args.overwrite == 'none' or (self.args.overwrite == 'live' and version.date):
                     continue
 
             try:
