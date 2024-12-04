@@ -78,4 +78,4 @@ def test_build_profile_codelists(tmpdir):
     schema = basedir.join('patched').join('release-schema.json').read()
 
     assert 'https://standard.open-contracting.org/{{version}}/{{lang}}/schema/codelists/#release-tag' not in schema
-    assert 'https://www.example.com' in schema
+    assert '](https://www.example.com' in schema
