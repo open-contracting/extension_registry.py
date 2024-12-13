@@ -4,6 +4,7 @@ Changelog
 0.6.0 (2024-12-13)
 ------------------
 
+-  Add :meth:`ocdsextensionregistry.versioned_release_schema.get_versioned_release_schema`.
 -  Prohibit extensions from using ``null`` to remove members.
 -  When replacing ``$ref``'erences:
 

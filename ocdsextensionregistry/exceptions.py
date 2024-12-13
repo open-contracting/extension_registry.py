@@ -59,3 +59,15 @@ class ExtensionCodelistWarning(OCDSExtensionRegistryWarning):
     def __str__(self):
         cls = type(self.exc)
         return f"{self.extension}({self.codelist}): {cls.__module__}.{cls.__name__}: {self.exc}"
+
+
+class VersionedReleaseTypeWarning(OCDSExtensionRegistryWarning):
+    """Used when a type is unexpected or unrecognized while creating a versioned release."""
+
+    def __init__(self, pointer, types, schema):
+        self.pointer = pointer
+        self.types = types
+        self.schema = schema
+
+    def __str__(self):
+        return f"{self.pointer} has unrecognized type {self.types}"
