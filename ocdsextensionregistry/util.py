@@ -5,6 +5,8 @@ from io import BytesIO
 from urllib.parse import urlsplit
 from zipfile import ZipFile
 
+import jsonref
+import requests
 from requests.adapters import HTTPAdapter
 from requests_cache import NEVER_EXPIRE, CachedSession
 
@@ -59,6 +61,34 @@ def get_latest_version(versions):
         return max(dated, key=lambda version: version.date)
 
     raise UnknownLatestVersion
+
+
+# jsonref's default jsonloader has no timeout and supports file, FTP and data URLs.
+def loader(url, **kwargs):
+    if urlsplit(url).scheme in {"http", "https"}:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        return response.json(**kwargs)
+    raise NotImplementedError
+
+
+def replace_refs(schema):
+    deref = jsonref.replace_refs(schema, proxies=False, merge_props=True, loader=loader)
+    deref.pop('definitions')
+    return deref
+
+
+def remove_nulls(schema):
+    if isinstance(schema, dict):
+        for key in list(schema):
+            subschema = schema[key]
+            if subschema is None:
+                del schema[key]
+            else:
+                remove_nulls(subschema)
+    elif isinstance(schema, list):
+        for subschema in schema:
+            remove_nulls(subschema)
 
 
 def _resolve(data_or_url):

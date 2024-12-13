@@ -71,9 +71,8 @@ def test_release_schema_patch():
     # Merges patches.
     assert 'Location' in result['definitions']
 
-    # Preserves null values.
-    assert result['properties']['buyer'] is None
-    assert 'REPLACE_WITH_NULL' not in json.dumps(result)
+    # Ignores null'ed fields.
+    assert 'buyer' not in result['properties']
 
 
 def test_patched_release_schema():
@@ -88,8 +87,8 @@ def test_patched_release_schema():
     assert '$schema' in result
     assert 'Location' in result['definitions']
 
-    # Removes null'ed fields.
-    assert 'buyer' not in result['properties']
+    # Keeps null'ed fields.
+    assert 'buyer' in result['properties']
 
 
 def test_patched_release_schema_with_extension_field():

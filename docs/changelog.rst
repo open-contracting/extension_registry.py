@@ -1,6 +1,16 @@
 Changelog
 =========
 
+0.6.0 (2024-12-13)
+------------------
+
+-  Prohibit extensions from using ``null`` to remove members.
+-  When replacing ``$ref``'erences:
+
+   -  Remove ``definitions``, as it is no longer relevant.
+   -  Resolve only HTTP and HTTPS URLs, with a 10-second timeout.
+   -  Merge properties that are siblings to the ``$ref`` property onto the referenced object.
+
 0.5.5 (2024-11-25)
 ------------------
 

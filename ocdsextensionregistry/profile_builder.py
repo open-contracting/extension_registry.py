@@ -34,7 +34,6 @@ import csv
 import json
 import logging
 import os
-import re
 import warnings
 import zipfile
 from collections.abc import Iterable
@@ -42,14 +41,13 @@ from io import StringIO
 from urllib.parse import urljoin, urlsplit
 
 import json_merge_patch
-import jsonref
 import requests
 
 from ocdsextensionregistry.codelist import Codelist
 from ocdsextensionregistry.exceptions import ExtensionWarning, UnsupportedSchemeError
 from ocdsextensionregistry.extension_registry import ExtensionRegistry
 from ocdsextensionregistry.extension_version import FIELD, ExtensionVersion
-from ocdsextensionregistry.util import _resolve_zip
+from ocdsextensionregistry.util import _resolve_zip, remove_nulls, replace_refs
 
 logger = logging.getLogger('ocdsextensionregistry')
 
@@ -148,11 +146,11 @@ class ProfileBuilder:
         """
         output = {}
 
-        # Replaces `null` with sentinel values, to preserve the null'ing of fields by extensions in the final patch.
+        # Remove ``null``, because removing fields or properties is prohibited.
         for extension in self.extensions():
             try:
-                patch = extension.remote('release-schema.json', default='{}')
-                patch = json.loads(re.sub(r':\s*null\b', ':"REPLACE_WITH_NULL"', patch))
+                patch = json.loads(extension.remote('release-schema.json', default='{}'))
+                remove_nulls(patch)
             except (
                 UnicodeDecodeError,
                 UnsupportedSchemeError,
@@ -172,7 +170,7 @@ class ProfileBuilder:
                 _add_extension_field(patch, value, extension_field)
             json_merge_patch.merge(output, patch)
 
-        return json.loads(json.dumps(output).replace('"REPLACE_WITH_NULL"', 'null'))
+        return output
 
     def patched_release_schema(self, *, schema=None, extension_field=None, extension_value='name', language='en'):
         """
@@ -202,9 +200,6 @@ class ProfileBuilder:
 
         return schema
 
-    def _dereferenced_patched_release_schema(self):
-        return jsonref.replace_refs(self.patched_release_schema(), proxies=False)
-
     def release_package_schema(self, schema=None, *, embed=False):
         """
         Return a release package schema.
@@ -220,7 +215,7 @@ class ProfileBuilder:
         if self.schema_base_url:
             schema['id'] = urljoin(self.schema_base_url, 'release-package-schema.json')
             if embed:
-                patched = self._dereferenced_patched_release_schema()
+                patched = replace_refs(self.patched_release_schema())
                 schema['properties']['releases']['items'] = patched
             else:
                 url = urljoin(self.schema_base_url, 'release-schema.json')
@@ -243,7 +238,7 @@ class ProfileBuilder:
         if self.schema_base_url:
             schema['id'] = urljoin(self.schema_base_url, 'record-package-schema.json')
             if embed:
-                patched = self._dereferenced_patched_release_schema()
+                patched = replace_refs(self.patched_release_schema())
                 schema['definitions']['record']['properties']['compiledRelease'] = patched
                 schema['definitions']['record']['properties']['releases']['oneOf'][1]['items'] = patched
             else:
