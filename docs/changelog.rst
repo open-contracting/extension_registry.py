@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.6.1 (2024-12-13)
+------------------
+
+-  :meth:`ocdsextensionregistry.versioned_release_schema.get_versioned_release_schema`: Recognize the type ``["number", "string", "null"]``.
+
 0.6.0 (2024-12-13)
 ------------------
 

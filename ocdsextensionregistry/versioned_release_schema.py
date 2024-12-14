@@ -58,6 +58,7 @@ _RECOGNIZED_TYPES = (
     # Mixed
     ["integer", "string"],
     ["integer", "string", "null"],
+    ["number", "string", "null"],
 )
 _KEYWORDS_TO_REMOVE = (
     # Metadata keywords
