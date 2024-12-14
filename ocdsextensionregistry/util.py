@@ -72,8 +72,8 @@ def loader(url, **kwargs):
     raise NotImplementedError
 
 
-def replace_refs(schema):
-    deref = jsonref.replace_refs(schema, proxies=False, merge_props=True, loader=loader)
+def replace_refs(schema, **kwargs):
+    deref = jsonref.replace_refs(schema, proxies=False, merge_props=True, loader=loader, **kwargs)
     deref.pop('definitions')
     return deref
 

@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.6.2 (2024-12-13)
+------------------
+
+-  :meth:`ocdsextensionregistry.util.replace_refs`: Accepts keyword arguments to pass through to ``jsonref.replace_refs``.
+
 0.6.1 (2024-12-13)
 ------------------
 
@@ -10,6 +15,7 @@ Changelog
 ------------------
 
 -  Add :meth:`ocdsextensionregistry.versioned_release_schema.get_versioned_release_schema`.
+-  Add :meth:`ocdsextensionregistry.util.replace_refs`.
 -  Prohibit extensions from using ``null`` to remove members.
 -  When replacing ``$ref``'erences:
 
