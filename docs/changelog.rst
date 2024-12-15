@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.6.5 (2024-12-14)
+------------------
+
+-  :meth:`ocdsextensionregistry.util.replace_refs`: Add the ``keep_defs`` keyword argument.
+
 0.6.4 (2024-12-14)
 ------------------
 

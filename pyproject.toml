@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ocdsextensionregistry"
-version = "0.6.4"
+version = "0.6.5"
 authors = [{name = "Open Contracting Partnership", email = "data@open-contracting.org"}]
 description = "Eases access to information from the extension registry of the Open Contracting Data Standard"
 readme = "README.rst"
