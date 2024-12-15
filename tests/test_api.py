@@ -46,7 +46,7 @@ def test_build_profile(tmpdir):
 def test_build_profile_codelists(tmpdir):
 
     def update_codelist_urls(text, codelists):
-        url = 'https://standard.open-contracting.org/{{version}}/{{lang}}/schema/codelists/#release-tag'
+        url = 'https://standard.open-contracting.org/1.1/en/schema/codelists/#release-tag'
         return text.replace(url, 'https://www.example.com')
 
     basedir = tmpdir.mkdir('schema')
@@ -77,5 +77,5 @@ def test_build_profile_codelists(tmpdir):
 
     schema = basedir.join('patched').join('release-schema.json').read()
 
-    assert 'https://standard.open-contracting.org/{{version}}/{{lang}}/schema/codelists/#release-tag' not in schema
+    assert 'https://standard.open-contracting.org/1.1/en/schema/codelists/#release-tag' not in schema
     assert '](https://www.example.com' in schema

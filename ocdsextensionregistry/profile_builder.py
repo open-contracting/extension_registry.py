@@ -173,7 +173,7 @@ class ProfileBuilder:
 
         return output
 
-    def patched_release_schema(self, *, schema=None, **kwargs):
+    def patched_release_schema(self, *, schema=None, language='en', **kwargs):
         """
         Return the patched release schema.
 
@@ -181,19 +181,23 @@ class ProfileBuilder:
         that defined or patched it.
 
         :param dict schema: the release schema
+        :param str language: see :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_schema_patch`
+            and :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.get_standard_file_contents`
         :param kwargs: see :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_schema_patch`
         """
         if not schema:
-            schema = json.loads(self.get_standard_file_contents('release-schema.json'))
+            schema = json.loads(self.get_standard_file_contents('release-schema.json', language=language))
 
-        json_merge_patch.merge(schema, self.release_schema_patch(**kwargs))
+        json_merge_patch.merge(schema, self.release_schema_patch(language=language, **kwargs))
 
         if base := self.schema_base_url:
             schema['id'] = urljoin(base, 'release-schema.json')
 
         return schema
 
-    def release_package_schema(self, *, schema=None, patched=None, embed=False, **kwargs):
+    def release_package_schema(
+        self, *, schema=None, patched=None, embed=False, proxies=False, language='en', **kwargs
+    ):
         """
         Return a release package schema.
 
@@ -202,24 +206,27 @@ class ProfileBuilder:
         :param dict schema: the base release package schema
         :param dict patched: the patched release schema
         :param bool embed: whether to embed or ``$ref``'erence the patched release schema
+        :param bool proxies: whether to replace references with proxy objects
+        :param str language: see :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_schema_patch`
+            and :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.get_standard_file_contents`
         :param kwargs: see :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_schema_patch`
         """
         if not schema:
-            schema = json.loads(self.get_standard_file_contents('release-package-schema.json'))
+            schema = json.loads(self.get_standard_file_contents('release-package-schema.json', language=language))
 
         if base := self.schema_base_url:
             schema['id'] = urljoin(base, 'release-package-schema.json')
             if not embed:
                 schema['properties']['releases']['items']['$ref'] = urljoin(base, 'release-schema.json')
 
-        if embed:
+        if embed or patched:
             if patched is None:
-                patched = self.patched_release_schema(**kwargs)
-            schema['properties']['releases']['items'] = replace_refs(patched)
+                patched = self.patched_release_schema(language=language, **kwargs)
+            schema['properties']['releases']['items'] = replace_refs(patched, proxies=proxies)
 
         return schema
 
-    def record_package_schema(self, *, schema=None, patched=None, embed=False, **kwargs):
+    def record_package_schema(self, *, schema=None, patched=None, embed=False, proxies=False, language='en', **kwargs):
         """
         Return a record package schema.
 
@@ -227,11 +234,14 @@ class ProfileBuilder:
 
         :param dict schema: the base record package schema
         :param dict patched: the patched release schema
+        :param bool proxies: whether to replace references with proxy objects
         :param bool embed: whether to embed or ``$ref``'erence the patched release schema
+        :param str language: see :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_schema_patch`
+            and :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.get_standard_file_contents`
         :param kwargs: see :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_schema_patch`
         """
         if not schema:
-            schema = json.loads(self.get_standard_file_contents('record-package-schema.json'))
+            schema = json.loads(self.get_standard_file_contents('record-package-schema.json', language=language))
 
         properties = schema['definitions']['record']['properties']
 
@@ -243,13 +253,15 @@ class ProfileBuilder:
                 properties['releases']['oneOf'][1]['items']['$ref'] = url
                 properties['versionedRelease']['$ref'] = urljoin(base, 'versioned-release-validation-schema.json')
 
-        if embed:
+        if embed or patched:
             if patched is None:
-                patched = self.patched_release_schema(**kwargs)
-            deref = replace_refs(patched)
+                patched = self.patched_release_schema(language=language, **kwargs)
+            deref = replace_refs(patched, proxies=proxies)
             properties['compiledRelease'] = deref
             properties['releases']['oneOf'][1]['items'] = deref
-            properties["versionedRelease"] = replace_refs(get_versioned_release_schema(patched, self.standard_tag))
+            properties["versionedRelease"] = replace_refs(
+                get_versioned_release_schema(patched, self.standard_tag), proxies=proxies
+            )
 
         return schema
 
@@ -261,7 +273,7 @@ class ProfileBuilder:
         self.get_standard_file_contents('release-schema.json')
 
         # This method shouldn't need to know about `_file_cache`.
-        for path, content in self._file_cache.items():
+        for path, content in self._file_cache['en'].items():
             name = os.path.basename(path)
             if 'codelists' in path.split('/') and name:
                 codelists[name] = Codelist(name)
@@ -355,13 +367,17 @@ class ProfileBuilder:
 
         return list(codelists.values())
 
-    def get_standard_file_contents(self, basename):
+    def get_standard_file_contents(self, basename, language='en'):
         """
         Return the contents of the file within the standard.
 
         Download the given version of the standard, and cache the contents of files in the ``schema/`` directory.
+
+        Replace the ``{{lang}}`` and ``{{version}}`` placeholders in files.
+
+        :param str language: the string with which to replace ``{{lang}}`` placeholders
         """
-        if not self._file_cache:
+        if language not in self._file_cache:
             zipfile = _resolve_zip(self.standard_base_url, 'schema')
             names = zipfile.namelist()
 
@@ -375,12 +391,15 @@ class ProfileBuilder:
             cache = {}
             for name in names[1:]:
                 if path in name:
-                    cache[name[start:]] = zipfile.read(name).decode('utf-8')
+                    # The ocds_babel.translate.translate() function makes these substitutions for published files.
+                    cache[name[start:]] = zipfile.read(name).decode('utf-8').replace('{{lang}}', language).replace(
+                        "{{version}}", '.'.join(self.standard_tag.split('__')[:2])
+                    )
 
             # Set _file_cache at once, e.g. if threaded.
-            self._file_cache = cache
+            self._file_cache[language] = cache
 
-        return self._file_cache[basename]
+        return self._file_cache[language][basename]
 
 
 def _add_extension_field(schema, extension_name, field_name, pointer=None):

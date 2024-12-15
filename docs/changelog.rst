@@ -1,10 +1,22 @@
 Changelog
 =========
 
+0.6.6 (2024-12-15)
+------------------
+
+-  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`:
+
+   -  :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_package_schema` and :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.record_package_schema`:
+
+      -  Add ``proxies`` argument.
+      -  Apply ``embed`` logic if ``patched`` argument is provided.
+
+   -  :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.get_standard_file_contents` replaces ``{{lang}}`` and ``{{version}}`` in files.
+
 0.6.5 (2024-12-14)
 ------------------
 
--  :meth:`ocdsextensionregistry.util.replace_refs`: Add the ``keep_defs`` keyword argument.
+-  :meth:`ocdsextensionregistry.util.replace_refs`: Add ``keep_defs`` argument.
 
 0.6.4 (2024-12-14)
 ------------------
@@ -14,17 +26,17 @@ Changelog
 0.6.3 (2024-12-14)
 ------------------
 
--  :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder`:
+-  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder`:
 
    -  :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_package_schema` and :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.record_package_schema`:
 
-      -  Apply the ``embed`` keyword argument even if ``schema_base_url`` is not provided.
-      -  Add the ``patched`` keyword argument, to skip :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.patched_release_schema`.
+      -  Apply ``embed`` argument even if ``schema_base_url`` is not provided.
+      -  Add ``patched`` argument, to skip :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.patched_release_schema`.
       -  Accept keyword arguments for :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_schema_patch`.
 
-   - :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.record_package_schema`:
+   -  :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.record_package_schema`:
 
-      -  Update the ``versionedRelease`` schema.
+      -  Patch the ``versionedRelease`` schema.
 
 0.6.2 (2024-12-13)
 ------------------

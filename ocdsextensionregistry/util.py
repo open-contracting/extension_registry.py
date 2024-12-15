@@ -72,10 +72,15 @@ def loader(url, **kwargs):
     raise NotImplementedError
 
 
-def replace_refs(schema, *, keep_defs=False, **kwargs):
-    deref = jsonref.replace_refs(schema, proxies=False, merge_props=True, loader=loader, **kwargs)
+def replace_refs(schema, *, keep_defs=False, proxies=False, **kwargs):
+    deref = jsonref.replace_refs(
+        schema,
+        # Using one of `merge_props=True` or `proxies=True` preserves "deprecated" in a schema with "$ref".
+        **({"proxies": proxies, "lazy_load": not proxies, "merge_props": not proxies, "loader": loader} | kwargs),
+    )
     if not keep_defs:
-        deref.pop('definitions', None)
+        for keyword in ('definitions', '$defs'):
+            deref.pop(keyword, None)
     return deref
 
 
