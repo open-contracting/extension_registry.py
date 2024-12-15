@@ -10,6 +10,7 @@ API Reference
    api/codelist
    api/codelist_code
    api/profile_builder
+   api/versioned_release_schema
    api/util
    api/api
    api/exceptions
