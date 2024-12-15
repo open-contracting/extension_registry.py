@@ -1,6 +1,21 @@
 Changelog
 =========
 
+0.6.3 (2024-12-14)
+------------------
+
+-  :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder`:
+
+   -  :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_package_schema` and :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.record_package_schema`:
+
+      -  Apply the ``embed`` keyword argument even if ``schema_base_url`` is not provided.
+      -  Add the ``patched`` keyword argument, to skip :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.patched_release_schema`.
+      -  Accept keyword arguments for :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_schema_patch`.
+
+   - :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.record_package_schema`:
+
+      -  Update the ``versionedRelease`` schema.
+
 0.6.2 (2024-12-13)
 ------------------
 
@@ -9,12 +24,12 @@ Changelog
 0.6.1 (2024-12-13)
 ------------------
 
--  :meth:`ocdsextensionregistry.versioned_release_schema.get_versioned_release_schema`: Recognize the type ``["number", "string", "null"]``.
+-  :meth:`~ocdsextensionregistry.versioned_release_schema.get_versioned_release_schema`: Recognize the type ``["number", "string", "null"]``.
 
 0.6.0 (2024-12-13)
 ------------------
 
--  Add :meth:`ocdsextensionregistry.versioned_release_schema.get_versioned_release_schema`.
+-  Add :meth:`~ocdsextensionregistry.versioned_release_schema.get_versioned_release_schema`.
 -  Add :meth:`ocdsextensionregistry.util.replace_refs`.
 -  Prohibit extensions from using ``null`` to remove members.
 -  When replacing ``$ref``'erences:

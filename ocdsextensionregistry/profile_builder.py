@@ -48,6 +48,7 @@ from ocdsextensionregistry.exceptions import ExtensionWarning, UnsupportedScheme
 from ocdsextensionregistry.extension_registry import ExtensionRegistry
 from ocdsextensionregistry.extension_version import FIELD, ExtensionVersion
 from ocdsextensionregistry.util import _resolve_zip, remove_nulls, replace_refs
+from ocdsextensionregistry.versioned_release_schema import get_versioned_release_schema
 
 logger = logging.getLogger('ocdsextensionregistry')
 
@@ -67,11 +68,11 @@ class ProfileBuilder:
         :param str standard_tag: the OCDS version tag, e.g. ``'1__1__4'``
         :param extension_versions: the extension versions
         :param str registry_base_url: the registry's base URL, defaults to
-                                      ``'https://raw.githubusercontent.com/open-contracting/extension_registry/main/'``
+            ``'https://raw.githubusercontent.com/open-contracting/extension_registry/main/'``
         :param str standard_base_url: the standard's base URL, defaults to
-                                      ``'https://codeload.github.com/open-contracting/standard/zip/' + standard_tag``
+            ``'https://codeload.github.com/open-contracting/standard/zip/' + standard_tag``
         :param str schema_base_url: the schema's base URL, e.g.
-                                    ``'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/'``
+            ``'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/'``
         :type extension_versions: dict or list
         """
         # Allows setting the registry URL to e.g. a pull request, when working on a profile.
@@ -138,7 +139,7 @@ class ProfileBuilder:
 
         :param str extension_field: the name of the property to add to each definition and field in the extension
         :param str extension_value: the value of the property to add to each definition and field in the extension,
-                                    either the 'name' or 'url'
+            either the 'name' or 'url'
         :param str language: the language to use for the name of the extension
         :warns ExtensionWarning: if the release schema patch's URL is not a supported scheme, if the request fails, if
             the bulk file is not a ZIP file, or if the release schema patch is not UTF-8 or not JSON
@@ -172,7 +173,7 @@ class ProfileBuilder:
 
         return output
 
-    def patched_release_schema(self, *, schema=None, extension_field=None, extension_value='name', language='en'):
+    def patched_release_schema(self, *, schema=None, **kwargs):
         """
         Return the patched release schema.
 
@@ -180,71 +181,75 @@ class ProfileBuilder:
         that defined or patched it.
 
         :param dict schema: the release schema
-        :param str extension_field: the name of the property to add to each definition and field in the extension
-        :param str extension_value: the value of the property to add to each definition and field in the extension,
-                                    either the 'name' or 'url'
-        :param str language: the language to use for the name of the extension
+        :param kwargs: see :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_schema_patch`
         """
         if not schema:
             schema = json.loads(self.get_standard_file_contents('release-schema.json'))
 
-        json_merge_patch.merge(
-            schema,
-            self.release_schema_patch(
-                extension_field=extension_field, extension_value=extension_value, language=language
-            ),
-        )
+        json_merge_patch.merge(schema, self.release_schema_patch(**kwargs))
 
-        if self.schema_base_url:
-            schema['id'] = urljoin(self.schema_base_url, 'release-schema.json')
+        if base := self.schema_base_url:
+            schema['id'] = urljoin(base, 'release-schema.json')
 
         return schema
 
-    def release_package_schema(self, schema=None, *, embed=False):
+    def release_package_schema(self, *, schema=None, patched=None, embed=False, **kwargs):
         """
         Return a release package schema.
 
         If the profile builder was initialized with ``schema_base_url``, update schema URLs.
 
-        :param dict schema: the release schema
+        :param dict schema: the base release package schema
+        :param dict patched: the patched release schema
         :param bool embed: whether to embed or ``$ref``'erence the patched release schema
+        :param kwargs: see :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_schema_patch`
         """
         if not schema:
             schema = json.loads(self.get_standard_file_contents('release-package-schema.json'))
 
-        if self.schema_base_url:
-            schema['id'] = urljoin(self.schema_base_url, 'release-package-schema.json')
-            if embed:
-                patched = replace_refs(self.patched_release_schema())
-                schema['properties']['releases']['items'] = patched
-            else:
-                url = urljoin(self.schema_base_url, 'release-schema.json')
-                schema['properties']['releases']['items']['$ref'] = url
+        if base := self.schema_base_url:
+            schema['id'] = urljoin(base, 'release-package-schema.json')
+            if not embed:
+                schema['properties']['releases']['items']['$ref'] = urljoin(base, 'release-schema.json')
+
+        if embed:
+            if patched is None:
+                patched = self.patched_release_schema(**kwargs)
+            schema['properties']['releases']['items'] = replace_refs(patched)
 
         return schema
 
-    def record_package_schema(self, schema=None, *, embed=False):
+    def record_package_schema(self, *, schema=None, patched=None, embed=False, **kwargs):
         """
         Return a record package schema.
 
         If the profile builder was initialized with ``schema_base_url``, update schema URLs.
 
-        :param dict schema: the record schema
+        :param dict schema: the base record package schema
+        :param dict patched: the patched release schema
         :param bool embed: whether to embed or ``$ref``'erence the patched release schema
+        :param kwargs: see :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_schema_patch`
         """
         if not schema:
             schema = json.loads(self.get_standard_file_contents('record-package-schema.json'))
 
-        if self.schema_base_url:
-            schema['id'] = urljoin(self.schema_base_url, 'record-package-schema.json')
-            if embed:
-                patched = replace_refs(self.patched_release_schema())
-                schema['definitions']['record']['properties']['compiledRelease'] = patched
-                schema['definitions']['record']['properties']['releases']['oneOf'][1]['items'] = patched
-            else:
-                url = urljoin(self.schema_base_url, 'release-schema.json')
-                schema['definitions']['record']['properties']['compiledRelease']['$ref'] = url
-                schema['definitions']['record']['properties']['releases']['oneOf'][1]['items']['$ref'] = url
+        properties = schema['definitions']['record']['properties']
+
+        if base := self.schema_base_url:
+            schema['id'] = urljoin(base, 'record-package-schema.json')
+            if not embed:
+                url = urljoin(base, 'release-schema.json')
+                properties['compiledRelease']['$ref'] = url
+                properties['releases']['oneOf'][1]['items']['$ref'] = url
+                properties['versionedRelease']['$ref'] = urljoin(base, 'versioned-release-validation-schema.json')
+
+        if embed:
+            if patched is None:
+                patched = self.patched_release_schema(**kwargs)
+            deref = replace_refs(patched)
+            properties['compiledRelease'] = deref
+            properties['releases']['oneOf'][1]['items'] = deref
+            properties["versionedRelease"] = replace_refs(get_versioned_release_schema(patched, self.standard_tag))
 
         return schema
 
