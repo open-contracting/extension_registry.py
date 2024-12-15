@@ -147,7 +147,7 @@ class ProfileBuilder:
         """
         output = {}
 
-        # Remove ``null``, because removing fields or properties is prohibited.
+        # Remove `null`, because removing fields or properties is prohibited.
         for extension in self.extensions():
             try:
                 patch = json.loads(extension.remote('release-schema.json', default='{}'))
