@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.6.4 (2024-12-14)
+------------------
+
+-  :meth:`ocdsextensionregistry.util.replace_refs` no longer errors if ``definitions`` isn't set, like on the release package schema.
+
 0.6.3 (2024-12-14)
 ------------------
 
