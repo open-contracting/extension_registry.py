@@ -255,6 +255,8 @@ def _remove_metadata_and_extended_keywords(schema):
 
 def get_versioned_release_schema(schema, tag):
     """Return the versioned release schema."""
+    schema = deepcopy(schema)
+
     # Update schema metadata.
     schema["id"] = (
         f"https://standard.open-contracting.org/schema/{tag}/versioned-release-validation-schema.json"

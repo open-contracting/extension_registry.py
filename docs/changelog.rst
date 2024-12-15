@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.6.7 (2024-12-15)
+------------------
+
+-  :meth:`~ocdsextensionregistry.versioned_release_schema.get_versioned_release_schema`: Copy schema before modifying in-place.
+
 0.6.6 (2024-12-15)
 ------------------
 
