@@ -76,7 +76,8 @@ def replace_refs(schema, *, keep_defs=False, proxies=False, **kwargs):
     deref = jsonref.replace_refs(
         schema,
         # Using one of `merge_props=True` or `proxies=True` preserves "deprecated" in a schema with "$ref".
-        **({"proxies": proxies, "lazy_load": not proxies, "merge_props": not proxies, "loader": loader} | kwargs),
+        # `lazy_load=True` has an effect only if `proxies=True`. `lazy_load=False` forces references errors early.
+        **({"proxies": proxies, "merge_props": not proxies, "loader": loader, "lazy_load": False} | kwargs),
     )
     if not keep_defs:
         for keyword in ('definitions', '$defs'):
