@@ -61,7 +61,11 @@ class ExtensionCodelistWarning(OCDSExtensionRegistryWarning):
         return f"{self.extension}({self.codelist}): {cls.__module__}.{cls.__name__}: {self.exc}"
 
 
-class VersionedReleaseTypeWarning(OCDSExtensionRegistryWarning):
+class VersionedReleaseWarning(OCDSExtensionRegistryWarning):
+    """Base class for warnings while creating a versioned release."""
+
+
+class VersionedReleaseTypeWarning(VersionedReleaseWarning):
     """Used when a type is unexpected or unrecognized while creating a versioned release."""
 
     def __init__(self, pointer, types, schema):
@@ -71,3 +75,25 @@ class VersionedReleaseTypeWarning(OCDSExtensionRegistryWarning):
 
     def __str__(self):
         return f"{self.pointer} has unrecognized type {self.types}"
+
+
+class VersionedReleaseRefWarning(VersionedReleaseWarning):
+    """Used when a subschema has no ``type`` or ``$ref``, while creating a versioned release."""
+
+    def __init__(self, pointer, schema):
+        self.pointer = pointer
+        self.schema = schema
+
+    def __str__(self):
+        return f"{self.pointer} has no type and no $ref"
+
+
+class VersionedReleaseItemsWarning(VersionedReleaseWarning):
+    """Used when an array has no ``items`` or ``items`` is an array, while creating a versioned release."""
+
+    def __init__(self, pointer, schema):
+        self.pointer = pointer
+        self.schema = schema
+
+    def __str__(self):
+        return f"{self.pointer}/items is not set or is an array"

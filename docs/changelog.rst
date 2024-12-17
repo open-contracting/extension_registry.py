@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.6.8 (2024-12-17)
+------------------
+
+-  :meth:`~ocdsextensionregistry.versioned_release_schema.get_versioned_release_schema`: Handle extensions that set ``items`` to an array or omit ``$ref`` or ``items`` where these are expected.
+
 0.6.7 (2024-12-15)
 ------------------
 

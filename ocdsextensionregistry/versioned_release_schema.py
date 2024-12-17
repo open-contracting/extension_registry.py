@@ -3,7 +3,11 @@ from copy import deepcopy
 
 import jsonref
 
-from ocdsextensionregistry.exceptions import VersionedReleaseTypeWarning
+from ocdsextensionregistry.exceptions import (
+    VersionedReleaseItemsWarning,
+    VersionedReleaseRefWarning,
+    VersionedReleaseTypeWarning,
+)
 
 _VERSIONED_TEMPLATE = {
   "type": "array",
@@ -132,18 +136,19 @@ def _get_unversioned_pointers(schema, fields, pointer=""):
         # If an array is whole list merge, its items are unversioned.
         if "array" in types and schema.get("wholeListMerge"):
             return
-        if "array" in types and "items" in schema:
-            item_types = _cast_as_list(schema["items"].get("type", []))
-            # If an array mixes objects and non-objects, it is whole list merge.
-            if any(item_type != "object" for item_type in item_types):
-                return
-            # If it is an array of objects, any `id` fields are unversioned.
-            if "id" in schema["items"]["properties"]:
-                if hasattr(schema["items"], "__reference__"):
-                    reference = schema["items"].__reference__["$ref"][1:]
-                else:
-                    reference = pointer
-                fields.add(f"{reference}/properties/id")
+        if "array" in types and (items := schema.get("items")):
+            if isinstance(items, dict):
+                item_types = _cast_as_list(items.get("type", []))
+                # If an array mixes objects and non-objects, it is whole list merge.
+                if any(item_type != "object" for item_type in item_types):
+                    return
+                # If it is an array of objects, any `id` fields are unversioned.
+                if "id" in items["properties"]:
+                    reference = items.__reference__["$ref"][1:] if hasattr(items, "__reference__") else pointer
+                    fields.add(f"{reference}/properties/id")
+            # This should only occur in tests.
+            else:
+                warnings.warn(VersionedReleaseItemsWarning(pointer, schema), stacklevel=2)
 
         for key, value in schema.items():
             _get_unversioned_pointers(value, fields, pointer=f"{pointer}/{key}")
@@ -193,10 +198,14 @@ def _add_versioned_field(schema, unversioned_pointers, pointer, key, value):
     if not types:
         # Ignore the `amendment` field, which had no `id` field in OCDS 1.0.
         if "deprecated" not in value:
-            versioned_pointer = f"{value['$ref'][1:]}/properties/id"
-            # If the `id` field is on an object not in an array, it needs to be versioned (e.g. buyer/properties/id).
-            if versioned_pointer in unversioned_pointers:
-                value["$ref"] = value["$ref"] + "VersionedId"
+            if "$ref" in value:
+                versioned_pointer = f"{value['$ref'][1:]}/properties/id"
+                # If the `id` field is on an object not in an array, it needs to be versioned (like on `buyer`).
+                if versioned_pointer in unversioned_pointers:
+                    value["$ref"] = value["$ref"] + "VersionedId"
+            # This should only occur in tests.
+            else:
+                warnings.warn(VersionedReleaseRefWarning(pointer, value), stacklevel=2)
         return
 
     # Reference a common versioned definition if possible, to limit the size of the schema.
@@ -213,26 +222,30 @@ def _add_versioned_field(schema, unversioned_pointers, pointer, key, value):
         new_value = deepcopy(value)
 
         if types == ["array"]:
-            item_types = _cast_as_list(value["items"].get("type", []))
+            if (items := value.get("items")) and isinstance(items, dict):
+                item_types = _cast_as_list(items.get("type", []))
 
-            # See https://standard.open-contracting.org/latest/en/schema/merging/#whole-list-merge
-            if value.get("wholeListMerge"):
-                # Update `$ref` to the unversioned definition.
-                if "$ref" in value["items"]:
-                    new_value["items"]["$ref"] = value["items"]["$ref"] + "Unversioned"
-                # Otherwise, similarly, don't iterate over item properties.
-            # See https://standard.open-contracting.org/latest/en/schema/merging/#lists
-            elif "$ref" in value["items"]:
-                # Leave `$ref` to the versioned definition.
-                return
-            # Exceptional case for deprecated `Amendment.changes`.
-            elif item_types == ["object"] and pointer == "/definitions/Amendment/properties/changes":
-                return
-            # Warn in case new combinations are added to the release schema.
-            elif item_types != ["string"]:
-                # Note: Versioning the properties of un-$ref'erenced objects in arrays isn't implemented. However,
-                # this combination hasn't occurred, with the exception of `Amendment/changes`.
-                warnings.warn(VersionedReleaseTypeWarning(f"{pointer}/items", item_types, value), stacklevel=2)
+                # See https://standard.open-contracting.org/latest/en/schema/merging/#whole-list-merge
+                if value.get("wholeListMerge"):
+                    # Update `$ref` to the unversioned definition.
+                    if "$ref" in items:
+                        new_value["items"]["$ref"] = items["$ref"] + "Unversioned"
+                    # Otherwise, similarly, don't iterate over item properties.
+                # See https://standard.open-contracting.org/latest/en/schema/merging/#lists
+                elif "$ref" in items:
+                    # Leave `$ref` to the versioned definition.
+                    return
+                # Exceptional case for deprecated `Amendment.changes`.
+                elif item_types == ["object"] and pointer == "/definitions/Amendment/properties/changes":
+                    return
+                # Warn in case new combinations are added to the release schema.
+                elif item_types != ["string"]:
+                    # Note: Versioning the properties of un-$ref'erenced objects in arrays isn't implemented. However,
+                    # this combination hasn't occurred, with the exception of `Amendment/changes`.
+                    warnings.warn(VersionedReleaseTypeWarning(f"{pointer}/items", item_types, value), stacklevel=2)
+            # This should only occur in tests.
+            else:
+                warnings.warn(VersionedReleaseItemsWarning(pointer, value), stacklevel=2)
 
         versioned = deepcopy(_VERSIONED_TEMPLATE)
         versioned["items"]["properties"]["value"] = new_value
