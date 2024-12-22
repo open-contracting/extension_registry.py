@@ -2,6 +2,7 @@ import json
 import os
 import warnings
 from io import BytesIO
+from operator import attrgetter
 from urllib.parse import urlsplit
 from zipfile import ZipFile
 
@@ -58,7 +59,7 @@ def get_latest_version(versions):
 
     dated = [version for version in versions if version.date]
     if dated:
-        return max(dated, key=lambda version: version.date)
+        return max(dated, key=attrgetter("date"))
 
     raise UnknownLatestVersion
 
