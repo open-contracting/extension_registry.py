@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.6.9 (2025-01-07)
+------------------
+
+-  :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder` also accepts ``standard_base_url`` as the bytes of a ZIP file.
+
 0.6.8 (2024-12-17)
 ------------------
 
@@ -142,7 +147,7 @@ Changelog
 0.3.4 (2023-07-08)
 ------------------
 
--  feat: :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder` accepts ``standard_base_url`` as a ZIP file, in addition to a directory.
+-  feat: :class:`~ocdsextensionregistry.profile_builder.ProfileBuilder` also accepts ``standard_base_url`` as a ``file://`` URL to a ZIP file.
 
 0.3.3 (2023-07-07)
 ------------------
