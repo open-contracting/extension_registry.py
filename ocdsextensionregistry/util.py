@@ -115,6 +115,9 @@ def _resolve(data_or_url):
 
 
 def _resolve_zip(url, base=''):
+    if isinstance(url, bytes):
+        return ZipFile(BytesIO(url))
+
     parsed = urlsplit(url)
 
     if parsed.scheme == 'file':

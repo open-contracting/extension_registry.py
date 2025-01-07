@@ -69,10 +69,12 @@ class ProfileBuilder:
         :param extension_versions: the extension versions
         :param str registry_base_url: the registry's base URL, defaults to
             ``'https://raw.githubusercontent.com/open-contracting/extension_registry/main/'``
-        :param str standard_base_url: the standard's base URL, defaults to
-            ``'https://codeload.github.com/open-contracting/standard/zip/' + standard_tag``
+        :param standard_base_url: the standard's base URL, defaults to
+            ``f'https://codeload.github.com/open-contracting/standard/zip/{standard_tag}'``
+            (can be a ``file://`` URL to a directory or a ZIP file, or the bytes of a ZIP file)
         :param str schema_base_url: the schema's base URL, e.g.
             ``'https://standard.open-contracting.org/profiles/ppp/schema/1__0__0__beta/'``
+        :type standard_base_url: str or bytes
         :type extension_versions: dict or list
         """
         # Allows setting the registry URL to e.g. a pull request, when working on a profile.
