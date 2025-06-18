@@ -11,6 +11,9 @@ class CodelistCode(Mapping):
             return self.data == other.data and self.extension_name == other.extension_name
         return dict.__eq__(self.data, other)
 
+    def __hash__(self):
+        return hash((self.data['Code'], self.extension_name))
+
     def __getitem__(self, key):
         return self.data[key]
 
