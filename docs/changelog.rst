@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Unreleased
+----------
+
+-  :class:`~ocdsextensionregistry.codelist_code.CodelistCode`: Add a :meth:`~ocdsextensionregistry.codelist_code.CodelistCode.__hash__` method.
+
 0.6.9 (2025-01-07)
 ------------------
 
