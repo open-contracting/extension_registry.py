@@ -2,11 +2,11 @@ class Extension:
     def __init__(self, data):
         """Accept a row from ``extensions.csv`` and assign values to properties."""
         #: The Id cell.
-        self.id = data['Id']
+        self.id = data["Id"]
         #: The Category cell.
-        self.category = data['Category']
+        self.category = data["Category"]
         #: The Core cell.
-        self.core = data['Core'] == 'true'
+        self.core = data["Core"] == "true"
 
     def __repr__(self):
         return self.id

@@ -11,16 +11,16 @@ from ocdsextensionregistry.util import json_dump
 
 
 class Command(BaseCommand):
-    name = 'patched-release-schema'
-    help = 'Create a patched release schema from the extensions array of a release package or record package.'
+    name = "patched-release-schema"
+    help = "Create a patched release schema from the extensions array of a release package or record package."
 
     def add_arguments(self):
-        self.add_argument('file', help='a release package or record package')
-        self.add_argument('--tag', help='the OCDS version whose release schema to extend, like 1__1__5')
+        self.add_argument("file", help="a release package or record package")
+        self.add_argument("--tag", help="the OCDS version whose release schema to extend, like 1__1__5")
 
     def handle(self):
         # Copy of ocdsmerge.util.get_tags().
-        response = requests.get('https://standard.open-contracting.org/schema/', timeout=10)
+        response = requests.get("https://standard.open-contracting.org/schema/", timeout=10)
         response.raise_for_status()
         tags = re.findall(r'"(\d+__\d+__\d+)/', response.text)
 

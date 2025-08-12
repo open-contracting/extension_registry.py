@@ -12,7 +12,7 @@ class CodelistCode(Mapping):
         return dict.__eq__(self.data, other)
 
     def __hash__(self):
-        return hash((self.data['Code'], self.extension_name))
+        return hash((self.data["Code"], self.extension_name))
 
     def __getitem__(self, key):
         return self.data[key]
@@ -27,12 +27,12 @@ class CodelistCode(Mapping):
         return len(self.data)
 
     def __lt__(self, other):
-        return self.data['Code'] < other.data['Code']
+        return self.data["Code"] < other.data["Code"]
 
     def __repr__(self):
         if self.extension_name:
-            return f'CodelistCode(data={self.data!r}, extension_name={self.extension_name!r})'
-        return f'CodelistCode(data={self.data!r})'
+            return f"CodelistCode(data={self.data!r}, extension_name={self.extension_name!r})"
+        return f"CodelistCode(data={self.data!r})"
 
     def pop(self, *args):
         return self.data.pop(*args)

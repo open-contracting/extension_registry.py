@@ -5,8 +5,10 @@ import pytest
 from ocdsextensionregistry import ExtensionRegistry
 from ocdsextensionregistry.exceptions import DoesNotExist, MissingExtensionMetadata
 
-extensions_url = 'https://raw.githubusercontent.com/open-contracting/extension_registry/main/extensions.csv'
-extension_versions_url = 'https://raw.githubusercontent.com/open-contracting/extension_registry/main/extension_versions.csv'
+extensions_url = "https://raw.githubusercontent.com/open-contracting/extension_registry/main/extensions.csv"
+extension_versions_url = (
+    "https://raw.githubusercontent.com/open-contracting/extension_registry/main/extension_versions.csv"
+)
 
 extensions_data = """Id,Category,Core
 charges,ppp,
@@ -45,53 +47,53 @@ def test_init_with_data():
 
     assert len(obj.versions) == 14
     assert obj.versions[0].as_dict() == {
-        'id': 'charges',
-        'date': '',
-        'version': 'master',
-        'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_charges_extension/master/',
-        'download_url': 'https://github.com/open-contracting-extensions/ocds_charges_extension/archive/master.zip',
-        'category': 'ppp',
-        'core': False,
+        "id": "charges",
+        "date": "",
+        "version": "master",
+        "base_url": "https://raw.githubusercontent.com/open-contracting-extensions/ocds_charges_extension/master/",
+        "download_url": "https://github.com/open-contracting-extensions/ocds_charges_extension/archive/master.zip",
+        "category": "ppp",
+        "core": False,
     }
     # Assume intermediate data is correctly parsed.
     assert obj.versions[-1].as_dict() == {
-        'id': 'lots',
-        'date': '2018-01-30',
-        'version': 'v1.1.3',
-        'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/v1.1.3/',
-        'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_lots_extension/zipball/v1.1.3',
-        'category': 'tender',
-        'core': True,
+        "id": "lots",
+        "date": "2018-01-30",
+        "version": "v1.1.3",
+        "base_url": "https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/v1.1.3/",
+        "download_url": "https://api.github.com/repos/open-contracting-extensions/ocds_lots_extension/zipball/v1.1.3",
+        "category": "tender",
+        "core": True,
     }
 
 
 def test_init_with_file(tmpdir):
-    extension_versions_file = tmpdir.join('extension_versions.csv')
+    extension_versions_file = tmpdir.join("extension_versions.csv")
     extension_versions_file.write(extension_versions_data)
-    extensions_file = tmpdir.join('extensions.csv')
+    extensions_file = tmpdir.join("extensions.csv")
     extensions_file.write(extensions_data)
 
     obj = ExtensionRegistry(Path(extension_versions_file).as_uri(), Path(extensions_file).as_uri())
 
     assert len(obj.versions) == 14
     assert obj.versions[0].as_dict() == {
-        'id': 'charges',
-        'date': '',
-        'version': 'master',
-        'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_charges_extension/master/',
-        'download_url': 'https://github.com/open-contracting-extensions/ocds_charges_extension/archive/master.zip',
-        'category': 'ppp',
-        'core': False,
+        "id": "charges",
+        "date": "",
+        "version": "master",
+        "base_url": "https://raw.githubusercontent.com/open-contracting-extensions/ocds_charges_extension/master/",
+        "download_url": "https://github.com/open-contracting-extensions/ocds_charges_extension/archive/master.zip",
+        "category": "ppp",
+        "core": False,
     }
     # Assume intermediate data is correctly parsed.
     assert obj.versions[-1].as_dict() == {
-        'id': 'lots',
-        'date': '2018-01-30',
-        'version': 'v1.1.3',
-        'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/v1.1.3/',
-        'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_lots_extension/zipball/v1.1.3',
-        'category': 'tender',
-        'core': True,
+        "id": "lots",
+        "date": "2018-01-30",
+        "version": "v1.1.3",
+        "base_url": "https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/v1.1.3/",
+        "download_url": "https://api.github.com/repos/open-contracting-extensions/ocds_lots_extension/zipball/v1.1.3",
+        "category": "tender",
+        "core": True,
     }
 
 
@@ -100,94 +102,94 @@ def test_init_with_versions_only():
 
     assert len(obj.versions) == 14
     assert obj.versions[0].as_dict() == {
-        'id': 'charges',
-        'date': '',
-        'version': 'master',
-        'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_charges_extension/master/',
-        'download_url': 'https://github.com/open-contracting-extensions/ocds_charges_extension/archive/master.zip',
+        "id": "charges",
+        "date": "",
+        "version": "master",
+        "base_url": "https://raw.githubusercontent.com/open-contracting-extensions/ocds_charges_extension/master/",
+        "download_url": "https://github.com/open-contracting-extensions/ocds_charges_extension/archive/master.zip",
     }
     # Assume intermediate data is correctly parsed.
     assert obj.versions[-1].as_dict() == {
-        'id': 'lots',
-        'date': '2018-01-30',
-        'version': 'v1.1.3',
-        'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/v1.1.3/',
-        'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_lots_extension/zipball/v1.1.3',
+        "id": "lots",
+        "date": "2018-01-30",
+        "version": "v1.1.3",
+        "base_url": "https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/v1.1.3/",
+        "download_url": "https://api.github.com/repos/open-contracting-extensions/ocds_lots_extension/zipball/v1.1.3",
     }
 
 
 def test_filter():
     obj = ExtensionRegistry(extension_versions_data, extensions_data)
-    result = obj.filter(core=True, version='v1.1.3', category='tender')
+    result = obj.filter(core=True, version="v1.1.3", category="tender")
 
     assert len(result) == 2
     assert result[0].as_dict() == {
-        'id': 'enquiries',
-        'date': '2018-02-01',
-        'version': 'v1.1.3',
-        'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_enquiry_extension/v1.1.3/',
-        'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_enquiry_extension/zipball/v1.1.3',
-        'category': 'tender',
-        'core': True,
+        "id": "enquiries",
+        "date": "2018-02-01",
+        "version": "v1.1.3",
+        "base_url": "https://raw.githubusercontent.com/open-contracting-extensions/ocds_enquiry_extension/v1.1.3/",
+        "download_url": "https://api.github.com/repos/open-contracting-extensions/ocds_enquiry_extension/zipball/v1.1.3",
+        "category": "tender",
+        "core": True,
     }
     assert result[1].as_dict() == {
-        'id': 'lots',
-        'date': '2018-01-30',
-        'version': 'v1.1.3',
-        'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/v1.1.3/',
-        'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_lots_extension/zipball/v1.1.3',
-        'category': 'tender',
-        'core': True,
+        "id": "lots",
+        "date": "2018-01-30",
+        "version": "v1.1.3",
+        "base_url": "https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/v1.1.3/",
+        "download_url": "https://api.github.com/repos/open-contracting-extensions/ocds_lots_extension/zipball/v1.1.3",
+        "category": "tender",
+        "core": True,
     }
 
 
 def test_filter_without_extensions():
     obj = ExtensionRegistry(extension_versions_data)
     with pytest.raises(MissingExtensionMetadata) as excinfo:
-        obj.filter(category='tender')
+        obj.filter(category="tender")
 
-    assert str(excinfo.value) == 'ExtensionRegistry must be initialized with extensions data.'
+    assert str(excinfo.value) == "ExtensionRegistry must be initialized with extensions data."
 
 
 def test_filter_invalid():
     obj = ExtensionRegistry(extension_versions_data)
     with pytest.raises(AttributeError) as excinfo:
-        obj.filter(invalid='invalid')
+        obj.filter(invalid="invalid")
 
     assert str(excinfo.value) == "'ExtensionVersion' object has no attribute 'invalid'"
 
 
 def test_get():
     obj = ExtensionRegistry(extension_versions_data)
-    result = obj.get(id='lots', version='v1.1.3')
+    result = obj.get(id="lots", version="v1.1.3")
 
     assert result.as_dict() == {
-        'id': 'lots',
-        'date': '2018-01-30',
-        'version': 'v1.1.3',
-        'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/v1.1.3/',
-        'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_lots_extension/zipball/v1.1.3',
+        "id": "lots",
+        "date": "2018-01-30",
+        "version": "v1.1.3",
+        "base_url": "https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/v1.1.3/",
+        "download_url": "https://api.github.com/repos/open-contracting-extensions/ocds_lots_extension/zipball/v1.1.3",
     }
 
 
 def test_get_from_url():
     obj = ExtensionRegistry(extension_versions_data)
-    url = 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/v1.1.3/extension.json'
+    url = "https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/v1.1.3/extension.json"
     result = obj.get_from_url(url)
 
     assert result.as_dict() == {
-        'id': 'lots',
-        'date': '2018-01-30',
-        'version': 'v1.1.3',
-        'base_url': 'https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/v1.1.3/',
-        'download_url': 'https://api.github.com/repos/open-contracting-extensions/ocds_lots_extension/zipball/v1.1.3',
+        "id": "lots",
+        "date": "2018-01-30",
+        "version": "v1.1.3",
+        "base_url": "https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/v1.1.3/",
+        "download_url": "https://api.github.com/repos/open-contracting-extensions/ocds_lots_extension/zipball/v1.1.3",
     }
 
 
 def test_get_no_match():
     obj = ExtensionRegistry(extension_versions_data)
     with pytest.raises(DoesNotExist) as excinfo:
-        obj.get(id='nonexistent')
+        obj.get(id="nonexistent")
 
     assert str(excinfo.value) == "Extension version matching {'id': 'nonexistent'} does not exist."
 
@@ -195,7 +197,7 @@ def test_get_no_match():
 def test_get_from_url_no_match():
     obj = ExtensionRegistry(extension_versions_data)
     with pytest.raises(DoesNotExist) as excinfo:
-        obj.get_from_url('http://example.com')
+        obj.get_from_url("http://example.com")
 
     assert str(excinfo.value) == "Extension version matching {'base_url': 'http://example.com/'} does not exist."
 
@@ -203,9 +205,9 @@ def test_get_from_url_no_match():
 def test_get_without_extensions():
     obj = ExtensionRegistry(extension_versions_data)
     with pytest.raises(MissingExtensionMetadata) as excinfo:
-        obj.get(category='tender')
+        obj.get(category="tender")
 
-    assert str(excinfo.value) == 'ExtensionRegistry must be initialized with extensions data.'
+    assert str(excinfo.value) == "ExtensionRegistry must be initialized with extensions data."
 
 
 def test_iter():

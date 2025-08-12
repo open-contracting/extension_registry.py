@@ -19,9 +19,9 @@ from ocdsextensionregistry.exceptions import (
 )
 from ocdsextensionregistry.util import _resolve_zip, session
 
-SCHEMAS = ('record-package-schema.json', 'release-package-schema.json', 'release-schema.json')
-FIELD_NAME = '4F434453'  # OCDS in hexidecimal
-FIELD = f'{{{FIELD_NAME}}}'
+SCHEMAS = ("record-package-schema.json", "release-package-schema.json", "release-schema.json")
+FIELD_NAME = "4F434453"  # OCDS in hexidecimal
+FIELD = f"{{{FIELD_NAME}}}"
 
 
 class ExtensionVersion:
@@ -34,20 +34,20 @@ class ExtensionVersion:
            Check the arguments to prevent server-side request forgery (SSRF).
         """
         #: The Id cell.
-        self.id = data['Id']
+        self.id = data["Id"]
         #: The Date cell.
-        self.date = data['Date']
+        self.date = data["Date"]
         #: The Version cell.
-        self.version = data['Version']
+        self.version = data["Version"]
         #: The Base URL cell.
-        self.base_url = data['Base URL']
+        self.base_url = data["Base URL"]
         #: The Download URL cell.
-        self.download_url = data['Download URL']
+        self.download_url = data["Download URL"]
         #: The URL that was provided in a list to
         #: :meth:`ocdsextensionregistry.profile_builder.ProfileBuilder.extensions`.
         self.input_url = input_url
         #: The URL schemes to allow.
-        self.allow_schemes = {'http', 'https'}
+        self.allow_schemes = {"http", "https"}
 
         self._url_pattern = url_pattern
         self._file_urls = file_urls or {}
@@ -64,14 +64,14 @@ class ExtensionVersion:
 
     def __repr__(self):
         if self.id and self.version:
-            return f'{self.id}=={self.version}'
+            return f"{self.id}=={self.version}"
         if self.base_url:
             return self.base_url
         if self.download_url:
             return self.download_url
         if self._url_pattern:
             return self._url_pattern
-        return self._file_urls['release-schema.json']
+        return self._file_urls["release-schema.json"]
 
     def update(self, other):
         """Merge in the properties of another Extension or ExtensionVersion object."""
@@ -81,8 +81,9 @@ class ExtensionVersion:
     def as_dict(self):
         """Return the object's public properties as a dictionary."""
         return {
-            key: value for key, value in self.__dict__.items()
-            if key not in {'input_url', 'allow_schemes'} and not key.startswith('_')
+            key: value
+            for key, value in self.__dict__.items()
+            if key not in {"input_url", "allow_schemes"} and not key.startswith("_")
         }
 
     def get_url(self, basename):
@@ -94,7 +95,7 @@ class ExtensionVersion:
         if basename in self._file_urls:
             return self._file_urls[basename]
         if self.base_url:
-            return f'{self.base_url}{basename}'
+            return f"{self.base_url}{basename}"
         if self._url_pattern:
             return self._url_pattern.format(**{FIELD_NAME: basename})
         raise NotImplementedError("get_url() with no base URL or matching file URL is not implemented")
@@ -120,12 +121,12 @@ class ExtensionVersion:
 
             if default is None or response.status_code != requests.codes.not_found:
                 response.raise_for_status()
-                self._files[basename] = response.content.decode('utf-8')
+                self._files[basename] = response.content.decode("utf-8")
 
         if default is not None:
             return self.files.get(basename, default)
         if basename not in self.files:
-            raise DoesNotExist(f'File {basename!r} does not exist in {self}')
+            raise DoesNotExist(f"File {basename!r} does not exist in {self}")
         return self.files[basename]
 
     @property
@@ -148,10 +149,10 @@ class ExtensionVersion:
 
                     for name in names[1:]:
                         filename = name[start:]
-                        if filename[-1] != '/' and not filename.startswith('.'):
+                        if filename[-1] != "/" and not filename.startswith("."):
                             content = zipfile.read(name)
-                            if os.path.splitext(name)[1] in {'.csv', '.json', '.md'}:
-                                content = content.decode('utf-8')
+                            if os.path.splitext(name)[1] in {".csv", ".json", ".md"}:
+                                content = content.decode("utf-8")
                             files[filename] = content
 
             self._files = files
@@ -176,7 +177,7 @@ class ExtensionVersion:
             self._raise_for_scheme(self.download_url)
             return _resolve_zip(self.download_url)
 
-        raise NotAvailableInBulk('ExtensionVersion.zipfile() requires a download_url.')
+        raise NotAvailableInBulk("ExtensionVersion.zipfile() requires a download_url.")
 
     @property
     def metadata(self):
@@ -186,18 +187,18 @@ class ExtensionVersion:
         Add language maps if not present.
         """
         if self._metadata is None:
-            self._metadata = json.loads(self.remote('extension.json'))
+            self._metadata = json.loads(self.remote("extension.json"))
 
-            for field in ('name', 'description', 'documentationUrl'):
+            for field in ("name", "description", "documentationUrl"):
                 # Add required fields.
                 self._metadata.setdefault(field, {})
                 # Add language maps.
                 if not isinstance(self._metadata[field], dict):
-                    self._metadata[field] = {'en': self._metadata[field]}
+                    self._metadata[field] = {"en": self._metadata[field]}
 
             # Fix the compatibility.
-            if 'compatibility' not in self._metadata or isinstance(self._metadata['compatibility'], str):
-                self._metadata['compatibility'] = ['1.1']
+            if "compatibility" not in self._metadata or isinstance(self._metadata["compatibility"], str):
+                self._metadata["compatibility"] = ["1.1"]
 
         return self._metadata
 
@@ -207,8 +208,8 @@ class ExtensionVersion:
         if self._schemas is None:
             schemas = {}
 
-            if 'schemas' in self.metadata:
-                names = self.metadata['schemas']
+            if "schemas" in self.metadata:
+                names = self.metadata["schemas"]
             elif self.download_url:
                 names = [name for name in self.files if name in SCHEMAS]
             else:
@@ -218,7 +219,7 @@ class ExtensionVersion:
                 try:
                     schemas[name] = json.loads(self.remote(name))
                 except requests.HTTPError:
-                    if 'schemas' in self.metadata:  # avoid raising if using SCHEMAS
+                    if "schemas" in self.metadata:  # avoid raising if using SCHEMAS
                         raise
 
             self._schemas = schemas
@@ -238,10 +239,10 @@ class ExtensionVersion:
         if self._codelists is None:
             codelists = {}
 
-            if 'codelists' in self.metadata:
-                names = self.metadata['codelists']
+            if "codelists" in self.metadata:
+                names = self.metadata["codelists"]
             elif self.download_url:
-                names = [name[10:] for name in self.files if name.startswith('codelists/')]
+                names = [name[10:] for name in self.files if name.startswith("codelists/")]
             else:
                 names = []
 
@@ -249,7 +250,7 @@ class ExtensionVersion:
                 try:
                     codelists[name] = Codelist(name)
                     # Use universal newlines mode, to avoid parsing errors.
-                    io = StringIO(self.remote(f'codelists/{name}'), newline='')
+                    io = StringIO(self.remote(f"codelists/{name}"), newline="")
                     codelists[name].extend(csv.DictReader(io))
                 except (
                     UnicodeDecodeError,
@@ -274,7 +275,7 @@ class ExtensionVersion:
 
             open-contracting-extensions/ocds_bid_extension
         """
-        return self._repository_property('full_name')
+        return self._repository_property("full_name")
 
     @property
     def repository_name(self):
@@ -286,7 +287,7 @@ class ExtensionVersion:
 
             ocds_bid_extension
         """
-        return self._repository_property('name')
+        return self._repository_property("name")
 
     @property
     def repository_user(self):
@@ -297,7 +298,7 @@ class ExtensionVersion:
 
             open-contracting-extensions
         """
-        return self._repository_property('user')
+        return self._repository_property("user")
 
     @property
     def repository_ref(self):
@@ -308,7 +309,7 @@ class ExtensionVersion:
 
             v1.1.5
         """
-        return self._repository_property('ref')
+        return self._repository_property("ref")
 
     @property
     def repository_user_page(self):
@@ -319,7 +320,7 @@ class ExtensionVersion:
 
             https://github.com/open-contracting-extensions
         """
-        return self._repository_property('user_page')
+        return self._repository_property("user_page")
 
     @property
     def repository_html_page(self):
@@ -330,7 +331,7 @@ class ExtensionVersion:
 
             https://github.com/open-contracting-extensions/ocds_bid_extension
         """
-        return self._repository_property('html_page')
+        return self._repository_property("html_page")
 
     @property
     def repository_url(self):
@@ -342,7 +343,7 @@ class ExtensionVersion:
 
             https://github.com/open-contracting-extensions/ocds_bid_extension.git
         """
-        return self._repository_property('url')
+        return self._repository_property("url")
 
     @property
     def repository_ref_download_url(self):
@@ -353,28 +354,28 @@ class ExtensionVersion:
 
             https://github.com/open-contracting-extensions/ocds_bid_extension/archive/v1.1.5.zip
         """
-        return self._repository_property('ref_download_url')
+        return self._repository_property("ref_download_url")
 
     def _repository_full_name(self, parsed, config):
-        match = re.search(config['full_name:pattern'], parsed.path)
+        match = re.search(config["full_name:pattern"], parsed.path)
         if match:
             return match.group(1)
         raise AttributeError(f"{parsed.path} !~ {config['full_name:pattern']}")
 
     def _repository_name(self, parsed, config):
-        match = re.search(config['name:pattern'], parsed.path)
+        match = re.search(config["name:pattern"], parsed.path)
         if match:
             return match.group(1)
         raise AttributeError(f"{parsed.path} !~ {config['name:pattern']}")
 
     def _repository_user(self, parsed, config):
-        match = re.search(config['user:pattern'], parsed.path)
+        match = re.search(config["user:pattern"], parsed.path)
         if match:
             return match.group(1)
         raise AttributeError(f"{parsed.path} !~ {config['user:pattern']}")
 
     def _repository_ref(self, parsed, config):
-        match = re.search(config['ref:pattern'], parsed.path)
+        match = re.search(config["ref:pattern"], parsed.path)
         if match:
             return match.group(1)
         raise AttributeError(f"{parsed.path} !~ {config['ref:pattern']}")
@@ -389,7 +390,7 @@ class ExtensionVersion:
         return f"{config['url:prefix']}{self._repository_full_name(parsed, config)}{config['url:suffix']}"
 
     def _repository_ref_download_url(self, parsed, config):
-        return config['download:format'].format(
+        return config["download:format"].format(
             full_name=self._repository_full_name(parsed, config),
             ref=self._repository_ref(parsed, config),
         )
@@ -398,7 +399,7 @@ class ExtensionVersion:
         parsed = urlsplit(self.base_url)
         config = self._configuration(parsed)
         if config:
-            return getattr(self, f'_repository_{prop}')(parsed, config)
+            return getattr(self, f"_repository_{prop}")(parsed, config)
         raise NotImplementedError(f"can't determine {prop} from {self.base_url}")
 
     def _configuration(self, parsed):
@@ -411,41 +412,41 @@ class ExtensionVersion:
         # If all interfaces could be disambiguated using the domain alone, we could implement the lookup of the
         # configuration as a dictionary. Since that's not the case, the lookup is implemented as a method.
         netloc = parsed.netloc
-        if netloc == 'raw.githubusercontent.com':
+        if netloc == "raw.githubusercontent.com":
             # Sample base URL: https://raw.githubusercontent.com/open-contracting-extensions/ocds_bid_extension/v1.1.4/
             return {
-                'full_name:pattern': r'\A/([^/]+/[^/]+)',
-                'name:pattern': r'\A/[^/]+/([^/]+)',
-                'user:pattern': r'\A/([^/]+)',
-                'ref:pattern': r'\A/[^/]+/[^/]+/([^/]+)/[^/]*\Z',
-                'html_page:prefix': 'https://github.com/',
-                'url:prefix': 'git@github.com:',
-                'url:suffix': '.git',
-                'download:format': 'https://github.com/{full_name}/archive/{ref}.zip',
+                "full_name:pattern": r"\A/([^/]+/[^/]+)",
+                "name:pattern": r"\A/[^/]+/([^/]+)",
+                "user:pattern": r"\A/([^/]+)",
+                "ref:pattern": r"\A/[^/]+/[^/]+/([^/]+)/[^/]*\Z",
+                "html_page:prefix": "https://github.com/",
+                "url:prefix": "git@github.com:",
+                "url:suffix": ".git",
+                "download:format": "https://github.com/{full_name}/archive/{ref}.zip",
             }
-        if netloc == 'bitbucket.org':
+        if netloc == "bitbucket.org":
             # A base URL may look like: https://bitbucket.org/facebook/hgsql/raw/default/
             return {
-                'full_name:pattern': r'\A/([^/]+/[^/]+)',
-                'name:pattern': r'\A/[^/]+/([^/]+)',
-                'user:pattern': r'\A/([^/]+)',
-                'ref:pattern': r'\A/[^/]+/[^/]+/raw/([^/]+)/[^/]*\Z',
-                'html_page:prefix': 'https://bitbucket.org/',
-                'url:prefix': 'https://bitbucket.org/',
-                'url:suffix': '.git',  # assumes Git not Mercurial, which can't be disambiguated using the base URL
-                'download:format': 'https://bitbucket.org/{full_name}/get/{ref}.zip',
+                "full_name:pattern": r"\A/([^/]+/[^/]+)",
+                "name:pattern": r"\A/[^/]+/([^/]+)",
+                "user:pattern": r"\A/([^/]+)",
+                "ref:pattern": r"\A/[^/]+/[^/]+/raw/([^/]+)/[^/]*\Z",
+                "html_page:prefix": "https://bitbucket.org/",
+                "url:prefix": "https://bitbucket.org/",
+                "url:suffix": ".git",  # assumes Git not Mercurial, which can't be disambiguated using the base URL
+                "download:format": "https://bitbucket.org/{full_name}/get/{ref}.zip",
             }
-        if netloc == 'gitlab.com':
+        if netloc == "gitlab.com":
             # A base URL may look like: https://gitlab.com/gitlab-org/gitter/env/raw/master/
             return {
-                'full_name:pattern': r'\A/(.+)/-/raw/',
-                'name:pattern': r'/([^/]+)/-/raw/',
-                'user:pattern': r'\A/([^/]+)',
-                'ref:pattern': r'/-/raw/([^/]+)/[^/]*\Z',
-                'html_page:prefix': 'https://gitlab.com/',
-                'url:prefix': 'https://gitlab.com/',
-                'url:suffix': '.git',
-                'download:format': 'https://gitlab.com/{full_name}/-/archive/{ref}.zip',
+                "full_name:pattern": r"\A/(.+)/-/raw/",
+                "name:pattern": r"/([^/]+)/-/raw/",
+                "user:pattern": r"\A/([^/]+)",
+                "ref:pattern": r"/-/raw/([^/]+)/[^/]*\Z",
+                "html_page:prefix": "https://gitlab.com/",
+                "url:prefix": "https://gitlab.com/",
+                "url:suffix": ".git",
+                "download:format": "https://gitlab.com/{full_name}/-/archive/{ref}.zip",
             }
         return None
 

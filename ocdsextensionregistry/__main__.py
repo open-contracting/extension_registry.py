@@ -5,20 +5,20 @@ import sys
 
 from ocdsextensionregistry.exceptions import CommandError
 
-logger = logging.getLogger('ocdsextensionregistry')
+logger = logging.getLogger("ocdsextensionregistry")
 
 COMMAND_MODULES = (
-    'ocdsextensionregistry.commands.download',
-    'ocdsextensionregistry.commands.generate_data_file',
-    'ocdsextensionregistry.commands.generate_pot_files',
-    'ocdsextensionregistry.commands.patched_release_schema',
+    "ocdsextensionregistry.commands.download",
+    "ocdsextensionregistry.commands.generate_data_file",
+    "ocdsextensionregistry.commands.generate_pot_files",
+    "ocdsextensionregistry.commands.patched_release_schema",
 )
 
 
 def main():
-    parser = argparse.ArgumentParser(description='OCDS Extension Registry CLI')
+    parser = argparse.ArgumentParser(description="OCDS Extension Registry CLI")
 
-    subparsers = parser.add_subparsers(dest='subcommand')
+    subparsers = parser.add_subparsers(dest="subcommand")
 
     subcommands = {}
 
@@ -44,5 +44,5 @@ def main():
         parser.print_help()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -50,12 +50,13 @@ from ocdsextensionregistry.extension_version import FIELD, ExtensionVersion
 from ocdsextensionregistry.util import _resolve_zip, remove_nulls, replace_refs
 from ocdsextensionregistry.versioned_release_schema import get_versioned_release_schema
 
-logger = logging.getLogger('ocdsextensionregistry')
+logger = logging.getLogger("ocdsextensionregistry")
 
 
 class ProfileBuilder:
-    def __init__(self, standard_tag, extension_versions, registry_base_url=None, standard_base_url=None,
-                 schema_base_url=None):
+    def __init__(
+        self, standard_tag, extension_versions, registry_base_url=None, standard_base_url=None, schema_base_url=None
+    ):
         """
         Accept an OCDS version and either a dictionary of extension identifiers and versions, or a list of extensions'
         metadata URLs, base URLs and/or download URLs, and initialize a reader of the extension registry.
@@ -79,9 +80,9 @@ class ProfileBuilder:
         """
         # Allows setting the registry URL to e.g. a pull request, when working on a profile.
         if not registry_base_url:
-            registry_base_url = 'https://raw.githubusercontent.com/open-contracting/extension_registry/main/'
+            registry_base_url = "https://raw.githubusercontent.com/open-contracting/extension_registry/main/"
         if not standard_base_url and standard_tag:
-            standard_base_url = f'https://codeload.github.com/open-contracting/standard/zip/{standard_tag}'
+            standard_base_url = f"https://codeload.github.com/open-contracting/standard/zip/{standard_tag}"
 
         self.standard_tag = standard_tag
         self.extension_versions = extension_versions
@@ -94,27 +95,27 @@ class ProfileBuilder:
     @property
     def registry(self):
         if self._registry is None:
-            self._registry = ExtensionRegistry(f'{self.registry_base_url}extension_versions.csv')
+            self._registry = ExtensionRegistry(f"{self.registry_base_url}extension_versions.csv")
 
         return self._registry
 
     @staticmethod
     def _extension_from_url(url, parsed):
-        data = dict.fromkeys(['Id', 'Date', 'Version', 'Base URL', 'Download URL'])
-        kwargs = {'input_url': url}
-        if url.endswith('/extension.json'):
-            data['Base URL'] = url[:-14]
-        elif url.endswith('/'):
-            data['Base URL'] = url
+        data = dict.fromkeys(["Id", "Date", "Version", "Base URL", "Download URL"])
+        kwargs = {"input_url": url}
+        if url.endswith("/extension.json"):
+            data["Base URL"] = url[:-14]
+        elif url.endswith("/"):
+            data["Base URL"] = url
         # If the files are served via API, with the filename as a query string parameter.
-        elif 'extension.json' in url:
-            kwargs['url_pattern'] = url.replace('extension.json', FIELD)
-        elif 'release-schema.json' in url:
-            kwargs['url_pattern'] = url.replace('release-schema.json', FIELD)
-        elif parsed.path.endswith('.json'):
-            kwargs['file_urls'] = {'release-schema.json': url}
+        elif "extension.json" in url:
+            kwargs["url_pattern"] = url.replace("extension.json", FIELD)
+        elif "release-schema.json" in url:
+            kwargs["url_pattern"] = url.replace("release-schema.json", FIELD)
+        elif parsed.path.endswith(".json"):
+            kwargs["file_urls"] = {"release-schema.json": url}
         else:
-            data['Download URL'] = url
+            data["Download URL"] = url
         return ExtensionVersion(data, **kwargs)
 
     def extensions(self):
@@ -132,7 +133,7 @@ class ProfileBuilder:
                     continue
                 yield self._extension_from_url(url, urlsplit(url))
 
-    def release_schema_patch(self, *, extension_field=None, extension_value='name', language='en'):
+    def release_schema_patch(self, *, extension_field=None, extension_value="name", language="en"):
         """
         Return the consolidated release schema patch.
 
@@ -152,7 +153,7 @@ class ProfileBuilder:
         # Remove `null`, because removing fields or properties is prohibited.
         for extension in self.extensions():
             try:
-                patch = json.loads(extension.remote('release-schema.json', default='{}'))
+                patch = json.loads(extension.remote("release-schema.json", default="{}"))
                 remove_nulls(patch)
             except (
                 UnicodeDecodeError,
@@ -164,10 +165,10 @@ class ProfileBuilder:
                 warnings.warn(ExtensionWarning(extension, e), stacklevel=2)
                 continue
             if extension_field:
-                if extension_value == 'name':
-                    value = extension.metadata['name'][language]
-                elif extension_value == 'url':
-                    value = extension.get_url('release-schema.json')
+                if extension_value == "name":
+                    value = extension.metadata["name"][language]
+                elif extension_value == "url":
+                    value = extension.get_url("release-schema.json")
                 else:
                     raise NotImplementedError
                 _add_extension_field(patch, value, extension_field)
@@ -175,7 +176,7 @@ class ProfileBuilder:
 
         return output
 
-    def patched_release_schema(self, *, schema=None, language='en', **kwargs):
+    def patched_release_schema(self, *, schema=None, language="en", **kwargs):
         """
         Return the patched release schema.
 
@@ -188,17 +189,17 @@ class ProfileBuilder:
         :param kwargs: see :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_schema_patch`
         """
         if not schema:
-            schema = json.loads(self.get_standard_file_contents('release-schema.json', language=language))
+            schema = json.loads(self.get_standard_file_contents("release-schema.json", language=language))
 
         json_merge_patch.merge(schema, self.release_schema_patch(language=language, **kwargs))
 
         if base := self.schema_base_url:
-            schema['id'] = urljoin(base, 'release-schema.json')
+            schema["id"] = urljoin(base, "release-schema.json")
 
         return schema
 
     def release_package_schema(
-        self, *, schema=None, patched=None, embed=False, proxies=False, language='en', **kwargs
+        self, *, schema=None, patched=None, embed=False, proxies=False, language="en", **kwargs
     ):
         """
         Return a release package schema.
@@ -214,21 +215,21 @@ class ProfileBuilder:
         :param kwargs: see :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_schema_patch`
         """
         if not schema:
-            schema = json.loads(self.get_standard_file_contents('release-package-schema.json', language=language))
+            schema = json.loads(self.get_standard_file_contents("release-package-schema.json", language=language))
 
         if base := self.schema_base_url:
-            schema['id'] = urljoin(base, 'release-package-schema.json')
+            schema["id"] = urljoin(base, "release-package-schema.json")
             if not embed:
-                schema['properties']['releases']['items']['$ref'] = urljoin(base, 'release-schema.json')
+                schema["properties"]["releases"]["items"]["$ref"] = urljoin(base, "release-schema.json")
 
         if embed or patched:
             if patched is None:
                 patched = self.patched_release_schema(language=language, **kwargs)
-            schema['properties']['releases']['items'] = replace_refs(patched, proxies=proxies)
+            schema["properties"]["releases"]["items"] = replace_refs(patched, proxies=proxies)
 
         return schema
 
-    def record_package_schema(self, *, schema=None, patched=None, embed=False, proxies=False, language='en', **kwargs):
+    def record_package_schema(self, *, schema=None, patched=None, embed=False, proxies=False, language="en", **kwargs):
         """
         Return a record package schema.
 
@@ -243,24 +244,24 @@ class ProfileBuilder:
         :param kwargs: see :meth:`~ocdsextensionregistry.profile_builder.ProfileBuilder.release_schema_patch`
         """
         if not schema:
-            schema = json.loads(self.get_standard_file_contents('record-package-schema.json', language=language))
+            schema = json.loads(self.get_standard_file_contents("record-package-schema.json", language=language))
 
-        properties = schema['definitions']['record']['properties']
+        properties = schema["definitions"]["record"]["properties"]
 
         if base := self.schema_base_url:
-            schema['id'] = urljoin(base, 'record-package-schema.json')
+            schema["id"] = urljoin(base, "record-package-schema.json")
             if not embed:
-                url = urljoin(base, 'release-schema.json')
-                properties['compiledRelease']['$ref'] = url
-                properties['releases']['oneOf'][1]['items']['$ref'] = url
-                properties['versionedRelease']['$ref'] = urljoin(base, 'versioned-release-validation-schema.json')
+                url = urljoin(base, "release-schema.json")
+                properties["compiledRelease"]["$ref"] = url
+                properties["releases"]["oneOf"][1]["items"]["$ref"] = url
+                properties["versionedRelease"]["$ref"] = urljoin(base, "versioned-release-validation-schema.json")
 
         if embed or patched:
             if patched is None:
                 patched = self.patched_release_schema(language=language, **kwargs)
             deref = replace_refs(patched, proxies=proxies)
-            properties['compiledRelease'] = deref
-            properties['releases']['oneOf'][1]['items'] = deref
+            properties["compiledRelease"] = deref
+            properties["releases"]["oneOf"][1]["items"] = deref
             properties["versionedRelease"] = replace_refs(
                 get_versioned_release_schema(patched, self.standard_tag), proxies=proxies
             )
@@ -272,14 +273,14 @@ class ProfileBuilder:
         codelists = {}
 
         # Populate the file cache.
-        self.get_standard_file_contents('release-schema.json')
+        self.get_standard_file_contents("release-schema.json")
 
         # This method shouldn't need to know about `_file_cache`.
-        for path, content in self._file_cache['en'].items():
+        for path, content in self._file_cache["en"].items():
             name = os.path.basename(path)
-            if 'codelists' in path.split('/') and name:
+            if "codelists" in path.split("/") and name:
                 codelists[name] = Codelist(name)
-                codelists[name].extend(csv.DictReader(StringIO(content)), 'OCDS Core')
+                codelists[name].extend(csv.DictReader(StringIO(content)), "OCDS Core")
 
         return list(codelists.values())
 
@@ -301,18 +302,18 @@ class ProfileBuilder:
         for extension in self.extensions():
             # We use the "codelists" field in extension.json (which standard-maintenance-scripts validates). An
             # extension is not guaranteed to offer a download URL, which is the only other way to get codelists.
-            for name in extension.metadata.get('codelists', []):
-                content = extension.remote(f'codelists/{name}')
+            for name in extension.metadata.get("codelists", []):
+                content = extension.remote(f"codelists/{name}")
 
                 if name not in codelists:
                     codelists[name] = Codelist(name)
                     originals[name] = content
                 elif not codelists[name].patch:
                     if originals[name] != content:
-                        raise AssertionError(f'codelist {name} differs across extensions')
+                        raise AssertionError(f"codelist {name} differs across extensions")
                     continue
 
-                codelists[name].extend(csv.DictReader(StringIO(content)), extension.metadata['name']['en'])
+                codelists[name].extend(csv.DictReader(StringIO(content)), extension.metadata["name"]["en"])
 
         # If a codelist replacement (name.csv) is consistent with additions (+name.csv) and removals (-name.csv), the
         # latter should be removed. In other words, the expectations are that:
@@ -331,16 +332,16 @@ class ProfileBuilder:
                 codes = codelists[basename].codes
                 if codelist.addend:
                     for row in codelist:
-                        code = row['Code']
+                        code = row["Code"]
                         if code not in codes:
-                            warnings.warn(f'{code} added by {name}, but not in {basename}', stacklevel=2)
-                    logger.info('%s has the codes added by %s - ignoring %s', basename, name, name)
+                            warnings.warn(f"{code} added by {name}, but not in {basename}", stacklevel=2)
+                    logger.info("%s has the codes added by %s - ignoring %s", basename, name, name)
                 else:
                     for row in codelist:
-                        code = row['Code']
+                        code = row["Code"]
                         if code in codes:
-                            warnings.warn(f'{code} removed by {name}, but in {basename}', stacklevel=2)
-                    logger.info('%s has no codes removed by %s - ignoring %s', basename, name, name)
+                            warnings.warn(f"{code} removed by {name}, but in {basename}", stacklevel=2)
+                    logger.info("%s has no codes removed by %s - ignoring %s", basename, name, name)
                 del codelists[name]
 
         return list(codelists.values())
@@ -362,14 +363,14 @@ class ProfileBuilder:
                 else:
                     # Remove the codes. Multiple extensions can remove the same codes.
                     removed = codelist.codes
-                    codelists[basename].rows = [row for row in codelists[basename] if row['Code'] not in removed]
+                    codelists[basename].rows = [row for row in codelists[basename] if row["Code"] not in removed]
             else:
                 # Set or replace the rows.
                 codelists[codelist.name] = codelist
 
         return list(codelists.values())
 
-    def get_standard_file_contents(self, basename, language='en'):
+    def get_standard_file_contents(self, basename, language="en"):
         """
         Return the contents of the file within the standard.
 
@@ -380,22 +381,25 @@ class ProfileBuilder:
         :param str language: the string with which to replace ``{{lang}}`` placeholders
         """
         if language not in self._file_cache:
-            zipfile = _resolve_zip(self.standard_base_url, 'schema')
+            zipfile = _resolve_zip(self.standard_base_url, "schema")
             names = zipfile.namelist()
 
             path = names[0]
-            if self.standard_tag < '1__1__5':
-                path += 'standard/schema/'
+            if self.standard_tag < "1__1__5":
+                path += "standard/schema/"
             else:
-                path += 'schema/'
+                path += "schema/"
             start = len(path)
 
             cache = {}
             for name in names[1:]:
                 if path in name:
                     # The ocds_babel.translate.translate() function makes these substitutions for published files.
-                    cache[name[start:]] = zipfile.read(name).decode('utf-8').replace('{{lang}}', language).replace(
-                        "{{version}}", '.'.join(self.standard_tag.split('__')[:2])
+                    cache[name[start:]] = (
+                        zipfile.read(name)
+                        .decode("utf-8")
+                        .replace("{{lang}}", language)
+                        .replace("{{version}}", ".".join(self.standard_tag.split("__")[:2]))
                     )
 
             # Set _file_cache at once, e.g. if threaded.
@@ -411,7 +415,7 @@ def _add_extension_field(schema, extension_name, field_name, pointer=None):
         for item in schema:
             _add_extension_field(item, extension_name, field_name=field_name, pointer=pointer)
     elif isinstance(schema, dict):
-        if len(pointer) > 1 and pointer[-2] in {'definitions', 'properties'} and 'title' in schema:
+        if len(pointer) > 1 and pointer[-2] in {"definitions", "properties"} and "title" in schema:
             schema[field_name] = extension_name
         for key, value in schema.items():
             _add_extension_field(value, extension_name, field_name=field_name, pointer=(*pointer, key))

@@ -10,26 +10,16 @@ from ocdsextensionregistry.exceptions import (
 )
 
 _VERSIONED_TEMPLATE = {
-  "type": "array",
-  "items": {
-    "type": "object",
-    "properties": {
-      "releaseDate": {
-        "format": "date-time",
-        "type": "string"
-      },
-      "releaseID": {
-        "type": "string"
-      },
-      "value": {},
-      "releaseTag": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      }
-    }
-  }
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "releaseDate": {"format": "date-time", "type": "string"},
+            "releaseID": {"type": "string"},
+            "value": {},
+            "releaseTag": {"type": "array", "items": {"type": "string"}},
+        },
+    },
 }
 _COMMON_VERSIONED_DEFINITIONS = {
     "StringNullUriVersioned": {
@@ -271,9 +261,7 @@ def get_versioned_release_schema(schema, tag):
     schema = deepcopy(schema)
 
     # Update schema metadata.
-    schema["id"] = (
-        f"https://standard.open-contracting.org/schema/{tag}/versioned-release-validation-schema.json"
-    )
+    schema["id"] = f"https://standard.open-contracting.org/schema/{tag}/versioned-release-validation-schema.json"
     schema["title"] = "Schema for a compiled, versioned Open Contracting Release."
 
     # Release IDs, dates and tags appear alongside values in the versioned release schema.
@@ -313,9 +301,7 @@ def get_versioned_release_schema(schema, tag):
                 definition = deepcopy(schema["definitions"][name[:-11]])
                 pointer = f"/definitions/{name[:-11]}/properties/id"
                 pointers = unversioned_pointers - {pointer}
-                _add_versioned_field(
-                    definition, pointers, pointer, "id", definition["properties"]["id"]
-                )
+                _add_versioned_field(definition, pointers, pointer, "id", definition["properties"]["id"])
             else:
                 # Add a copy of an definition with no versioned fields.
                 definition = unversioned_definitions[name]

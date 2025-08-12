@@ -7,8 +7,9 @@ from ocdsextensionregistry.extension_version import ExtensionVersion
 from ocdsextensionregistry.profile_builder import ProfileBuilder
 from ocdsextensionregistry.versioned_release_schema import get_versioned_release_schema
 
-EXTENSIONS_DATA = 'https://raw.githubusercontent.com/open-contracting/extension_registry/main/extensions.csv'
-EXTENSION_VERSIONS_DATA = 'https://raw.githubusercontent.com/open-contracting/extension_registry/main/extension_versions.csv'
+_prefix = "https://raw.githubusercontent.com/open-contracting/extension_registry/main/"
+EXTENSIONS_DATA = f"{_prefix}extensions.csv"
+EXTENSION_VERSIONS_DATA = f"{_prefix}extension_versions.csv"
 
 __all__ = (
     "EXTENSIONS_DATA",

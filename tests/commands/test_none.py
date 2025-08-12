@@ -2,11 +2,11 @@ import sys
 
 from ocdsextensionregistry.__main__ import main
 
-args = ['ocdsextensionregistry']
+args = ["ocdsextensionregistry"]
 
 
 def test_command(capsys, monkeypatch, tmpdir):
-    monkeypatch.setattr(sys, 'argv', args)
+    monkeypatch.setattr(sys, "argv", args)
     main()
 
-    assert 'usage: ocdsextensionregistry' in capsys.readouterr().out
+    assert "usage: ocdsextensionregistry" in capsys.readouterr().out

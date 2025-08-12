@@ -18,17 +18,17 @@ class BaseCommand:
         self.subparser.add_argument(*args, **kwargs)
 
     def handle(self):
-        raise NotImplementedError('commands must implement handle()')
+        raise NotImplementedError("commands must implement handle()")
 
     def versions(self):
         registry = ExtensionRegistry(self.args.extension_versions_url, self.args.extensions_url)
 
         versions = defaultdict(list)
         for value in self.args.versions:
-            if '==' in value:
-                extension, version = value.split('==', 1)
+            if "==" in value:
+                extension, version = value.split("==", 1)
                 versions[extension].append(version)
-            elif '=' in value:
+            elif "=" in value:
                 # Help users with a common error.
                 raise CommandError(f"Couldn't parse '{value}'. Use '==' not '='.")
             else:

@@ -47,6 +47,7 @@ Get the name of the codelist it modifies:
 
     codelist.basename  # 'partyRole.csv'
 """
+
 import csv
 from io import StringIO
 
@@ -71,7 +72,7 @@ class Codelist:
         return self.name < other.name
 
     def __repr__(self):
-        return f'Codelist(name={self.name!r}, rows={self.rows!r})'
+        return f"Codelist(name={self.name!r}, rows={self.rows!r})"
 
     def extend(self, rows, extension_name=None):
         """Add rows to the codelist."""
@@ -85,13 +86,13 @@ class Codelist:
 
     def remove_deprecated_codes(self):
         """Remove deprecated codes and the ``Deprecated`` column."""
-        self.rows = [row for row in self.rows if not row.pop('Deprecated', None)]
+        self.rows = [row for row in self.rows if not row.pop("Deprecated", None)]
 
     def to_csv(self):
         """Return the codelist as CSV content."""
         io = StringIO()
 
-        writer = csv.DictWriter(io, fieldnames=self.fieldnames, lineterminator='\n', extrasaction='ignore')
+        writer = csv.DictWriter(io, fieldnames=self.fieldnames, lineterminator="\n", extrasaction="ignore")
         writer.writeheader()
         writer.writerows(self)
 
@@ -100,7 +101,7 @@ class Codelist:
     @property
     def codes(self):
         """Returns the codes in the codelist."""
-        return [row['Code'] for row in self.rows]
+        return [row["Code"] for row in self.rows]
 
     @property
     def fieldnames(self):
@@ -121,14 +122,14 @@ class Codelist:
     @property
     def patch(self):
         """Returns whether the codelist modifies another codelist."""
-        return self.name.startswith(('+', '-'))
+        return self.name.startswith(("+", "-"))
 
     @property
     def addend(self):
         """Returns whether the codelist adds codes to another codelist."""
-        return self.name.startswith('+')
+        return self.name.startswith("+")
 
     @property
     def subtrahend(self):
         """Returns whether the codelist removes codes from another codelist."""
-        return self.name.startswith('-')
+        return self.name.startswith("-")

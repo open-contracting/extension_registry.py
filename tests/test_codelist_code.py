@@ -6,15 +6,15 @@ from ocdsextensionregistry import CodelistCode
 def test_init():
     obj = CodelistCode(*arguments())
 
-    assert obj.data == {'Code': 'tender', 'Title': 'Tender', 'Description': '…'}
+    assert obj.data == {"Code": "tender", "Title": "Tender", "Description": "…"}
     assert obj.extension_name is None
 
 
 def test_init_extension_name():
-    obj = CodelistCode(*arguments('OCDS Core'))
+    obj = CodelistCode(*arguments("OCDS Core"))
 
-    assert obj.data == {'Code': 'tender', 'Title': 'Tender', 'Description': '…'}
-    assert obj.extension_name == 'OCDS Core'
+    assert obj.data == {"Code": "tender", "Title": "Tender", "Description": "…"}
+    assert obj.extension_name == "OCDS Core"
 
 
 def test_eq():
@@ -33,10 +33,10 @@ def test_eq_dict():
 def test_getitem():
     obj = CodelistCode(*arguments())
 
-    assert obj['Code'] == 'tender'
+    assert obj["Code"] == "tender"
 
     with pytest.raises(KeyError) as excinfo:
-        obj['nonexistent']
+        obj["nonexistent"]
 
     assert str(excinfo.value) == "'nonexistent'"
 
@@ -44,16 +44,16 @@ def test_getitem():
 def test_get():
     obj = CodelistCode(*arguments())
 
-    assert obj.get('Code') == 'tender'
+    assert obj.get("Code") == "tender"
 
-    assert obj.get('nonexistent', 'default') == 'default'
+    assert obj.get("nonexistent", "default") == "default"
 
 
 def test_setitem():
     obj = CodelistCode(*arguments())
-    obj['Extension'] = 'OCDS Core'
+    obj["Extension"] = "OCDS Core"
 
-    assert obj['Extension'] == 'OCDS Core'
+    assert obj["Extension"] == "OCDS Core"
 
 
 def test_iter():
@@ -77,26 +77,29 @@ def test_repr():
 
 
 def test_repr_extension_name():
-    obj = CodelistCode(*arguments('OCDS Core'))
+    obj = CodelistCode(*arguments("OCDS Core"))
 
-    assert repr(obj) == "CodelistCode(data={'Code': 'tender', 'Title': 'Tender', 'Description': '…'}, extension_name='OCDS Core')"  # noqa: E501
+    assert (
+        repr(obj)
+        == "CodelistCode(data={'Code': 'tender', 'Title': 'Tender', 'Description': '…'}, extension_name='OCDS Core')"
+    )
 
 
 def test_pop():
     obj = CodelistCode(*arguments())
 
-    assert obj.pop('Code', 'default') == 'tender'
+    assert obj.pop("Code", "default") == "tender"
 
-    assert obj.pop('Code', 'default') == 'default'
+    assert obj.pop("Code", "default") == "default"
 
     with pytest.raises(KeyError) as excinfo:
-        obj['Code']
+        obj["Code"]
 
     assert str(excinfo.value) == "'Code'"
 
 
 def arguments(*args):
-    data = [{'Code': 'tender', 'Title': 'Tender', 'Description': '…'}]
+    data = [{"Code": "tender", "Title": "Tender", "Description": "…"}]
 
     data.extend(args)
     return data
