@@ -15,7 +15,7 @@ project = "OCDS Extension Registry Python Package"
 copyright = "2018, Open Contracting Partnership"
 author = "Open Contracting Partnership"
 
-version = "0.6.9"
+version = "0.7.0"
 release = version
 
 # -- General configuration ---------------------------------------------------

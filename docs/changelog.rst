@@ -1,8 +1,8 @@
 Changelog
 =========
 
-Unreleased
-----------
+0.7.0 (2025-08-25)
+------------------
 
 -  ``generate-pot-files``:
 
