@@ -57,15 +57,13 @@ class Command(BaseCommand):
         #
         # * bin/sphinx-build calls main() in sphinx.cmd.build, which calls build_main(), which calls Sphinx(…).build(…)
 
-        # https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-suppress_warnings
-        warning_type = "image.not_readable"
-
         kwargs = {
             # sphinx-build -E …
             "freshenv": True,
-            # sphinx-build -D suppress_warnings=image.not_readable …
+            # https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-suppress_warnings
+            # sphinx-build -D suppress_warnings=image.not_readable -D extensions=myst_parser …
             "confoverrides": {
-                "suppress_warnings": [warning_type],
+                "suppress_warnings": ["image.not_readable"],
                 "extensions": ["myst_parser"],
             },
         }
