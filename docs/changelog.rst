@@ -6,7 +6,8 @@ Unreleased
 
 -  ``generate-pot-files``:
 
-   -  Fix 0.4.0 regression causing empty ``docs.pot`` files.
+   -  Fix a 0.4.0 regression causing empty ``docs.pot`` files.
+   -  Resolve the ``--versions-dir`` directory to avoid an exception.
    -  Log the extension version if the ``--verbose`` option is set.
    -  Pass the ``--verbose`` count (for example, ``-vv``) to Sphinx.
 

@@ -49,7 +49,7 @@ class Command(BaseCommand):
         output_directory = Path(self.args.output_directory)
 
         if self.args.versions_dir:
-            versions_directory = Path(self.args.versions_dir)
+            versions_directory = Path(self.args.versions_dir).resolve()
 
         # We simulate pybabel and sphinx-build commands. Variable names are chosen to match upstream code.
 
