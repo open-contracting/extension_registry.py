@@ -35,7 +35,7 @@ class Command(BaseCommand):
             "versions", nargs="*", help="the versions of extensions to process (e.g. 'bids' or 'lots==master')"
         )
         self.add_argument("-W", dest="warningiserror", action="store_true", help="turn Sphinx warnings into errors")
-        self.add_argument("-v", "--verbose", action="count", help="print verbose output")
+        self.add_argument("-v", "--verbose", action="count", default=0, help="print verbose output")
         self.add_argument("--versions-dir", help="a directory containing versions of extensions")
         self.add_argument("--no-frozen", action="store_true", help="exclude frozen versions")
         self.add_argument("--extensions-url", default=EXTENSIONS_DATA, help="the URL of the registry's extensions.csv")
