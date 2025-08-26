@@ -133,6 +133,9 @@ class Command(BaseCommand):
 
             outdir.mkdir(parents=True, exist_ok=True)
 
+            if self.args.verbose:
+                logger.info(version)
+
             # See the `files` method of `ExtensionVersion` for similar code.
             with closing(version.zipfile()) as zipfile:
                 names = zipfile.namelist()

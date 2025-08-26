@@ -4,6 +4,7 @@ Changelog
 Unreleased
 ----------
 
+-  ``generate-pot-files``: Log the extension version if the ``--verbose`` option is set.
 -  :class:`~ocdsextensionregistry.codelist_code.CodelistCode`: Add a :meth:`~ocdsextensionregistry.codelist_code.CodelistCode.__hash__` method.
 -  Add support for Python 3.13.
 -  Drop support for Python 3.9.
