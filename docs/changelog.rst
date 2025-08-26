@@ -4,7 +4,12 @@ Changelog
 Unreleased
 ----------
 
--  ``generate-pot-files``: Log the extension version if the ``--verbose`` option is set.
+-  ``generate-pot-files``:
+
+   -  Fix 0.4.0 regression causing empty ``docs.pot`` files.
+   -  Log the extension version if the ``--verbose`` option is set.
+   -  Pass the ``--verbose`` count (for example, ``-vv``) to Sphinx.
+
 -  :class:`~ocdsextensionregistry.codelist_code.CodelistCode`: Add a :meth:`~ocdsextensionregistry.codelist_code.CodelistCode.__hash__` method.
 -  Add support for Python 3.13.
 -  Drop support for Python 3.9.

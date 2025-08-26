@@ -35,7 +35,7 @@ class Command(BaseCommand):
             "versions", nargs="*", help="the versions of extensions to process (e.g. 'bids' or 'lots==master')"
         )
         self.add_argument("-W", dest="warningiserror", action="store_true", help="turn Sphinx warnings into errors")
-        self.add_argument("-v", "--verbose", action="store_true", help="print verbose output")
+        self.add_argument("-v", "--verbose", action="count", help="print verbose output")
         self.add_argument("--versions-dir", help="a directory containing versions of extensions")
         self.add_argument("--no-frozen", action="store_true", help="exclude frozen versions")
         self.add_argument("--extensions-url", default=EXTENSIONS_DATA, help="the URL of the registry's extensions.csv")
@@ -171,8 +171,9 @@ class Command(BaseCommand):
                 # This section is equivalent to running:
                 #
                 # echo -e '.. toctree::\n   :hidden:\n\n   README' > index.rst
-                # sphinx-build -v -b gettext -a -E -C -D extensions=myst_parser . outdir
-                # msgcat outdir/*.pot
+                # sphinx-build -v -b gettext -C -E -D suppress_warnings=image.not_readable -D extensions=myst_parser \
+                #   -a . locale
+                # msgcat locale/*.pot
                 with TemporaryDirectory() as srcdir:
                     infos = zipfile.infolist()
                     start = len(infos[0].filename)
@@ -192,16 +193,29 @@ class Command(BaseCommand):
 
                         with patch_docutils(), docutils_namespace():
                             try:
-                                # sphinx-build -b gettext $(DOCS_DIR) $(POT_DIR)
-                                app = Sphinx(".", None, "outdir", ".", "gettext", **kwargs)
-                                # sphinx-build -a …
+                                app = Sphinx(
+                                    # -v
+                                    verbosity=self.args.verbose,
+                                    # -b gettext
+                                    buildername="gettext",
+                                    # -C
+                                    confdir=None,
+                                    # .
+                                    srcdir=".",
+                                    # locale
+                                    outdir="locale",
+                                    doctreedir=".",
+                                    # -E -D suppress_warnings=image.not_readable -D extensions=myst_parser
+                                    **kwargs,
+                                )
+                                # -a
                                 app.build(force_all=True)
                             except sphinx.errors.SphinxWarning as e:
                                 raise SphinxError(str(outdir)) from e
 
                         # https://stackoverflow.com/questions/15408348
                         content = subprocess.run(  # noqa: S603 # trusted input
-                            ["msgcat", *glob(str(outdir / "*.pot"))],  # noqa: S607
+                            ["msgcat", *glob("locale/*.pot")],  # noqa: S607
                             check=True,
                             stdout=subprocess.PIPE,
                         ).stdout

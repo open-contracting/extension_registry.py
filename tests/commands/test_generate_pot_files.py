@@ -25,6 +25,7 @@ def test_command(capsys, monkeypatch, tmpdir):
     # files
     assert tree[2][1] == []
     assert sorted(tree[2][2]) == ["codelists.pot", "docs.pot", "schema.pot"]
+    assert (tmpdir / "location" / "v1.1.4" / "docs.pot").size()
 
 
 def test_command_directory(capsys, monkeypatch, tmpdir):
@@ -50,6 +51,7 @@ def test_command_directory(capsys, monkeypatch, tmpdir):
     # files
     assert tree[2][1] == []
     assert sorted(tree[2][2]) == ["docs.pot"]
+    assert (output_dir / "location" / "v1.1.4" / "docs.pot").size()
 
 
 def test_command_missing_directory(capsys, monkeypatch, tmpdir, caplog):
