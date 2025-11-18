@@ -22,7 +22,7 @@ If you are viewing this on GitHub or PyPI, open the `full documentation <https:/
    :target: https://pypi.org/project/ocdsextensionregistry/
 .. |Build Status| image:: https://github.com/open-contracting/extension_registry.py/actions/workflows/ci.yml/badge.svg
    :target: https://github.com/open-contracting/extension_registry.py/actions/workflows/ci.yml
-.. |Coverage Status| image:: https://coveralls.io/repos/github/open-contracting/extension_registry.py/badge.svg?branch=main
-   :target: https://coveralls.io/github/open-contracting/extension_registry.py?branch=main
+.. |Coverage Status| image:: https://codecov.io/github/open-contracting/extension_registry.py/graph/badge.svg
+   :target: https://codecov.io/github/open-contracting/extension_registry.py
 .. |Python Version| image:: https://img.shields.io/pypi/pyversions/ocdsextensionregistry.svg
    :target: https://pypi.org/project/ocdsextensionregistry/
