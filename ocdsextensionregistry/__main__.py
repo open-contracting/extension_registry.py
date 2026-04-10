@@ -16,7 +16,7 @@ COMMAND_MODULES = (
 
 
 def main():
-    parser = argparse.ArgumentParser(description="OCDS Extension Registry CLI")
+    parser = argparse.ArgumentParser(prog="ocdsextensionregistry", description="OCDS Extension Registry CLI")
 
     subparsers = parser.add_subparsers(dest="subcommand")
 
