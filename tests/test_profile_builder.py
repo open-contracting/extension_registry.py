@@ -336,7 +336,7 @@ def test_extension_codelists(caplog):
 
     # Combines codelist additions and removals.
     assert len(plus_party_role) == 13
-    assert sorted(plus_party_role)[-1]["Code"] == "socialWitness"
+    assert max(plus_party_role)["Code"] == "socialWitness"
 
     # Logs ignored codelists.
     assert len(caplog.records) == 1
