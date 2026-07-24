@@ -6,7 +6,6 @@ jobs:
     permissions:
       contents: read
     with:
-      python-version: '3.10'
       standard-maintenance-scripts-extras: cli
       # MyST-Parser is used as a Sphinx extension.
       standard-maintenance-scripts-ignore: MyST-Parser
