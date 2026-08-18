@@ -31,7 +31,7 @@ warnings.filterwarnings(
 adapter = HTTPAdapter(max_retries=3, pool_maxsize=int(os.getenv("REQUESTS_POOL_MAXSIZE", "10")))
 session = CachedSession(backend="memory", expire_after=os.getenv("REQUESTS_CACHE_EXPIRE_AFTER", NEVER_EXPIRE))
 session.headers.update(
-    {"User-Agent": "ocdsextensionregistry (+http://www.open-contracting.org; data@open-contracting.org)"}
+    {"User-Agent": "ocdsextensionregistry (+https://www.open-contracting.org; data@open-contracting.org)"}
 )
 session.mount("https://", adapter)
 session.mount("http://", adapter)
