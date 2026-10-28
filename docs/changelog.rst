@@ -4,7 +4,7 @@ Changelog
 Unreleased
 ----------
 
--  Add support for Python 3.14.
+-  Add support for Python 3.14, 3.15.
 -  Drop support for Python 3.10.
 
 0.7.0 (2025-08-25)
